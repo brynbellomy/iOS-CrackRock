@@ -145,7 +145,7 @@
   }
   
   // pass the array to a new instance of SESpringBoard and add it to the view
-  SESpringBoard *board = [SESpringBoard initWithNavbarTitle: nil //@"Characters"
+  SESpringBoard *board = [SESpringBoard initWithNavbarTitle: nil
                                                       items: items
                                               launcherImage: [UIImage imageNamed:@"navbtn_home.png"]];
   board.allowsEditing = NO;

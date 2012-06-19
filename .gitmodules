@@ -1,0 +1,3 @@
+[submodule "EBPurchase"]
+	path = EBPurchase
+	url = git://github.com/ebutterfly/EBPurchase.git
