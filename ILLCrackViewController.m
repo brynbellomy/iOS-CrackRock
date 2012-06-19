@@ -7,8 +7,8 @@
 //
 
 #import "ILLCrackViewController.h"
-#import "SESpringBoard.h"
-#import "SEMenuItem.h"
+#import "ILLBlingLord.h"
+#import "ILLBlingLordMenuItem.h"
 #import "EBPurchase.h"
 #import "MBProgressHUD.h" // @@TODO: implement MBProgressHUD
 
@@ -101,7 +101,7 @@
                                                       object: nil
                                                        queue: [NSOperationQueue mainQueue]
                                                   usingBlock: ^(NSNotification *note) {
-                                                    // We're done retrieving product info from Apple, so populate and display the SESpringBoard view
+                                                    // We're done retrieving product info from Apple, so populate and display the ILLBlingLord view
                                                     [weakSelf didReceiveAllInAppPurchaseProductInfo];
                                                   }];
   
@@ -127,7 +127,7 @@
 
 
 - (void) initializeSpringboardView {
-  // create an array of SEMenuItem objects
+  // create an array of ILLBlingLord objects
   NSMutableArray *items = [NSMutableArray array];
   
   __weak ILLCrackViewController *weakSelf = self;
@@ -136,7 +136,7 @@
     UIImage *icon = [UIImage imageWithContentsOfFile: iconPath];
     
     __block NSDictionary *productCopy = [product copy];
-    SEMenuItem *menuItem = [SEMenuItem initWithTitle: productCopy[ ReadableName ] image: icon removable: NO
+    ILLBlingLordMenuItem *menuItem = [ILLBlingLordMenuItem initWithTitle: productCopy[ ReadableName ] image: icon removable: NO
                                      tapHandlerBlock: ^{
                                        NSUInteger purchaseStatus = ((NSNumber *)productCopy[ PurchaseStatus ]).unsignedIntegerValue;
                                        [weakSelf iconWasTappedForProduct:productCopy purchaseStatus:purchaseStatus];
@@ -144,8 +144,8 @@
     [items addObject: menuItem];
   }
   
-  // pass the array to a new instance of SESpringBoard and add it to the view
-  SESpringBoard *board = [SESpringBoard initWithNavbarTitle: nil
+  // pass the array to a new instance of ILLBlingLord and add it to the view
+  ILLBlingLord *board = [ILLBlingLord initWithNavbarTitle: nil
                                                       items: items
                                               launcherImage: [UIImage imageNamed:@"navbtn_home.png"]];
   board.allowsEditing = NO;
@@ -215,7 +215,7 @@
   int i = 0;
   NSMutableArray *productList = [NSMutableArray new];
   
-  // Populate the arrays that the SESpringBoard view draws on for its contents:
+  // Populate the arrays that the ILLBlingLord view draws on for its contents:
   
   // ... first add all of the free/default products to the list
   for (NSDictionary *product in self.freeProducts) {

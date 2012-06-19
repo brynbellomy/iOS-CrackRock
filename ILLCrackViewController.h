@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SEViewController.h"
+#import "ILLBlingLordViewController.h"
 #import "EBPurchase.h"
 
-@class SESpringBoard;
+@class ILLBlingLord;
 
 static NSString *const ProductID = @"ProductID";
 static NSString *const ReadableName = @"ReadableName";
@@ -31,9 +31,9 @@ typedef enum {
 static NSString *const ILLCrackUserDefaultsKey_purchasedItems = @"ILLCrackUserDefaultsKey_purchasedItems";
 static NSString *const ILLCrackNotification_iapProductInfoIsLoaded = @"ILLCrackNotification_iapProductInfoIsLoaded";
 
-@interface ILLCrackViewController : SEViewController <EBPurchaseDelegate>
+@interface ILLCrackViewController : ILLBlingLordViewController <EBPurchaseDelegate>
 
-@property (nonatomic, weak,   readwrite) SESpringBoard *springboardView;
+@property (nonatomic, weak,   readwrite) ILLBlingLord *springboardView;
 @property (nonatomic, strong, readonly)  NSMutableArray *productList;
 @property (nonatomic, strong, readonly)  NSMutableArray *purchasedItems;
 
