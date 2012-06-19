@@ -1,4 +1,10 @@
-crack
-=====
+# // crack
 
-in-app purchase helpers for brewing that delicious iOS fool-aid
+iOS in-app-purchase helpers
+
+# what
+
+relatively inflexible, specific use-case helpers for brewing that delicious iOS
+fool-aid.
+
+
