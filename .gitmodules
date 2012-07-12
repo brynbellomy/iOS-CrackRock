@@ -4,3 +4,6 @@
 [submodule "iOS-BlingLord"]
 	path = iOS-BlingLord
 	url = git://github.com/brynbellomy/iOS-BlingLord.git
+[submodule "iOS-StatefulNotifications"]
+	path = iOS-StatefulNotifications
+	url = git://github.com/brynbellomy/iOS-StatefulNotifications.git
