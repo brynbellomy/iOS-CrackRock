@@ -2,6 +2,10 @@
 
 ## as in: the irresistible street drug
 
+![crackrock](http://f.cl.ly/items/332U2r342K3Q1F1u0L1g/crack-rock.png)
+
+(unbifurcations)
+
 # what
 
 helpers for brewing that delicious iOS fool-aid.  right now, it only supports a
