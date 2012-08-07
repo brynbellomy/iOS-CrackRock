@@ -1,0 +1,721 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C5133BFC15BD8E060026E5ED /* SECrackRockCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = C5133BFB15BD8E060026E5ED /* SECrackRockCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C5133BFE15BD9C710026E5ED /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133BFD15BD9C710026E5ED /* StoreKit.framework */; };
+		C5133C3815BDC7000026E5ED /* libiOS-BlingLord.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C2B15BDC6790026E5ED /* libiOS-BlingLord.a */; };
+		C5133C3915BDC7000026E5ED /* libiOS-StatefulNotifications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C3115BDC6790026E5ED /* libiOS-StatefulNotifications.a */; };
+		C5133C3A15BDC7550026E5ED /* SECrackRockSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D9115BC866400358BA6 /* SECrackRockSpec.m */; };
+		C5133C3B15BDD19A0026E5ED /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133BFD15BD9C710026E5ED /* StoreKit.framework */; };
+		C5133C3E15BDD1C20026E5ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C3D15BDD1C20026E5ED /* UIKit.framework */; };
+		C5133C4015BDD2750026E5ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C3F15BDD2750026E5ED /* CoreGraphics.framework */; };
+		C5133C4215BDD2D30026E5ED /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C4115BDD2D30026E5ED /* QuartzCore.framework */; };
+		C56D0D4815BC7D8900358BA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D4715BC7D8900358BA6 /* Foundation.framework */; };
+		C56D0D5615BC7D8900358BA6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D5515BC7D8900358BA6 /* SenTestingKit.framework */; };
+		C56D0D5915BC7D8900358BA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D4715BC7D8900358BA6 /* Foundation.framework */; };
+		C56D0D5C15BC7D8900358BA6 /* libiOS-CrackRock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D4415BC7D8900358BA6 /* libiOS-CrackRock.a */; };
+		C56D0D6215BC7D8900358BA6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C56D0D6015BC7D8900358BA6 /* InfoPlist.strings */; };
+		C56D0D7615BC85F400358BA6 /* SECrackRock.h in Headers */ = {isa = PBXBuildFile; fileRef = C56D0D6E15BC85F400358BA6 /* SECrackRock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C56D0D7715BC85F500358BA6 /* SECrackRock.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D6F15BC85F400358BA6 /* SECrackRock.m */; };
+		C56D0D7815BC85F500358BA6 /* SECrackRockProduct.h in Headers */ = {isa = PBXBuildFile; fileRef = C56D0D7015BC85F400358BA6 /* SECrackRockProduct.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C56D0D7915BC85F500358BA6 /* SECrackRockProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D7115BC85F400358BA6 /* SECrackRockProduct.m */; };
+		C56D0D7A15BC85F500358BA6 /* SECrackRockViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C56D0D7215BC85F400358BA6 /* SECrackRockViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C56D0D7B15BC85F500358BA6 /* SECrackRockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D7315BC85F400358BA6 /* SECrackRockViewController.m */; };
+		C56D0D7C15BC85F500358BA6 /* UIImage+SECrackRock.h in Headers */ = {isa = PBXBuildFile; fileRef = C56D0D7415BC85F400358BA6 /* UIImage+SECrackRock.h */; };
+		C56D0D7D15BC85F500358BA6 /* UIImage+SECrackRock.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D7515BC85F400358BA6 /* UIImage+SECrackRock.m */; };
+		C59150FA15BCD34A0062C02E /* Bryn.h in Headers */ = {isa = PBXBuildFile; fileRef = C59150F915BCD34A0062C02E /* Bryn.h */; };
+		C591518015BCDBA10062C02E /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C591517F15BCDBA10062C02E /* libKiwi.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C5133BC815BD8C6A0026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C591516A15BCDB650062C02E /* Kiwi.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F5015B9F11583A77002E9A98;
+			remoteInfo = Kiwi;
+		};
+		C5133BCA15BD8C6A0026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C591516A15BCDB650062C02E /* Kiwi.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 832C83C7157263B300F160D5;
+			remoteInfo = "Kiwi-OSX";
+		};
+		C5133BCC15BD8C6A0026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C591516A15BCDB650062C02E /* Kiwi.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F5015C9E11584017002E9A98;
+			remoteInfo = KiwiTests;
+		};
+		C5133BCE15BD8C6A0026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C591516A15BCDB650062C02E /* Kiwi.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A3B16542139967B800E9CC6E;
+			remoteInfo = KiwiExamples;
+		};
+		C5133C2A15BDC6790026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5133C1A15BDC6780026E5ED /* iOS-BlingLord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C591518E15BD081C0062C02E;
+			remoteInfo = "iOS-BlingLord";
+		};
+		C5133C2C15BDC6790026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5133C1A15BDC6780026E5ED /* iOS-BlingLord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C591519E15BD081C0062C02E;
+			remoteInfo = "iOS-BlingLordTests";
+		};
+		C5133C3015BDC6790026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5133C1D15BDC6780026E5ED /* iOS-StatefulNotifications.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C508B41515BA3AA100175FE4;
+			remoteInfo = "iOS-StatefulNotifications";
+		};
+		C5133C3215BDC6790026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5133C1D15BDC6780026E5ED /* iOS-StatefulNotifications.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C508B42515BA3AA100175FE4;
+			remoteInfo = "iOS-StatefulNotificationsTests";
+		};
+		C5133C3415BDC6DC0026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5133C1A15BDC6780026E5ED /* iOS-BlingLord.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C591518D15BD081C0062C02E;
+			remoteInfo = "iOS-BlingLord";
+		};
+		C5133C3615BDC6DF0026E5ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5133C1D15BDC6780026E5ED /* iOS-StatefulNotifications.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C508B41415BA3AA100175FE4;
+			remoteInfo = "iOS-StatefulNotifications";
+		};
+		C56D0D5A15BC7D8900358BA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C56D0D3B15BC7D8900358BA6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C56D0D4315BC7D8900358BA6;
+			remoteInfo = "iOS-CrackRock";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C5133BFB15BD8E060026E5ED /* SECrackRockCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRockCommon.h; sourceTree = "<group>"; };
+		C5133BFD15BD9C710026E5ED /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		C5133C1A15BDC6780026E5ED /* iOS-BlingLord.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "iOS-BlingLord.xcodeproj"; path = "iOS-BlingLord/iOS-BlingLord.xcodeproj"; sourceTree = "<group>"; };
+		C5133C1D15BDC6780026E5ED /* iOS-StatefulNotifications.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "iOS-StatefulNotifications.xcodeproj"; path = "iOS-StatefulNotifications/iOS-StatefulNotifications.xcodeproj"; sourceTree = "<group>"; };
+		C5133C3D15BDD1C20026E5ED /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C5133C3F15BDD2750026E5ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C5133C4115BDD2D30026E5ED /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C56D0D4415BC7D8900358BA6 /* libiOS-CrackRock.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libiOS-CrackRock.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C56D0D4715BC7D8900358BA6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C56D0D4B15BC7D8900358BA6 /* iOS-CrackRock-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS-CrackRock-Prefix.pch"; sourceTree = "<group>"; };
+		C56D0D5415BC7D8900358BA6 /* iOS-CrackRockTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-CrackRockTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C56D0D5515BC7D8900358BA6 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		C56D0D5F15BC7D8900358BA6 /* iOS-CrackRockTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOS-CrackRockTests-Info.plist"; sourceTree = "<group>"; };
+		C56D0D6115BC7D8900358BA6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C56D0D6E15BC85F400358BA6 /* SECrackRock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRock.h; sourceTree = "<group>"; };
+		C56D0D6F15BC85F400358BA6 /* SECrackRock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRock.m; sourceTree = "<group>"; };
+		C56D0D7015BC85F400358BA6 /* SECrackRockProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRockProduct.h; sourceTree = "<group>"; };
+		C56D0D7115BC85F400358BA6 /* SECrackRockProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockProduct.m; sourceTree = "<group>"; };
+		C56D0D7215BC85F400358BA6 /* SECrackRockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRockViewController.h; sourceTree = "<group>"; };
+		C56D0D7315BC85F400358BA6 /* SECrackRockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockViewController.m; sourceTree = "<group>"; };
+		C56D0D7415BC85F400358BA6 /* UIImage+SECrackRock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+SECrackRock.h"; sourceTree = "<group>"; };
+		C56D0D7515BC85F400358BA6 /* UIImage+SECrackRock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SECrackRock.m"; sourceTree = "<group>"; };
+		C56D0D9115BC866400358BA6 /* SECrackRockSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockSpec.m; sourceTree = "<group>"; };
+		C59150F915BCD34A0062C02E /* Bryn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bryn.h; path = Bryn.h/Bryn.h; sourceTree = "<group>"; };
+		C591516A15BCDB650062C02E /* Kiwi.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kiwi.xcodeproj; path = Kiwi/Kiwi.xcodeproj; sourceTree = "<group>"; };
+		C591517F15BCDBA10062C02E /* libKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libKiwi.a; path = "Vendor/Kiwi/build/Release-iphoneos/libKiwi.a"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C56D0D4115BC7D8900358BA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5133C3815BDC7000026E5ED /* libiOS-BlingLord.a in Frameworks */,
+				C5133C3915BDC7000026E5ED /* libiOS-StatefulNotifications.a in Frameworks */,
+				C5133BFE15BD9C710026E5ED /* StoreKit.framework in Frameworks */,
+				C56D0D4815BC7D8900358BA6 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C56D0D5015BC7D8900358BA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5133C4215BDD2D30026E5ED /* QuartzCore.framework in Frameworks */,
+				C5133C4015BDD2750026E5ED /* CoreGraphics.framework in Frameworks */,
+				C5133C3E15BDD1C20026E5ED /* UIKit.framework in Frameworks */,
+				C5133C3B15BDD19A0026E5ED /* StoreKit.framework in Frameworks */,
+				C56D0D5915BC7D8900358BA6 /* Foundation.framework in Frameworks */,
+				C56D0D5615BC7D8900358BA6 /* SenTestingKit.framework in Frameworks */,
+				C591518015BCDBA10062C02E /* libKiwi.a in Frameworks */,
+				C56D0D5C15BC7D8900358BA6 /* libiOS-CrackRock.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C5133BC115BD8C6A0026E5ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C5133BC915BD8C6A0026E5ED /* libKiwi.a */,
+				C5133BCB15BD8C6A0026E5ED /* libKiwi-OSX.a */,
+				C5133BCD15BD8C6A0026E5ED /* KiwiTests.octest */,
+				C5133BCF15BD8C6A0026E5ED /* KiwiExamples.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C5133C1B15BDC6780026E5ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C5133C2B15BDC6790026E5ED /* libiOS-BlingLord.a */,
+				C5133C2D15BDC6790026E5ED /* iOS-BlingLordTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C5133C1E15BDC6780026E5ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C5133C3115BDC6790026E5ED /* libiOS-StatefulNotifications.a */,
+				C5133C3315BDC6790026E5ED /* iOS-StatefulNotificationsTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C56D0D3915BC7D8900358BA6 = {
+			isa = PBXGroup;
+			children = (
+				C56D0D4915BC7D8900358BA6 /* iOS-CrackRock */,
+				C56D0D5D15BC7D8900358BA6 /* iOS-CrackRockTests */,
+				C591345515BCC9860062C02E /* Vendor */,
+				C56D0D4615BC7D8900358BA6 /* Frameworks */,
+				C56D0D4515BC7D8900358BA6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C56D0D4515BC7D8900358BA6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C56D0D4415BC7D8900358BA6 /* libiOS-CrackRock.a */,
+				C56D0D5415BC7D8900358BA6 /* iOS-CrackRockTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C56D0D4615BC7D8900358BA6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C5133C4115BDD2D30026E5ED /* QuartzCore.framework */,
+				C5133C3F15BDD2750026E5ED /* CoreGraphics.framework */,
+				C5133C3D15BDD1C20026E5ED /* UIKit.framework */,
+				C5133BFD15BD9C710026E5ED /* StoreKit.framework */,
+				C56D0D4715BC7D8900358BA6 /* Foundation.framework */,
+				C56D0D5515BC7D8900358BA6 /* SenTestingKit.framework */,
+				C591517F15BCDBA10062C02E /* libKiwi.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C56D0D4915BC7D8900358BA6 /* iOS-CrackRock */ = {
+			isa = PBXGroup;
+			children = (
+				C5133BFB15BD8E060026E5ED /* SECrackRockCommon.h */,
+				C56D0D6E15BC85F400358BA6 /* SECrackRock.h */,
+				C56D0D6F15BC85F400358BA6 /* SECrackRock.m */,
+				C56D0D7015BC85F400358BA6 /* SECrackRockProduct.h */,
+				C56D0D7115BC85F400358BA6 /* SECrackRockProduct.m */,
+				C56D0D7215BC85F400358BA6 /* SECrackRockViewController.h */,
+				C56D0D7315BC85F400358BA6 /* SECrackRockViewController.m */,
+				C56D0D7415BC85F400358BA6 /* UIImage+SECrackRock.h */,
+				C56D0D7515BC85F400358BA6 /* UIImage+SECrackRock.m */,
+				C56D0D4A15BC7D8900358BA6 /* Supporting Files */,
+			);
+			path = "iOS-CrackRock";
+			sourceTree = "<group>";
+		};
+		C56D0D4A15BC7D8900358BA6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C56D0D4B15BC7D8900358BA6 /* iOS-CrackRock-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C56D0D5D15BC7D8900358BA6 /* iOS-CrackRockTests */ = {
+			isa = PBXGroup;
+			children = (
+				C56D0D5E15BC7D8900358BA6 /* Supporting Files */,
+				C56D0D9115BC866400358BA6 /* SECrackRockSpec.m */,
+			);
+			path = "iOS-CrackRockTests";
+			sourceTree = "<group>";
+		};
+		C56D0D5E15BC7D8900358BA6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C56D0D5F15BC7D8900358BA6 /* iOS-CrackRockTests-Info.plist */,
+				C56D0D6015BC7D8900358BA6 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C591345515BCC9860062C02E /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				C5133C1A15BDC6780026E5ED /* iOS-BlingLord.xcodeproj */,
+				C5133C1D15BDC6780026E5ED /* iOS-StatefulNotifications.xcodeproj */,
+				C591516A15BCDB650062C02E /* Kiwi.xcodeproj */,
+				C59150F915BCD34A0062C02E /* Bryn.h */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C56D0D4215BC7D8900358BA6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C56D0D7615BC85F400358BA6 /* SECrackRock.h in Headers */,
+				C56D0D7815BC85F500358BA6 /* SECrackRockProduct.h in Headers */,
+				C56D0D7A15BC85F500358BA6 /* SECrackRockViewController.h in Headers */,
+				C5133BFC15BD8E060026E5ED /* SECrackRockCommon.h in Headers */,
+				C56D0D7C15BC85F500358BA6 /* UIImage+SECrackRock.h in Headers */,
+				C59150FA15BCD34A0062C02E /* Bryn.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C56D0D4315BC7D8900358BA6 /* iOS-CrackRock */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C56D0D6815BC7D8900358BA6 /* Build configuration list for PBXNativeTarget "iOS-CrackRock" */;
+			buildPhases = (
+				C56D0D4015BC7D8900358BA6 /* Sources */,
+				C56D0D4115BC7D8900358BA6 /* Frameworks */,
+				C56D0D4215BC7D8900358BA6 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C5133C3715BDC6DF0026E5ED /* PBXTargetDependency */,
+				C5133C3515BDC6DC0026E5ED /* PBXTargetDependency */,
+			);
+			name = "iOS-CrackRock";
+			productName = "iOS-CrackRock";
+			productReference = C56D0D4415BC7D8900358BA6 /* libiOS-CrackRock.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C56D0D5315BC7D8900358BA6 /* iOS-CrackRockTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C56D0D6B15BC7D8900358BA6 /* Build configuration list for PBXNativeTarget "iOS-CrackRockTests" */;
+			buildPhases = (
+				C56D0D4F15BC7D8900358BA6 /* Sources */,
+				C56D0D5015BC7D8900358BA6 /* Frameworks */,
+				C56D0D5115BC7D8900358BA6 /* Resources */,
+				C56D0D5215BC7D8900358BA6 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C56D0D5B15BC7D8900358BA6 /* PBXTargetDependency */,
+			);
+			name = "iOS-CrackRockTests";
+			productName = "iOS-CrackRockTests";
+			productReference = C56D0D5415BC7D8900358BA6 /* iOS-CrackRockTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C56D0D3B15BC7D8900358BA6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = illumntr;
+			};
+			buildConfigurationList = C56D0D3E15BC7D8900358BA6 /* Build configuration list for PBXProject "iOS-CrackRock" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C56D0D3915BC7D8900358BA6;
+			productRefGroup = C56D0D4515BC7D8900358BA6 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C5133C1B15BDC6780026E5ED /* Products */;
+					ProjectRef = C5133C1A15BDC6780026E5ED /* iOS-BlingLord.xcodeproj */;
+				},
+				{
+					ProductGroup = C5133C1E15BDC6780026E5ED /* Products */;
+					ProjectRef = C5133C1D15BDC6780026E5ED /* iOS-StatefulNotifications.xcodeproj */;
+				},
+				{
+					ProductGroup = C5133BC115BD8C6A0026E5ED /* Products */;
+					ProjectRef = C591516A15BCDB650062C02E /* Kiwi.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				C56D0D4315BC7D8900358BA6 /* iOS-CrackRock */,
+				C56D0D5315BC7D8900358BA6 /* iOS-CrackRockTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C5133BC915BD8C6A0026E5ED /* libKiwi.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libKiwi.a;
+			remoteRef = C5133BC815BD8C6A0026E5ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C5133BCB15BD8C6A0026E5ED /* libKiwi-OSX.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libKiwi-OSX.a";
+			remoteRef = C5133BCA15BD8C6A0026E5ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C5133BCD15BD8C6A0026E5ED /* KiwiTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = KiwiTests.octest;
+			remoteRef = C5133BCC15BD8C6A0026E5ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C5133BCF15BD8C6A0026E5ED /* KiwiExamples.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = KiwiExamples.octest;
+			remoteRef = C5133BCE15BD8C6A0026E5ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C5133C2B15BDC6790026E5ED /* libiOS-BlingLord.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libiOS-BlingLord.a";
+			remoteRef = C5133C2A15BDC6790026E5ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C5133C2D15BDC6790026E5ED /* iOS-BlingLordTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "iOS-BlingLordTests.octest";
+			remoteRef = C5133C2C15BDC6790026E5ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C5133C3115BDC6790026E5ED /* libiOS-StatefulNotifications.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libiOS-StatefulNotifications.a";
+			remoteRef = C5133C3015BDC6790026E5ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C5133C3315BDC6790026E5ED /* iOS-StatefulNotificationsTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "iOS-StatefulNotificationsTests.octest";
+			remoteRef = C5133C3215BDC6790026E5ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C56D0D5115BC7D8900358BA6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C56D0D6215BC7D8900358BA6 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C56D0D5215BC7D8900358BA6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C56D0D4015BC7D8900358BA6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C56D0D7715BC85F500358BA6 /* SECrackRock.m in Sources */,
+				C56D0D7915BC85F500358BA6 /* SECrackRockProduct.m in Sources */,
+				C56D0D7B15BC85F500358BA6 /* SECrackRockViewController.m in Sources */,
+				C56D0D7D15BC85F500358BA6 /* UIImage+SECrackRock.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C56D0D4F15BC7D8900358BA6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5133C3A15BDC7550026E5ED /* SECrackRockSpec.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C5133C3515BDC6DC0026E5ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "iOS-BlingLord";
+			targetProxy = C5133C3415BDC6DC0026E5ED /* PBXContainerItemProxy */;
+		};
+		C5133C3715BDC6DF0026E5ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "iOS-StatefulNotifications";
+			targetProxy = C5133C3615BDC6DF0026E5ED /* PBXContainerItemProxy */;
+		};
+		C56D0D5B15BC7D8900358BA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C56D0D4315BC7D8900358BA6 /* iOS-CrackRock */;
+			targetProxy = C56D0D5A15BC7D8900358BA6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C56D0D6015BC7D8900358BA6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C56D0D6115BC7D8900358BA6 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C56D0D6615BC7D8900358BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
+					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C56D0D6715BC7D8900358BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
+					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C56D0D6915BC7D8900358BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/iOS_CrackRock.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C56D0D6A15BC7D8900358BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/iOS_CrackRock.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		C56D0D6C15BC7D8900358BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/libiOS-CrackRock.a";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
+					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
+					Vendor/Kiwi/Kiwi,
+				);
+				INFOPLIST_FILE = "iOS-CrackRockTests/iOS-CrackRockTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		C56D0D6D15BC7D8900358BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/libiOS-CrackRock.a";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
+					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
+					Vendor/Kiwi/Kiwi,
+				);
+				INFOPLIST_FILE = "iOS-CrackRockTests/iOS-CrackRockTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C56D0D3E15BC7D8900358BA6 /* Build configuration list for PBXProject "iOS-CrackRock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C56D0D6615BC7D8900358BA6 /* Debug */,
+				C56D0D6715BC7D8900358BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C56D0D6815BC7D8900358BA6 /* Build configuration list for PBXNativeTarget "iOS-CrackRock" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C56D0D6915BC7D8900358BA6 /* Debug */,
+				C56D0D6A15BC7D8900358BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C56D0D6B15BC7D8900358BA6 /* Build configuration list for PBXNativeTarget "iOS-CrackRockTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C56D0D6C15BC7D8900358BA6 /* Debug */,
+				C56D0D6D15BC7D8900358BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C56D0D3B15BC7D8900358BA6 /* Project object */;
+}

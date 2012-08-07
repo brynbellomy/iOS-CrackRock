@@ -7,14 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SECrackRock.h"
 
-typedef enum {
-  SECrackRockPurchaseStatusUnknown = (1 << 0),
-  SECrackRockPurchaseStatusError = (1 << 1),
-  SECrackRockPurchaseStatusFree = (1 << 2),
-  SECrackRockPurchaseStatusNonfreeUnpurchased = (1 << 3),
-  SECrackRockPurchaseStatusNonfreePurchased = (1 << 4)
-} SECrackRockPurchaseStatus;
+@class SKProduct;
 
 @interface SECrackRockProduct : NSObject <NSCopying>
   
@@ -25,6 +20,7 @@ typedef enum {
 @property (nonatomic, assign, readwrite) SECrackRockPurchaseStatus purchaseStatus;
 @property (nonatomic, assign, readwrite) BOOL isAvailableInStore;
 @property (nonatomic, strong, readwrite) NSString *thumbnailPNGFilename;
+@property (nonatomic, strong, readwrite) SKProduct *skProduct;
 
 - (id) initWithProductID:(NSString *)productID thumbnailPNGFilename:(NSString *)thumbnailPNGFilename;
 - (id) initWithProductID:(NSString *)productID readableName:(NSString *)readableName description:(NSString *)description thumbnailPNGFilename:(NSString *)thumbnailPNGFilename;
