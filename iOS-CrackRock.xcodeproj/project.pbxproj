@@ -1,515 +1,1191 @@
-// !$*UTF8*$!
-{
-	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 46;
-	objects = {
-
-/* Begin PBXBuildFile section */
-		C5133BFC15BD8E060026E5ED /* SECrackRockCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = C5133BFB15BD8E060026E5ED /* SECrackRockCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C5133BFE15BD9C710026E5ED /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133BFD15BD9C710026E5ED /* StoreKit.framework */; };
-		C5133C3A15BDC7550026E5ED /* SECrackRockSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D9115BC866400358BA6 /* SECrackRockSpec.m */; };
-		C5133C3B15BDD19A0026E5ED /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133BFD15BD9C710026E5ED /* StoreKit.framework */; };
-		C5133C3E15BDD1C20026E5ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C3D15BDD1C20026E5ED /* UIKit.framework */; };
-		C5133C4015BDD2750026E5ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C3F15BDD2750026E5ED /* CoreGraphics.framework */; };
-		C5133C4215BDD2D30026E5ED /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C4115BDD2D30026E5ED /* QuartzCore.framework */; };
-		C56D0D4815BC7D8900358BA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D4715BC7D8900358BA6 /* Foundation.framework */; };
-		C56D0D5615BC7D8900358BA6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D5515BC7D8900358BA6 /* SenTestingKit.framework */; };
-		C56D0D5915BC7D8900358BA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D4715BC7D8900358BA6 /* Foundation.framework */; };
-		C56D0D5C15BC7D8900358BA6 /* libiOS-CrackRock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D4415BC7D8900358BA6 /* libiOS-CrackRock.a */; };
-		C56D0D6215BC7D8900358BA6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C56D0D6015BC7D8900358BA6 /* InfoPlist.strings */; };
-		C56D0D7615BC85F400358BA6 /* SECrackRock.h in Headers */ = {isa = PBXBuildFile; fileRef = C56D0D6E15BC85F400358BA6 /* SECrackRock.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C56D0D7715BC85F500358BA6 /* SECrackRock.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D6F15BC85F400358BA6 /* SECrackRock.m */; };
-		C56D0D7815BC85F500358BA6 /* SECrackRockProduct.h in Headers */ = {isa = PBXBuildFile; fileRef = C56D0D7015BC85F400358BA6 /* SECrackRockProduct.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C56D0D7915BC85F500358BA6 /* SECrackRockProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D7115BC85F400358BA6 /* SECrackRockProduct.m */; };
-		C56D0D7A15BC85F500358BA6 /* SECrackRockViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C56D0D7215BC85F400358BA6 /* SECrackRockViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C56D0D7B15BC85F500358BA6 /* SECrackRockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D7315BC85F400358BA6 /* SECrackRockViewController.m */; };
-		C56D0D7C15BC85F500358BA6 /* UIImage+SECrackRock.h in Headers */ = {isa = PBXBuildFile; fileRef = C56D0D7415BC85F400358BA6 /* UIImage+SECrackRock.h */; };
-		C56D0D7D15BC85F500358BA6 /* UIImage+SECrackRock.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D7515BC85F400358BA6 /* UIImage+SECrackRock.m */; };
-		C591518015BCDBA10062C02E /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C591517F15BCDBA10062C02E /* libKiwi.a */; };
-/* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		C56D0D5A15BC7D8900358BA6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C56D0D3B15BC7D8900358BA6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C56D0D4315BC7D8900358BA6;
-			remoteInfo = "iOS-CrackRock";
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXFileReference section */
-		C5133BFB15BD8E060026E5ED /* SECrackRockCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRockCommon.h; sourceTree = "<group>"; };
-		C5133BFD15BD9C710026E5ED /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		C5133C3D15BDD1C20026E5ED /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		C5133C3F15BDD2750026E5ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		C5133C4115BDD2D30026E5ED /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		C56D0D4415BC7D8900358BA6 /* libiOS-CrackRock.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libiOS-CrackRock.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C56D0D4715BC7D8900358BA6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		C56D0D4B15BC7D8900358BA6 /* iOS-CrackRock-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS-CrackRock-Prefix.pch"; sourceTree = "<group>"; };
-		C56D0D5415BC7D8900358BA6 /* iOS-CrackRockTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-CrackRockTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C56D0D5515BC7D8900358BA6 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		C56D0D5F15BC7D8900358BA6 /* iOS-CrackRockTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOS-CrackRockTests-Info.plist"; sourceTree = "<group>"; };
-		C56D0D6115BC7D8900358BA6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C56D0D6E15BC85F400358BA6 /* SECrackRock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRock.h; sourceTree = "<group>"; };
-		C56D0D6F15BC85F400358BA6 /* SECrackRock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRock.m; sourceTree = "<group>"; };
-		C56D0D7015BC85F400358BA6 /* SECrackRockProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRockProduct.h; sourceTree = "<group>"; };
-		C56D0D7115BC85F400358BA6 /* SECrackRockProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockProduct.m; sourceTree = "<group>"; };
-		C56D0D7215BC85F400358BA6 /* SECrackRockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRockViewController.h; sourceTree = "<group>"; };
-		C56D0D7315BC85F400358BA6 /* SECrackRockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockViewController.m; sourceTree = "<group>"; };
-		C56D0D7415BC85F400358BA6 /* UIImage+SECrackRock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+SECrackRock.h"; sourceTree = "<group>"; };
-		C56D0D7515BC85F400358BA6 /* UIImage+SECrackRock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SECrackRock.m"; sourceTree = "<group>"; };
-		C56D0D9115BC866400358BA6 /* SECrackRockSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockSpec.m; sourceTree = "<group>"; };
-		C591517F15BCDBA10062C02E /* libKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libKiwi.a; path = "Vendor/Kiwi/build/Release-iphoneos/libKiwi.a"; sourceTree = "<group>"; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		C56D0D4115BC7D8900358BA6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C5133BFE15BD9C710026E5ED /* StoreKit.framework in Frameworks */,
-				C56D0D4815BC7D8900358BA6 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C56D0D5015BC7D8900358BA6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C5133C4215BDD2D30026E5ED /* QuartzCore.framework in Frameworks */,
-				C5133C4015BDD2750026E5ED /* CoreGraphics.framework in Frameworks */,
-				C5133C3E15BDD1C20026E5ED /* UIKit.framework in Frameworks */,
-				C5133C3B15BDD19A0026E5ED /* StoreKit.framework in Frameworks */,
-				C56D0D5915BC7D8900358BA6 /* Foundation.framework in Frameworks */,
-				C56D0D5615BC7D8900358BA6 /* SenTestingKit.framework in Frameworks */,
-				C591518015BCDBA10062C02E /* libKiwi.a in Frameworks */,
-				C56D0D5C15BC7D8900358BA6 /* libiOS-CrackRock.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXGroup section */
-		C56D0D3915BC7D8900358BA6 = {
-			isa = PBXGroup;
-			children = (
-				C56D0D4915BC7D8900358BA6 /* iOS-CrackRock */,
-				C56D0D5D15BC7D8900358BA6 /* iOS-CrackRockTests */,
-				C56D0D4615BC7D8900358BA6 /* Frameworks */,
-				C56D0D4515BC7D8900358BA6 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		C56D0D4515BC7D8900358BA6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C56D0D4415BC7D8900358BA6 /* libiOS-CrackRock.a */,
-				C56D0D5415BC7D8900358BA6 /* iOS-CrackRockTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		C56D0D4615BC7D8900358BA6 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				C5133C4115BDD2D30026E5ED /* QuartzCore.framework */,
-				C5133C3F15BDD2750026E5ED /* CoreGraphics.framework */,
-				C5133C3D15BDD1C20026E5ED /* UIKit.framework */,
-				C5133BFD15BD9C710026E5ED /* StoreKit.framework */,
-				C56D0D4715BC7D8900358BA6 /* Foundation.framework */,
-				C56D0D5515BC7D8900358BA6 /* SenTestingKit.framework */,
-				C591517F15BCDBA10062C02E /* libKiwi.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		C56D0D4915BC7D8900358BA6 /* iOS-CrackRock */ = {
-			isa = PBXGroup;
-			children = (
-				C5133BFB15BD8E060026E5ED /* SECrackRockCommon.h */,
-				C56D0D6E15BC85F400358BA6 /* SECrackRock.h */,
-				C56D0D6F15BC85F400358BA6 /* SECrackRock.m */,
-				C56D0D7015BC85F400358BA6 /* SECrackRockProduct.h */,
-				C56D0D7115BC85F400358BA6 /* SECrackRockProduct.m */,
-				C56D0D7215BC85F400358BA6 /* SECrackRockViewController.h */,
-				C56D0D7315BC85F400358BA6 /* SECrackRockViewController.m */,
-				C56D0D7415BC85F400358BA6 /* UIImage+SECrackRock.h */,
-				C56D0D7515BC85F400358BA6 /* UIImage+SECrackRock.m */,
-				C56D0D4A15BC7D8900358BA6 /* Supporting Files */,
-			);
-			path = "iOS-CrackRock";
-			sourceTree = "<group>";
-		};
-		C56D0D4A15BC7D8900358BA6 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C56D0D4B15BC7D8900358BA6 /* iOS-CrackRock-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		C56D0D5D15BC7D8900358BA6 /* iOS-CrackRockTests */ = {
-			isa = PBXGroup;
-			children = (
-				C56D0D5E15BC7D8900358BA6 /* Supporting Files */,
-				C56D0D9115BC866400358BA6 /* SECrackRockSpec.m */,
-			);
-			path = "iOS-CrackRockTests";
-			sourceTree = "<group>";
-		};
-		C56D0D5E15BC7D8900358BA6 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C56D0D5F15BC7D8900358BA6 /* iOS-CrackRockTests-Info.plist */,
-				C56D0D6015BC7D8900358BA6 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-/* End PBXGroup section */
-
-/* Begin PBXHeadersBuildPhase section */
-		C56D0D4215BC7D8900358BA6 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C56D0D7615BC85F400358BA6 /* SECrackRock.h in Headers */,
-				C56D0D7815BC85F500358BA6 /* SECrackRockProduct.h in Headers */,
-				C56D0D7A15BC85F500358BA6 /* SECrackRockViewController.h in Headers */,
-				C5133BFC15BD8E060026E5ED /* SECrackRockCommon.h in Headers */,
-				C56D0D7C15BC85F500358BA6 /* UIImage+SECrackRock.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
-/* Begin PBXNativeTarget section */
-		C56D0D4315BC7D8900358BA6 /* iOS-CrackRock */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C56D0D6815BC7D8900358BA6 /* Build configuration list for PBXNativeTarget "iOS-CrackRock" */;
-			buildPhases = (
-				C56D0D4015BC7D8900358BA6 /* Sources */,
-				C56D0D4115BC7D8900358BA6 /* Frameworks */,
-				C56D0D4215BC7D8900358BA6 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "iOS-CrackRock";
-			productName = "iOS-CrackRock";
-			productReference = C56D0D4415BC7D8900358BA6 /* libiOS-CrackRock.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		C56D0D5315BC7D8900358BA6 /* iOS-CrackRockTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C56D0D6B15BC7D8900358BA6 /* Build configuration list for PBXNativeTarget "iOS-CrackRockTests" */;
-			buildPhases = (
-				C56D0D4F15BC7D8900358BA6 /* Sources */,
-				C56D0D5015BC7D8900358BA6 /* Frameworks */,
-				C56D0D5115BC7D8900358BA6 /* Resources */,
-				C56D0D5215BC7D8900358BA6 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C56D0D5B15BC7D8900358BA6 /* PBXTargetDependency */,
-			);
-			name = "iOS-CrackRockTests";
-			productName = "iOS-CrackRockTests";
-			productReference = C56D0D5415BC7D8900358BA6 /* iOS-CrackRockTests.octest */;
-			productType = "com.apple.product-type.bundle";
-		};
-/* End PBXNativeTarget section */
-
-/* Begin PBXProject section */
-		C56D0D3B15BC7D8900358BA6 /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				LastUpgradeCheck = 0430;
-				ORGANIZATIONNAME = illumntr;
-			};
-			buildConfigurationList = C56D0D3E15BC7D8900358BA6 /* Build configuration list for PBXProject "iOS-CrackRock" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-			);
-			mainGroup = C56D0D3915BC7D8900358BA6;
-			productRefGroup = C56D0D4515BC7D8900358BA6 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				C56D0D4315BC7D8900358BA6 /* iOS-CrackRock */,
-				C56D0D5315BC7D8900358BA6 /* iOS-CrackRockTests */,
-			);
-		};
-/* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		C56D0D5115BC7D8900358BA6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C56D0D6215BC7D8900358BA6 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		C56D0D5215BC7D8900358BA6 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		C56D0D4015BC7D8900358BA6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C56D0D7715BC85F500358BA6 /* SECrackRock.m in Sources */,
-				C56D0D7915BC85F500358BA6 /* SECrackRockProduct.m in Sources */,
-				C56D0D7B15BC85F500358BA6 /* SECrackRockViewController.m in Sources */,
-				C56D0D7D15BC85F500358BA6 /* UIImage+SECrackRock.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C56D0D4F15BC7D8900358BA6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C5133C3A15BDC7550026E5ED /* SECrackRockSpec.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C56D0D5B15BC7D8900358BA6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C56D0D4315BC7D8900358BA6 /* iOS-CrackRock */;
-			targetProxy = C56D0D5A15BC7D8900358BA6 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		C56D0D6015BC7D8900358BA6 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C56D0D6115BC7D8900358BA6 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
-/* Begin XCBuildConfiguration section */
-		C56D0D6615BC7D8900358BA6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = "";
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"\"$(OBJROOT)/UninstalledProducts/include\"",
-					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		C56D0D6715BC7D8900358BA6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				COPY_PHASE_STRIP = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = "";
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"\"$(OBJROOT)/UninstalledProducts/include\"",
-					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		C56D0D6915BC7D8900358BA6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DSTROOT = /tmp/iOS_CrackRock.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos\"",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
-					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		C56D0D6A15BC7D8900358BA6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DSTROOT = /tmp/iOS_CrackRock.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos\"",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
-					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		C56D0D6C15BC7D8900358BA6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/libiOS-CrackRock.a";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"$(OBJROOT)/UninstalledProducts/include\"",
-					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
-					Vendor/Kiwi/Kiwi,
-				);
-				INFOPLIST_FILE = "iOS-CrackRockTests/iOS-CrackRockTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos\"",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
-					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		C56D0D6D15BC7D8900358BA6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/libiOS-CrackRock.a";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"$(OBJROOT)/UninstalledProducts/include\"",
-					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
-					Vendor/Kiwi/Kiwi,
-				);
-				INFOPLIST_FILE = "iOS-CrackRockTests/iOS-CrackRockTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos\"",
-					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
-					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
-/* End XCBuildConfiguration section */
-
-/* Begin XCConfigurationList section */
-		C56D0D3E15BC7D8900358BA6 /* Build configuration list for PBXProject "iOS-CrackRock" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C56D0D6615BC7D8900358BA6 /* Debug */,
-				C56D0D6715BC7D8900358BA6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C56D0D6815BC7D8900358BA6 /* Build configuration list for PBXNativeTarget "iOS-CrackRock" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C56D0D6915BC7D8900358BA6 /* Debug */,
-				C56D0D6A15BC7D8900358BA6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C56D0D6B15BC7D8900358BA6 /* Build configuration list for PBXNativeTarget "iOS-CrackRockTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C56D0D6C15BC7D8900358BA6 /* Debug */,
-				C56D0D6D15BC7D8900358BA6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-/* End XCConfigurationList section */
-	};
-	rootObject = C56D0D3B15BC7D8900358BA6 /* Project object */;
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>archiveVersion</key>
+	<string>1</string>
+	<key>classes</key>
+	<dict/>
+	<key>objectVersion</key>
+	<string>46</string>
+	<key>objects</key>
+	<dict>
+		<key>3D4D196EAB1548528CA00265</key>
+		<dict>
+			<key>fileRef</key>
+			<string>F6376896C9CD4AE2A434784E</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>8989D58C91584257A5F9AE72</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Copy Pods Resources</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/Pods/Pods-resources.sh"
+</string>
+		</dict>
+		<key>C02AC70241664ED59A2C8A23</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods.xcconfig</string>
+			<key>path</key>
+			<string>Pods/Pods.xcconfig</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>C5133BFB15BD8E060026E5ED</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>SECrackRockCommon.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C5133BFC15BD8E060026E5ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C5133BFB15BD8E060026E5ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>C5133BFD15BD9C710026E5ED</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>StoreKit.framework</string>
+			<key>path</key>
+			<string>System/Library/Frameworks/StoreKit.framework</string>
+			<key>sourceTree</key>
+			<string>SDKROOT</string>
+		</dict>
+		<key>C5133BFE15BD9C710026E5ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C5133BFD15BD9C710026E5ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C5133C3A15BDC7550026E5ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D9115BC866400358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C5133C3B15BDD19A0026E5ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C5133BFD15BD9C710026E5ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C5133C3D15BDD1C20026E5ED</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>UIKit.framework</string>
+			<key>path</key>
+			<string>System/Library/Frameworks/UIKit.framework</string>
+			<key>sourceTree</key>
+			<string>SDKROOT</string>
+		</dict>
+		<key>C5133C3E15BDD1C20026E5ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C5133C3D15BDD1C20026E5ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C5133C3F15BDD2750026E5ED</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>CoreGraphics.framework</string>
+			<key>path</key>
+			<string>System/Library/Frameworks/CoreGraphics.framework</string>
+			<key>sourceTree</key>
+			<string>SDKROOT</string>
+		</dict>
+		<key>C5133C4015BDD2750026E5ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C5133C3F15BDD2750026E5ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C5133C4115BDD2D30026E5ED</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>QuartzCore.framework</string>
+			<key>path</key>
+			<string>System/Library/Frameworks/QuartzCore.framework</string>
+			<key>sourceTree</key>
+			<string>SDKROOT</string>
+		</dict>
+		<key>C5133C4215BDD2D30026E5ED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C5133C4115BDD2D30026E5ED</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D3915BC7D8900358BA6</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C56D0D4915BC7D8900358BA6</string>
+				<string>C56D0D5D15BC7D8900358BA6</string>
+				<string>C56D0D4615BC7D8900358BA6</string>
+				<string>C56D0D4515BC7D8900358BA6</string>
+				<string>C02AC70241664ED59A2C8A23</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D3B15BC7D8900358BA6</key>
+		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>LastUpgradeCheck</key>
+				<string>0430</string>
+				<key>ORGANIZATIONNAME</key>
+				<string>illumntr</string>
+			</dict>
+			<key>buildConfigurationList</key>
+			<string>C56D0D3E15BC7D8900358BA6</string>
+			<key>compatibilityVersion</key>
+			<string>Xcode 3.2</string>
+			<key>developmentRegion</key>
+			<string>English</string>
+			<key>hasScannedForEncodings</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXProject</string>
+			<key>knownRegions</key>
+			<array>
+				<string>en</string>
+			</array>
+			<key>mainGroup</key>
+			<string>C56D0D3915BC7D8900358BA6</string>
+			<key>productRefGroup</key>
+			<string>C56D0D4515BC7D8900358BA6</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectRoot</key>
+			<string></string>
+			<key>targets</key>
+			<array>
+				<string>C56D0D4315BC7D8900358BA6</string>
+				<string>C56D0D5315BC7D8900358BA6</string>
+			</array>
+		</dict>
+		<key>C56D0D3E15BC7D8900358BA6</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>C56D0D6615BC7D8900358BA6</string>
+				<string>C56D0D6715BC7D8900358BA6</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>C56D0D4015BC7D8900358BA6</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>C56D0D7715BC85F500358BA6</string>
+				<string>C56D0D7915BC85F500358BA6</string>
+				<string>C56D0D7B15BC85F500358BA6</string>
+				<string>C56D0D7D15BC85F500358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>C56D0D4115BC7D8900358BA6</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>C5133BFE15BD9C710026E5ED</string>
+				<string>C56D0D4815BC7D8900358BA6</string>
+				<string>3D4D196EAB1548528CA00265</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>C56D0D4215BC7D8900358BA6</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>C56D0D7615BC85F400358BA6</string>
+				<string>C56D0D7815BC85F500358BA6</string>
+				<string>C56D0D7A15BC85F500358BA6</string>
+				<string>C5133BFC15BD8E060026E5ED</string>
+				<string>C56D0D7C15BC85F500358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXHeadersBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>C56D0D4315BC7D8900358BA6</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>C56D0D6815BC7D8900358BA6</string>
+			<key>buildPhases</key>
+			<array>
+				<string>C56D0D4015BC7D8900358BA6</string>
+				<string>C56D0D4115BC7D8900358BA6</string>
+				<string>C56D0D4215BC7D8900358BA6</string>
+				<string>8989D58C91584257A5F9AE72</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>iOS-CrackRock</string>
+			<key>productName</key>
+			<string>iOS-CrackRock</string>
+			<key>productReference</key>
+			<string>C56D0D4415BC7D8900358BA6</string>
+			<key>productType</key>
+			<string>com.apple.product-type.library.static</string>
+		</dict>
+		<key>C56D0D4415BC7D8900358BA6</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>libiOS-CrackRock.a</string>
+			<key>path</key>
+			<string>libiOS-CrackRock.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>C56D0D4515BC7D8900358BA6</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C56D0D4415BC7D8900358BA6</string>
+				<string>C56D0D5415BC7D8900358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D4615BC7D8900358BA6</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C5133C4115BDD2D30026E5ED</string>
+				<string>C5133C3F15BDD2750026E5ED</string>
+				<string>C5133C3D15BDD1C20026E5ED</string>
+				<string>C5133BFD15BD9C710026E5ED</string>
+				<string>C56D0D4715BC7D8900358BA6</string>
+				<string>C56D0D5515BC7D8900358BA6</string>
+				<string>C591517F15BCDBA10062C02E</string>
+				<string>F6376896C9CD4AE2A434784E</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D4715BC7D8900358BA6</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>Foundation.framework</string>
+			<key>path</key>
+			<string>System/Library/Frameworks/Foundation.framework</string>
+			<key>sourceTree</key>
+			<string>SDKROOT</string>
+		</dict>
+		<key>C56D0D4815BC7D8900358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D4715BC7D8900358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D4915BC7D8900358BA6</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C5133BFB15BD8E060026E5ED</string>
+				<string>C56D0D6E15BC85F400358BA6</string>
+				<string>C56D0D6F15BC85F400358BA6</string>
+				<string>C56D0D7015BC85F400358BA6</string>
+				<string>C56D0D7115BC85F400358BA6</string>
+				<string>C56D0D7215BC85F400358BA6</string>
+				<string>C56D0D7315BC85F400358BA6</string>
+				<string>C56D0D7415BC85F400358BA6</string>
+				<string>C56D0D7515BC85F400358BA6</string>
+				<string>C56D0D4A15BC7D8900358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>iOS-CrackRock</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D4A15BC7D8900358BA6</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C56D0D4B15BC7D8900358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Supporting Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D4B15BC7D8900358BA6</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>iOS-CrackRock-Prefix.pch</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D4F15BC7D8900358BA6</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>C5133C3A15BDC7550026E5ED</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>C56D0D5015BC7D8900358BA6</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>C5133C4215BDD2D30026E5ED</string>
+				<string>C5133C4015BDD2750026E5ED</string>
+				<string>C5133C3E15BDD1C20026E5ED</string>
+				<string>C5133C3B15BDD19A0026E5ED</string>
+				<string>C56D0D5915BC7D8900358BA6</string>
+				<string>C56D0D5615BC7D8900358BA6</string>
+				<string>C591518015BCDBA10062C02E</string>
+				<string>C56D0D5C15BC7D8900358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>C56D0D5115BC7D8900358BA6</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>C56D0D6215BC7D8900358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXResourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>C56D0D5215BC7D8900358BA6</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string># Run the unit tests in this test bundle.
+"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
+</string>
+		</dict>
+		<key>C56D0D5315BC7D8900358BA6</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>C56D0D6B15BC7D8900358BA6</string>
+			<key>buildPhases</key>
+			<array>
+				<string>C56D0D4F15BC7D8900358BA6</string>
+				<string>C56D0D5015BC7D8900358BA6</string>
+				<string>C56D0D5115BC7D8900358BA6</string>
+				<string>C56D0D5215BC7D8900358BA6</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array>
+				<string>C56D0D5B15BC7D8900358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>iOS-CrackRockTests</string>
+			<key>productName</key>
+			<string>iOS-CrackRockTests</string>
+			<key>productReference</key>
+			<string>C56D0D5415BC7D8900358BA6</string>
+			<key>productType</key>
+			<string>com.apple.product-type.bundle</string>
+		</dict>
+		<key>C56D0D5415BC7D8900358BA6</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.cfbundle</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>iOS-CrackRockTests.octest</string>
+			<key>path</key>
+			<string>iOS-CrackRockTests.octest</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>C56D0D5515BC7D8900358BA6</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>SenTestingKit.framework</string>
+			<key>path</key>
+			<string>Library/Frameworks/SenTestingKit.framework</string>
+			<key>sourceTree</key>
+			<string>DEVELOPER_DIR</string>
+		</dict>
+		<key>C56D0D5615BC7D8900358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D5515BC7D8900358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D5915BC7D8900358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D4715BC7D8900358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D5A15BC7D8900358BA6</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>C56D0D3B15BC7D8900358BA6</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>C56D0D4315BC7D8900358BA6</string>
+			<key>remoteInfo</key>
+			<string>iOS-CrackRock</string>
+		</dict>
+		<key>C56D0D5B15BC7D8900358BA6</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>target</key>
+			<string>C56D0D4315BC7D8900358BA6</string>
+			<key>targetProxy</key>
+			<string>C56D0D5A15BC7D8900358BA6</string>
+		</dict>
+		<key>C56D0D5C15BC7D8900358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D4415BC7D8900358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D5D15BC7D8900358BA6</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C56D0D5E15BC7D8900358BA6</string>
+				<string>C56D0D9115BC866400358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>iOS-CrackRockTests</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D5E15BC7D8900358BA6</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C56D0D5F15BC7D8900358BA6</string>
+				<string>C56D0D6015BC7D8900358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Supporting Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D5F15BC7D8900358BA6</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>iOS-CrackRockTests-Info.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D6015BC7D8900358BA6</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C56D0D6115BC7D8900358BA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXVariantGroup</string>
+			<key>name</key>
+			<string>InfoPlist.strings</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D6115BC7D8900358BA6</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.strings</string>
+			<key>name</key>
+			<string>en</string>
+			<key>path</key>
+			<string>en.lproj/InfoPlist.strings</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D6215BC7D8900358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D6015BC7D8900358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D6615BC7D8900358BA6</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>ARCHS</key>
+				<string>$(ARCHS_STANDARD_32_BIT)</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+				<string>NO</string>
+				<key>GCC_VERSION</key>
+				<string></string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>HEADER_SEARCH_PATHS</key>
+				<array>
+					<string>"$(OBJROOT)/UninstalledProducts/include"</string>
+					<string>"$(TARGET_BUILD_DIR)/usr/local/lib/include"</string>
+				</array>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>4.3</string>
+				<key>OTHER_LDFLAGS</key>
+				<array>
+					<string>-all_load</string>
+					<string>-ObjC</string>
+				</array>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>include/$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>C56D0D6715BC7D8900358BA6</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>ARCHS</key>
+				<string>$(ARCHS_STANDARD_32_BIT)</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_VERSION</key>
+				<string></string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>HEADER_SEARCH_PATHS</key>
+				<array>
+					<string>"$(OBJROOT)/UninstalledProducts/include"</string>
+					<string>"$(TARGET_BUILD_DIR)/usr/local/lib/include"</string>
+				</array>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>4.3</string>
+				<key>OTHER_LDFLAGS</key>
+				<array>
+					<string>-all_load</string>
+					<string>-ObjC</string>
+				</array>
+				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
+				<string>include/$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>C56D0D6815BC7D8900358BA6</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>C56D0D6915BC7D8900358BA6</string>
+				<string>C56D0D6A15BC7D8900358BA6</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>C56D0D6915BC7D8900358BA6</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>C02AC70241664ED59A2C8A23</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>DSTROOT</key>
+				<string>/tmp/iOS_CrackRock.dst</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>iOS-CrackRock/iOS-CrackRock-Prefix.pch</string>
+				<key>LIBRARY_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator"</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos"</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator"</string>
+					<string>"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos"</string>
+					<string>"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator"</string>
+				</array>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>C56D0D6A15BC7D8900358BA6</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>C02AC70241664ED59A2C8A23</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>DSTROOT</key>
+				<string>/tmp/iOS_CrackRock.dst</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>iOS-CrackRock/iOS-CrackRock-Prefix.pch</string>
+				<key>LIBRARY_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator"</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos"</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator"</string>
+					<string>"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos"</string>
+					<string>"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator"</string>
+				</array>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>C56D0D6B15BC7D8900358BA6</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>C56D0D6C15BC7D8900358BA6</string>
+				<string>C56D0D6D15BC7D8900358BA6</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>C56D0D6C15BC7D8900358BA6</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>BUNDLE_LOADER</key>
+				<string>$(BUILT_PRODUCTS_DIR)/libiOS-CrackRock.a</string>
+				<key>FRAMEWORK_SEARCH_PATHS</key>
+				<array>
+					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
+					<string>$(DEVELOPER_LIBRARY_DIR)/Frameworks</string>
+				</array>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>iOS-CrackRock/iOS-CrackRock-Prefix.pch</string>
+				<key>HEADER_SEARCH_PATHS</key>
+				<array>
+					<string>"$(OBJROOT)/UninstalledProducts/include"</string>
+					<string>"$(TARGET_BUILD_DIR)/usr/local/lib/include"</string>
+					<string>Vendor/Kiwi/Kiwi</string>
+				</array>
+				<key>INFOPLIST_FILE</key>
+				<string>iOS-CrackRockTests/iOS-CrackRockTests-Info.plist</string>
+				<key>LIBRARY_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator"</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos"</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator"</string>
+					<string>"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos"</string>
+					<string>"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator"</string>
+				</array>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>TEST_HOST</key>
+				<string>$(BUNDLE_LOADER)</string>
+				<key>WRAPPER_EXTENSION</key>
+				<string>octest</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>C56D0D6D15BC7D8900358BA6</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>BUNDLE_LOADER</key>
+				<string>$(BUILT_PRODUCTS_DIR)/libiOS-CrackRock.a</string>
+				<key>FRAMEWORK_SEARCH_PATHS</key>
+				<array>
+					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
+					<string>$(DEVELOPER_LIBRARY_DIR)/Frameworks</string>
+				</array>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>iOS-CrackRock/iOS-CrackRock-Prefix.pch</string>
+				<key>HEADER_SEARCH_PATHS</key>
+				<array>
+					<string>"$(OBJROOT)/UninstalledProducts/include"</string>
+					<string>"$(TARGET_BUILD_DIR)/usr/local/lib/include"</string>
+					<string>Vendor/Kiwi/Kiwi</string>
+				</array>
+				<key>INFOPLIST_FILE</key>
+				<string>iOS-CrackRockTests/iOS-CrackRockTests-Info.plist</string>
+				<key>LIBRARY_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Build/Products/Debug-iphonesimulator"</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphoneos"</string>
+					<string>"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator"</string>
+					<string>"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos"</string>
+					<string>"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator"</string>
+				</array>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>TEST_HOST</key>
+				<string>$(BUNDLE_LOADER)</string>
+				<key>WRAPPER_EXTENSION</key>
+				<string>octest</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>C56D0D6E15BC85F400358BA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>SECrackRock.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D6F15BC85F400358BA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>SECrackRock.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D7015BC85F400358BA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>SECrackRockProduct.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D7115BC85F400358BA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>SECrackRockProduct.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D7215BC85F400358BA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>SECrackRockViewController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D7315BC85F400358BA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>SECrackRockViewController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D7415BC85F400358BA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>UIImage+SECrackRock.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D7515BC85F400358BA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>UIImage+SECrackRock.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C56D0D7615BC85F400358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D6E15BC85F400358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>C56D0D7715BC85F500358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D6F15BC85F400358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D7815BC85F500358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D7015BC85F400358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>C56D0D7915BC85F500358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D7115BC85F400358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D7A15BC85F500358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D7215BC85F400358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>C56D0D7B15BC85F500358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D7315BC85F400358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D7C15BC85F500358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D7415BC85F400358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D7D15BC85F500358BA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C56D0D7515BC85F400358BA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C56D0D9115BC866400358BA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>SECrackRockSpec.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C591517F15BCDBA10062C02E</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>archive.ar</string>
+			<key>name</key>
+			<string>libKiwi.a</string>
+			<key>path</key>
+			<string>Vendor/Kiwi/build/Release-iphoneos/libKiwi.a</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C591518015BCDBA10062C02E</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C591517F15BCDBA10062C02E</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>F6376896C9CD4AE2A434784E</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>libPods.a</string>
+			<key>path</key>
+			<string>libPods.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+	</dict>
+	<key>rootObject</key>
+	<string>C56D0D3B15BC7D8900358BA6</string>
+</dict>
+</plist>

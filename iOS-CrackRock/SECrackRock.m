@@ -6,10 +6,9 @@
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
 //
 
+#import <ObjC-StatelyNotificationRobot/SEStatelyNotificationRobot.h>
 #import "SECrackRock.h"
 #import "SECrackRockProduct.h"
-#import <iOS-StatefulNotifications/SEStatelyNotificationRobot.h>
-#import "Bryn.h"
 
 
 @interface SECrackRock ()

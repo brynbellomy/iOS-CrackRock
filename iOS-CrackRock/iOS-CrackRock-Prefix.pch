@@ -5,5 +5,5 @@
 #ifdef __OBJC__
   #import <Foundation/Foundation.h>
 
-  #import "Bryn.h"
+  #import <BrynKit/Bryn.h>
 #endif

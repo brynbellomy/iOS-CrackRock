@@ -18,7 +18,7 @@
 
 // Properties //
 
-@property (nonatomic, weak,   readwrite) SEBlingLordView *springboardView;
+@property (nonatomic, bryn_weak, readwrite) SEBlingLordView *springboardView;
 @property (nonatomic, assign, readwrite) CGSize springboardItemSize;
 @property (nonatomic, assign, readwrite) CGSize springboardItemMargins;
 @property (nonatomic, assign, readwrite) CGSize springboardOuterMargins;

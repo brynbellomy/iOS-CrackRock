@@ -46,7 +46,7 @@
 - (bool) tryToRestorePurchase:(NSString *)productID;
 - (bool) tryToRestoreAllPurchases;
 
-@property (nonatomic, weak,   readwrite) id<SECrackRockDataSource> dataSource;
+@property (nonatomic, bryn_weak, readwrite) id<SECrackRockDataSource> dataSource;
 @property (nonatomic, strong, readwrite) NSArray *freeProducts;
 @property (nonatomic, strong, readwrite) NSArray *paidProducts;
 @property (nonatomic, strong, readwrite) NSMutableArray *sortedProductIDs;

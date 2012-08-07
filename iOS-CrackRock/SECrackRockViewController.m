@@ -8,7 +8,7 @@
 
 #import <iOS-BlingLord/SEBlingLordView.h>
 #import <iOS-BlingLord/SEBlingLordMenuItem.h>
-#import <iOS-StatefulNotifications/SEStatelyNotificationRobot.h>
+#import <ObjC-StatelyNotificationRobot/SEStatelyNotificationRobot.h>
 
 #import "SECrackRockViewController.h"
 #import "SECrackRock.h"
@@ -33,7 +33,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 @interface SECrackRockViewController ()
-  @property (nonatomic, weak, readwrite) UIBarButtonItem *restorePurchasesButton;
+  @property (nonatomic, bryn_weak, readwrite) UIBarButtonItem *restorePurchasesButton;
 @end
 
 
@@ -90,7 +90,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
   [[SEStatelyNotificationRobot sharedRobot] removeHandlerWithID: SECrackRockTransactionStateObserver_RestorePurchasesButton];
   [[SEStatelyNotificationRobot sharedRobot] removeHandlerWithID: SECrackRockProductsRequestStateObserver_SECrackRockViewController];
   
-  __weak SECrackRockViewController *weakSelf = self;
+  __bryn_weak SECrackRockViewController *weakSelf = self;
   [[SEStatelyNotificationRobot sharedRobot] handleStateOf: SECrackRockState_TransactionState
                                                 handlerID: SECrackRockTransactionStateObserver_RestorePurchasesButton
                                                   onQueue: [NSOperationQueue mainQueue]
@@ -425,7 +425,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
   
   [[SEStatelyNotificationRobot sharedRobot] removeHandlerWithID: SECrackRockTransactionStateObserver_SpringboardView]; // remove any existing observer
   
-  __weak SECrackRockViewController *weakSelf = self;
+  __bryn_weak SECrackRockViewController *weakSelf = self;
   [[SEStatelyNotificationRobot sharedRobot] handleStateOf: SECrackRockState_TransactionState
                                                 handlerID: SECrackRockTransactionStateObserver_SpringboardView
                                                   onQueue: [NSOperationQueue mainQueue]
@@ -460,7 +460,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
   // recreate the product's icon without the purchaseable indicator
   
-  __weak SECrackRockViewController *weakSelf = self;
+  __bryn_weak SECrackRockViewController *weakSelf = self;
   dispatch_async(dispatch_get_main_queue(), ^{
     __strong SECrackRockViewController *strongSelf = weakSelf;
     
