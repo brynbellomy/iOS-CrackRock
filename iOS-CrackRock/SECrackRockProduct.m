@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
 //
 
+#import <StoreKit/StoreKit.h>
 #import "SECrackRockProduct.h"
 
 @interface SECrackRockProduct ()
@@ -22,6 +23,7 @@
 @synthesize purchaseStatus = _purchaseStatus;
 @synthesize isAvailableInStore = _isAvailableInStore;
 @synthesize thumbnailPNGFilename = _thumbnailPNGFilename;
+@synthesize skProduct = _skProduct;
 
 
 
@@ -64,6 +66,7 @@
   [theCopy setPrice:[self.price copy]];
   [theCopy setPurchaseStatus:self.purchaseStatus];
   [theCopy setIsAvailableInStore:self.isAvailableInStore];
+  [theCopy setSkProduct:[self.skProduct copy]];
   
   return theCopy;
 }

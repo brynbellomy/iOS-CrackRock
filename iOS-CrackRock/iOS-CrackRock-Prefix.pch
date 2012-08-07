@@ -1,0 +1,9 @@
+//
+// Prefix header for all source files of the 'iOS-CrackRock' target in the 'iOS-CrackRock' project
+//
+
+#ifdef __OBJC__
+  #import <Foundation/Foundation.h>
+
+  #import "Bryn.h"
+#endif
