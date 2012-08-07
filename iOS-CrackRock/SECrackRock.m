@@ -22,7 +22,7 @@
 
   @property (nonatomic, assign, readwrite) bool isCurrentlyRestoringMultiplePurchases;
   @property (nonatomic, assign, readwrite) bool restoreWasInitiatedByUser;
-@property (nonatomic, strong, readwrite) SKProductsRequest *productsRequest;
+  @property (nonatomic, strong, readwrite) SKProductsRequest *productsRequest;
 @end
 
 

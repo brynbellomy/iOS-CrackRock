@@ -243,7 +243,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
   // create an array of SEBlingLord objects
   NSMutableArray *items = [NSMutableArray arrayWithCapacity: [SECrackRock sharedInstance].sortedProductIDs.count];
   
-  __weak SECrackRockViewController *weakSelf = self;
+  __bryn_weak SECrackRockViewController *weakSelf = self;
   for (NSString *productID in [SECrackRock sharedInstance].sortedProductIDs) {
     SECrackRockProduct *product = [SECrackRock sharedInstance].productsByID[ productID ];
     
