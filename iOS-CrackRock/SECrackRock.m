@@ -7,6 +7,7 @@
 //
 
 #import <ObjC-StatelyNotificationRobot/SEStatelyNotificationRobot.h>
+#import <BrynKit/Bryn.h>
 #import "SECrackRock.h"
 #import "SECrackRockProduct.h"
 
@@ -14,7 +15,7 @@
 @interface SECrackRock ()
 #if DEBUG
 {
-  bool _storeTransactionIsUnderway;
+//  bool _storeTransactionIsUnderway;
   bool _isMonitoringTransactions;
 }
 #endif
@@ -22,22 +23,12 @@
   @property (nonatomic, assign, readwrite) bool isCurrentlyRestoringMultiplePurchases;
   @property (nonatomic, assign, readwrite) bool restoreWasInitiatedByUser;
   @property (nonatomic, strong, readwrite) SKProductsRequest *productsRequest;
+  @property (nonatomic, strong, readwrite) NSMutableSet *activeTransactions;
 @end
 
 
 
 @implementation SECrackRock
-
-@synthesize dataSource = _dataSource;
-@synthesize sortedProductIDs = _sortedProductIDs;
-@synthesize productsByID = _productsByID;
-@synthesize purchasedItems = _purchasedItems;
-@synthesize freeProducts = _freeProducts;
-@synthesize paidProducts = _paidProducts;
-@synthesize isCurrentlyRestoringMultiplePurchases = _isCurrentlyRestoringMultiplePurchases;
-@synthesize restoreWasInitiatedByUser = _restoreWasInitiatedByUser;
-@synthesize productsRequest = _productsRequest;
-
 
 
 
@@ -145,11 +136,12 @@
 - (id) init {
   self = [super init];
   if (self) {
-    self.isCurrentlyRestoringMultiplePurchases = NO;
-    self.restoreWasInitiatedByUser = NO;
+    _isCurrentlyRestoringMultiplePurchases = NO;
+    _restoreWasInitiatedByUser = NO;
+    _activeTransactions = [NSMutableSet set];
     
 #if DEBUG
-    _storeTransactionIsUnderway = NO;
+//    _storeTransactionIsUnderway = NO;
     _isMonitoringTransactions = NO;
 #endif
   }
@@ -253,19 +245,22 @@
 
 - (void) storeTransactionWillBegin:(SECrackRockStoreTransactionType)type {
   NSLog(@"Store transaction will begin. (%@)", (type == 2 ? @"purchase" : (type == 4 ? @"restore" : @"products request")));
-#if DEBUG
-  NSAssert(_storeTransactionIsUnderway == NO, @"A store transaction is already underway, or SECrackRock is in an inconsistent state.");
-  _storeTransactionIsUnderway = YES;
-#endif
+  NSAssert(NO == [self.activeTransactions containsObject:b(type)], @"A transaction of the given type is already underway. (type = %d)", type);
+//#if DEBUG
+//  NSAssert(_storeTransactionIsUnderway == NO, @"A store transaction is already underway, or SECrackRock is in an inconsistent state.");
+//  _storeTransactionIsUnderway = YES;
+//#endif
+    
+  BOOL wasEmpty = (self.activeTransactions.count <= 0);
+
+  [self.activeTransactions addObject:b(type)];
   
-//  id objects[2], keys[2];
-//  keys[0] = SECrackRockUserInfoKey_CrackRock;       objects[0] = self;
-//  keys[1] = SECrackRockUserInfoKey_TransactionType; objects[1] = [NSNumber numberWithUnsignedInteger:type];
-  
-  [[SEStatelyNotificationRobot sharedRobot] changeStateOf: SECrackRockState_TransactionState
-                                                       to: SECrackRockTransactionStateInProgress
-                                                stateInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
-                                                              SECrackRockUserInfoKey_TransactionType : b(type) }];
+  if (wasEmpty) {
+    [[SEStatelyNotificationRobot sharedRobot] changeStateOf: SECrackRockState_TransactionState
+                                                         to: SECrackRockTransactionStateInProgress
+                                                  stateInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
+                                                                SECrackRockUserInfoKey_TransactionType : b(type) }];
+  }
 }
 
 
@@ -276,20 +271,20 @@
 
 - (void) storeTransactionDidEnd:(SECrackRockStoreTransactionType)type {
   NSLog(@"Store transaction did end. (%@)", (type == 2 ? @"purchase" : (type == 4 ? @"restore" : @"products request")));
-#if DEBUG
-  NSAssert(_storeTransactionIsUnderway == YES, @"No store transaction is currently active, or SECrackRock is in an inconsistent state.");
-  _storeTransactionIsUnderway = NO;
-#endif
+//#if DEBUG
+//  NSAssert(_storeTransactionIsUnderway == YES, @"No store transaction is currently active, or SECrackRock is in an inconsistent state.");
+//  _storeTransactionIsUnderway = NO;
+//#endif
 
+  if ([self.activeTransactions containsObject:b(type)])
+    [self.activeTransactions removeObject:b(type)];
   
-//  id objects[2], keys[2];
-//  keys[0] = SECrackRockUserInfoKey_CrackRock;       objects[0] = self;
-//  keys[1] = SECrackRockUserInfoKey_TransactionType; objects[1] = [NSNumber numberWithUnsignedInteger:type];
-  
-  [[SEStatelyNotificationRobot sharedRobot] changeStateOf: SECrackRockState_TransactionState
-                                                       to: SECrackRockTransactionStateAsleep
-                                                stateInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
-                                                              SECrackRockUserInfoKey_TransactionType : b(type) }];
+  if (self.activeTransactions.count <= 0) {
+    [[SEStatelyNotificationRobot sharedRobot] changeStateOf: SECrackRockState_TransactionState
+                                                         to: SECrackRockTransactionStateAsleep
+                                                  stateInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
+                                                                SECrackRockUserInfoKey_TransactionType : b(type) }];
+  }
 }
 
 
@@ -808,11 +803,17 @@
     NSAssert(self.productsByID[ product.productIdentifier ] != nil, @"SKProductsRequest was returned a productID that was not requested.");
 //      [self requestedProductNotValid: product.productIdentifier];
     
-    [self requestedProductValidated:product
-                          productID:product.productIdentifier
-                               name:product.localizedTitle
-                              price:product.price.stringValue
-                        description:product.localizedDescription];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.locale = product.priceLocale;
+    NSString *currencyString = [formatter stringFromNumber:product.price];
+
+    
+    [self requestedProductValidated: product
+                          productID: product.productIdentifier
+                               name: product.localizedTitle
+                              price: currencyString
+                        description: product.localizedDescription];
   }
 
   // if any of the requested product IDs were not valid, mark them as such
