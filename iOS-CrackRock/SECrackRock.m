@@ -184,7 +184,7 @@
     // if the purchased items array has never been written to disk, create an empty array and save it
     if (_purchasedItems == nil || [_purchasedItems isKindOfClass:[NSMutableArray class]] == NO) {
       NSLog(@"WRITING NEW BLANK PURCHASEDITEMS ARRAY TO USER DEFAULTS");
-      _purchasedItems = $marr;
+      _purchasedItems = $marrnew;
       [[NSUserDefaults standardUserDefaults] setObject:_purchasedItems forKey:SECrackRockUserDefaultsKey_purchasedItems];
       [[NSUserDefaults standardUserDefaults] synchronize];
     }
@@ -799,7 +799,7 @@
   
   NSLog(@"(SECrackRock) updatedTransactions");
   
-  NSMutableArray *restores = $marr;
+  NSMutableArray *restores = $marrnew;
   
 	for (SKPaymentTransaction *transaction in transactions) {
     
