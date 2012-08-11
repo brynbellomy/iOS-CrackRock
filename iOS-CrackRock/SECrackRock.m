@@ -40,7 +40,7 @@
   
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    instance = [[SECrackRock alloc] init];
+    instance = $new(SECrackRock);
   });
   
   return instance;
@@ -138,7 +138,7 @@
   if (self) {
     _isCurrentlyRestoringMultiplePurchases = NO;
     _restoreWasInitiatedByUser = NO;
-    _activeTransactions = [NSMutableSet set];
+    _activeTransactions = $msetnew;
     
 #if DEBUG
 //    _storeTransactionIsUnderway = NO;
@@ -184,7 +184,7 @@
     // if the purchased items array has never been written to disk, create an empty array and save it
     if (_purchasedItems == nil || [_purchasedItems isKindOfClass:[NSMutableArray class]] == NO) {
       NSLog(@"WRITING NEW BLANK PURCHASEDITEMS ARRAY TO USER DEFAULTS");
-      _purchasedItems = [NSMutableArray array];
+      _purchasedItems = $marr;
       [[NSUserDefaults standardUserDefaults] setObject:_purchasedItems forKey:SECrackRockUserDefaultsKey_purchasedItems];
       [[NSUserDefaults standardUserDefaults] synchronize];
     }
@@ -367,12 +367,6 @@
   
   // save a record that this has been purchased locally to the phone (ends up in NSUserDefaults)
   [self setProduct:productID hasBeenPurchased:YES];
-  
-//  id objects[3], keys[3];
-//  keys[0] = SECrackRockUserInfoKey_CrackRock; objects[0] = self;
-//  keys[1] = SECrackRockUserInfoKey_ProductID; objects[1] = productID;
-//  keys[2] = SECrackRockUserInfoKey_Receipt;   objects[2] = transactionReceipt;
-  
   [[NSNotificationCenter defaultCenter] postNotificationName: SECrackRockNotification_SuccessfulPurchase
                                                       object: self
                                                     userInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
@@ -398,12 +392,6 @@
   
   // save a record that this has been purchased locally to the phone (ends up in NSUserDefaults)
   [self setProduct:productID hasBeenPurchased:YES];
-  
-//  id objects[3], keys[3];
-//  keys[0] = SECrackRockUserInfoKey_CrackRock; objects[0] = self;
-//  keys[1] = SECrackRockUserInfoKey_ProductID; objects[1] = productID;
-//  keys[2] = SECrackRockUserInfoKey_Receipt;   objects[2] = transactionReceipt;
-  
   [[NSNotificationCenter defaultCenter] postNotificationName: SECrackRockNotification_SuccessfulRestore
                                                       object: self
                                                     userInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
@@ -437,10 +425,6 @@
   self.isCurrentlyRestoringMultiplePurchases = NO;
   self.restoreWasInitiatedByUser = NO;
   
-  
-//  id objects[1], keys[1];
-//  keys[0] = SECrackRockUserInfoKey_CrackRock; objects[0] = self;
-  
   [[NSNotificationCenter defaultCenter] postNotificationName: SECrackRockNotification_MultipleRestoreComplete
                                                       object: self
                                                     userInfo: @{ SECrackRockUserInfoKey_CrackRock : self }];
@@ -456,11 +440,6 @@
   NSLog(@"(SECrackRock) cancelledPurchase");
   
   [self storeTransactionDidEnd:SECrackRockStoreTransactionTypePurchase];
-  
-  id objects[2], keys[2];
-  keys[0] = SECrackRockUserInfoKey_CrackRock; objects[0] = self;
-  keys[1] = SECrackRockUserInfoKey_Message;   objects[1] = errorMessage;
-  
   [[NSNotificationCenter defaultCenter] postNotificationName: SECrackRockNotification_CancelledPurchase
                                                       object: self
                                                     userInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
@@ -479,11 +458,6 @@
   NSLog(@"(SECrackRock) failedPurchase");
   
   [self storeTransactionDidEnd:SECrackRockStoreTransactionTypePurchase];
-  
-//  id objects[3], keys[3];
-//  keys[0] = SECrackRockUserInfoKey_CrackRock; objects[0] = self;
-//  keys[1] = SECrackRockUserInfoKey_ErrorCode; objects[1] = [NSNumber numberWithInteger:errorCode];
-//  keys[2] = SECrackRockUserInfoKey_Message;   objects[2] = errorMessage;
   
   [[NSNotificationCenter defaultCenter] postNotificationName: SECrackRockNotification_FailedPurchase
                                                       object: self
@@ -507,9 +481,6 @@
   
   [self storeTransactionDidEnd:SECrackRockStoreTransactionTypeRestore];
   
-//  id objects[1], keys[1];
-//  keys[0] = SECrackRockUserInfoKey_CrackRock; objects[0] = self;
-  
   [[NSNotificationCenter defaultCenter] postNotificationName: SECrackRockNotification_IncompleteRestore
                                                       object: self
                                                     userInfo: @{ SECrackRockUserInfoKey_CrackRock : self }];
@@ -527,11 +498,6 @@
   NSLog(@"(SECrackRock) failedRestore");
   
   [self storeTransactionDidEnd:SECrackRockStoreTransactionTypeRestore];
-  
-//  id objects[3], keys[3];
-//  keys[0] = SECrackRockUserInfoKey_CrackRock; objects[0] = self;
-//  keys[1] = SECrackRockUserInfoKey_ErrorCode; objects[1] = [NSNumber numberWithInteger:errorCode];
-//  keys[2] = SECrackRockUserInfoKey_Message;   objects[2] = errorMessage;
   
   [[NSNotificationCenter defaultCenter] postNotificationName: SECrackRockNotification_FailedRestore
                                                       object: self
@@ -591,19 +557,15 @@
   
   // ... first add all of the free/default products
   for (SECrackRockProduct *product in self.freeProducts) {
-//    SECrackRockProduct *productCopy = [product copy];
     product.purchaseStatus = SECrackRockPurchaseStatusFree;
     productDict[ product.productID ] = product;
-//    [productDict setObject:product forKey:product.productID];
   }
   
   // ... then add all of the paid products
   for (SECrackRockProduct *product in self.paidProducts) {
-//    SECrackRockProduct *productCopy = [product copy];
     product.purchaseStatus = SECrackRockPurchaseStatusUnknown;
     product.isAvailableInStore = NO; // set to NO until we get confirmation of YES from apple
     productDict[ product.productID ] = product;
-//    [productDict setObject:product forKey:product.productID];
   }
   
   return productDict;
@@ -624,11 +586,6 @@
 - (void) didFinishPreparingProductInfo:(BOOL)success {
   NSLog(@"didFinishPreparingProductInfo (success: %@)", (success ? @"YES" : @"NO"));
   
-//  id objects[2], keys[2];
-//  keys[0] = SECrackRockUserInfoKey_CrackRock; objects[0] = self;
-//  keys[1] = SECrackRockUserInfoKey_Success;   objects[1] = [NSNumber numberWithBool:success];
-  
-//  NSNumber *nSuccess = (success ? @YES : @NO);
   [[SEStatelyNotificationRobot sharedRobot] changeStateOf: SECrackRockState_ProductsRequestState
                                                        to: SECrackRockProductsRequestStateFinished
                                                 stateInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
@@ -803,7 +760,7 @@
     NSAssert(self.productsByID[ product.productIdentifier ] != nil, @"SKProductsRequest was returned a productID that was not requested.");
 //      [self requestedProductNotValid: product.productIdentifier];
     
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    NSNumberFormatter *formatter = $new(NSNumberFormatter);
     formatter.numberStyle = NSNumberFormatterCurrencyStyle;
     formatter.locale = product.priceLocale;
     NSString *currencyString = [formatter stringFromNumber:product.price];
@@ -842,7 +799,7 @@
   
   NSLog(@"(SECrackRock) updatedTransactions");
   
-  NSMutableArray *restores = [NSMutableArray array];
+  NSMutableArray *restores = $marr;
   
 	for (SKPaymentTransaction *transaction in transactions) {
     
