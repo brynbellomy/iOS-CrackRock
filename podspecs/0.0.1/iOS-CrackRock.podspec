@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   # s.author       = { "Bryn Austin Bellomy" => "bryn@signals.io" }
 
   s.platform     = :ios #, '4.3'
-  s.source       = { :git => "/Users/bryn/repo/iOS-CrackRock.git", :branch => "develop" }
+  s.source       = { :git => "https://github.com/brynbellomy/iOS-CrackRock.git" }
   s.source_files = 'iOS-CrackRock/*.{h,m}'
   s.requires_arc = true
   s.xcconfig = { 'PUBLIC_HEADERS_FOLDER_PATH' => 'include/$(TARGET_NAME)' }
