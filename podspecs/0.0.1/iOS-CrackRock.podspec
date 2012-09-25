@@ -12,6 +12,8 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.xcconfig = { 'PUBLIC_HEADERS_FOLDER_PATH' => 'include/$(TARGET_NAME)' }
 
+  s.frameworks   = "StoreKit"
+
   s.dependency 'BrynKit', '>= 0.0.1'
   s.dependency 'iOS-BlingLord', '>= 0.0.1'
   s.dependency 'ObjC-StatelyNotificationRobot', '>= 0.0.1'
