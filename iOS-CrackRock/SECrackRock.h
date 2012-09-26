@@ -44,12 +44,12 @@
 
 + (SECrackRock *) sharedInstance;
 
-- (BOOL) startMonitoringTransactions;
+- (bool) startMonitoringTransactions;
 - (void) stopMonitoringTransactions;
 
-- (BOOL) tryToPurchaseProduct:(NSString *)productID;
-- (BOOL) tryToRestorePurchase:(NSString *)productID;
-- (BOOL) tryToRestoreAllPurchases;
+- (bool) tryToPurchaseProduct:(NSString *)productID;
+- (bool) tryToRestorePurchase:(NSString *)productID;
+- (bool) tryToRestoreAllPurchases;
 
 @property (nonatomic, weak,   readwrite) id<SECrackRockDataSource> dataSource;
 @property (nonatomic, strong, readwrite) NSArray *freeProducts;
@@ -57,7 +57,7 @@
 @property (nonatomic, strong, readwrite) NSMutableArray *sortedProductIDs;
 @property (nonatomic, strong, readwrite) NSMutableDictionary *productsByID;
 @property (nonatomic, strong, readwrite) NSMutableArray *purchasedItems;
-@property (nonatomic, assign, readonly)  BOOL isCurrentlyRestoringMultiplePurchases;
+@property (nonatomic, assign, readonly)  bool isCurrentlyRestoringMultiplePurchases;
 
 @end
 

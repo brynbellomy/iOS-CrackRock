@@ -86,11 +86,11 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 /**!
  * #### viewWillAppear:
  * 
- * @param {BOOL} animated
+ * @param {bool} animated
  * @return {void}
  */
 
-- (void) viewWillAppear:(BOOL)animated {
+- (void) viewWillAppear:(bool)animated {
   [super viewWillAppear: animated];
   
   // provide a default title on the view's navigation bar
@@ -117,7 +117,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
                                                     NSLog(@"handler for TransactionState state change: newState == %d", newState);
                                                     __strong SECrackRockViewController *strongSelf = weakSelf;
                                                     
-                                                    BOOL enabled = (newState == SECrackRockTransactionStateAsleep);
+                                                    bool enabled = (newState == SECrackRockTransactionStateAsleep);
                                                     strongSelf.restorePurchasesButton.enabled = enabled;
                                                   
                                                 }];
@@ -144,11 +144,11 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 /**!
  * #### viewWillDisappear:
  * 
- * @param {BOOL} animated
+ * @param {bool} animated
  * @return {void}
  */
 
-- (void) viewWillDisappear:(BOOL)animated {
+- (void) viewWillDisappear:(bool)animated {
   [super viewWillDisappear:animated];
     
   // remove all notification handlers and SEStatelyNotificationRobot state handlers
@@ -177,10 +177,10 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
  * #### shouldAutorotateToInterfaceOrientation:
  * 
  * @param {UIInterfaceOrientation} interfaceOrientation
- * @return {BOOL}
+ * @return {bool}
  */
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (bool) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
@@ -237,13 +237,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
  * #### shouldDisplayProductInStore:
  * 
  * @param {SECrackRockProduct*} product
- * @return {BOOL}
+ * @return {bool}
  */
 
-- (BOOL) shouldDisplayProductInStore:(SECrackRockProduct *)product {
+- (bool) shouldDisplayProductInStore:(SECrackRockProduct *)product {
   NSAssert(product != nil, @"product argument is nil.");
   
-  BOOL shouldDisplayItem = YES;
+  bool shouldDisplayItem = YES;
   
   switch (product.purchaseStatus) {
     // products that returned errors or nothing when app store was queried
@@ -286,11 +286,11 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
  * #### iconForProduct:withPurchaseableIndicator:
  * 
  * @param {SECrackRockProduct*} product
- * @param {BOOL} withPurchaseableIndicator
+ * @param {bool} withPurchaseableIndicator
  * @return {UIImage*}
  */
 
-- (UIImage *) iconForProduct:(SECrackRockProduct *)product withPurchaseableIndicator:(BOOL)withPurchaseableIndicator {
+- (UIImage *) iconForProduct:(SECrackRockProduct *)product withPurchaseableIndicator:(bool)withPurchaseableIndicator {
   NSAssert(product != nil, @"product argument is nil.");
   
   // load the product's icon, add the 'purchaseable' indicator overlay if it hasn't been purchased yet
@@ -330,7 +330,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
       continue;
     
     // generate the product's icon
-    BOOL showPurchaseableIndicator = (product.purchaseStatus == SECrackRockPurchaseStatusNonfreeUnpurchased);
+    bool showPurchaseableIndicator = (product.purchaseStatus == SECrackRockPurchaseStatusNonfreeUnpurchased);
     UIImage *icon = [self iconForProduct:product withPurchaseableIndicator:showPurchaseableIndicator];
 
     // initialize the menu item object
@@ -542,7 +542,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
                                                 withBlock: ^(SEState newState, NSDictionary *stateInfo) {
                                                   
                                                     __strong SECrackRockViewController *strongSelf = weakSelf;
-                                                    BOOL enabled = (newState == SECrackRockTransactionStateAsleep);
+                                                    bool enabled = (newState == SECrackRockTransactionStateAsleep);
                                                     strongSelf.springboardView.userInteractionEnabled = enabled;
                                                   
                                                 }];

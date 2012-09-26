@@ -239,11 +239,11 @@
  * locally-cached record of purchased items in NSUserDefaults).
  * 
  * @param {NSString*} productID
- * @param {BOOL} hasBeenPurchased
+ * @param {bool} hasBeenPurchased
  * @return {void}
  */
 
-- (void) setProduct:(NSString *)productID hasBeenPurchased:(BOOL)hasBeenPurchased {
+- (void) setProduct:(NSString *)productID hasBeenPurchased:(bool)hasBeenPurchased {
   NSAssert(productID != nil, @"productID argument is nil.");
   NSAssert(self.productsByID[ productID ] != nil, @"No known product for the given productID.");
   
@@ -279,7 +279,7 @@
 - (void) storeTransactionWillBegin:(SECrackRockStoreTransactionType)type {
   NSLog(@"Store transaction will begin. (%@)", (type == 2 ? @"purchase" : (type == 4 ? @"restore" : @"products request")));
   NSAssert(NO == [self.activeTransactions containsObject:@(type)], @"A transaction of the given type is already underway. (type = %d)", type);
-  BOOL wasEmpty = (self.activeTransactions.count <= 0);
+  bool wasEmpty = (self.activeTransactions.count <= 0);
 
   [self.activeTransactions addObject:@(type)];
   
@@ -665,12 +665,12 @@
 /**!
  * #### didFinishPreparingProductInfo:
  * 
- * @param {BOOL} success
+ * @param {bool} success
  * 
  * @return {void}
  */
 
-- (void) didFinishPreparingProductInfo:(BOOL)success {
+- (void) didFinishPreparingProductInfo:(bool)success {
   NSLog(@"didFinishPreparingProductInfo (success: %@)", (success ? @"YES" : @"NO"));
   
   [[SEStatelyNotificationRobot sharedRobot] changeStateOf: SECrackRockState_ProductsRequestState

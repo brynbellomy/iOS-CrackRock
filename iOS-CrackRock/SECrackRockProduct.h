@@ -18,7 +18,7 @@
 @property (nonatomic, strong, readwrite) NSString *productDescription;
 @property (nonatomic, strong, readwrite) NSString *price;
 @property (nonatomic, assign, readwrite) SECrackRockPurchaseStatus purchaseStatus;
-@property (nonatomic, assign, readwrite) BOOL isAvailableInStore;
+@property (nonatomic, assign, readwrite) bool isAvailableInStore;
 @property (nonatomic, strong, readwrite) NSString *thumbnailPNGFilename;
 @property (nonatomic, strong, readwrite) SKProduct *skProduct;
 
