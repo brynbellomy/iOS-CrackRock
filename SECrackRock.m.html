@@ -1,0 +1,942 @@
+<!DOCTYPE html><html><head><title>SECrackRock.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h2"><a href="#class-methods">Class methods</a></div><div class="heading h4"><a href="#sharedinstance">sharedInstance</a></div><div class="heading h2"><a href="#instance-methods">Instance methods</a></div><div class="heading h4"><a href="#startmonitoringtransactions">startMonitoringTransactions</a></div><div class="heading h4"><a href="#stopmonitoringtransactions">stopMonitoringTransactions</a></div><div class="heading h4"><a href="#init">init</a></div><div class="heading h4"><a href="#dealloc">dealloc</a></div><div class="heading h4"><a href="#purchaseditems">purchasedItems</a></div><div class="heading h4"><a href="#hasproductbeenpurchased-">hasProductBeenPurchased:</a></div><div class="heading h4"><a href="#setproduct-hasbeenpurchased-">setProduct:hasBeenPurchased:</a></div><div class="heading h4"><a href="#storetransactionwillbegin-">storeTransactionWillBegin:</a></div><div class="heading h4"><a href="#storetransactiondidend-">storeTransactionDidEnd:</a></div><div class="heading h4"><a href="#requestedproductvalidated-productid-name-price-description-">requestedProductValidated:productID:name:price:description:</a></div><div class="heading h4"><a href="#requestedproductnotvalid-">requestedProductNotValid:</a></div><div class="heading h4"><a href="#successfulpurchase-receipt-">successfulPurchase:receipt:</a></div><div class="heading h4"><a href="#successfulrestore-receipt-">successfulRestore:receipt:</a></div><div class="heading h4"><a href="#successfulmultiplerestorecomplete">successfulMultipleRestoreComplete</a></div><div class="heading h4"><a href="#cancelledpurchase-">cancelledPurchase:</a></div><div class="heading h4"><a href="#failedpurchase-message-">failedPurchase:message:</a></div><div class="heading h4"><a href="#incompleterestore">incompleteRestore</a></div><div class="heading h4"><a href="#failedrestore-message-">failedRestore:message:</a></div><div class="heading h4"><a href="#createsortedproductidlist">createSortedProductIDList</a></div><div class="heading h4"><a href="#createproductdictionary">createProductDictionary</a></div><div class="heading h4"><a href="#didfinishpreparingproductinfo-">didFinishPreparingProductInfo:</a></div><div class="heading h4"><a href="#trytopurchaseproduct-">tryToPurchaseProduct:</a></div><div class="heading h4"><a href="#trytorestorepurchase-">tryToRestorePurchase:</a></div><div class="heading h4"><a href="#trytorestoreallpurchases">tryToRestoreAllPurchases</a></div><div class="heading h4"><a href="#requestproduct-">requestProduct:</a></div><div class="heading h4"><a href="#requestproducts-">requestProducts:</a></div><div class="heading h4"><a href="#productsrequest-didreceiveresponse-">productsRequest:didReceiveResponse:</a></div><div class="heading h4"><a href="#paymentqueue-updatedtransactions-">paymentQueue:updatedTransactions:</a></div><div class="heading h4"><a href="#paymentqueue-removedtransactions-">paymentQueue:removedTransactions:</a></div><div class="heading h4"><a href="#paymentqueuerestorecompletedtransactionsfinished-">paymentQueueRestoreCompletedTransactionsFinished:</a></div><div class="heading h4"><a href="#paymentqueue-restorecompletedtransactionsfailedwitherror-">paymentQueue:restoreCompletedTransactionsFailedWithError:</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><h1>SECrackRock.m</h1></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">//</span>
+<span class="cp">//  SECrackRock.m</span>
+<span class="cp">//  iOS-CrackRock iOS in-app purchase framework</span>
+<span class="cp">//</span>
+<span class="cp">//  Created by bryn austin bellomy on 7/16/12.</span>
+<span class="cp">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
+<span class="cp">//</span>
+
+<span class="cp">#import &lt;ObjC-StatelyNotificationRobot/SEStatelyNotificationRobot.h&gt;</span>
+<span class="cp">#import &lt;BrynKit/BrynKit.h&gt;</span>
+<span class="cp">#import &quot;SECrackRock.h&quot;</span>
+<span class="cp">#import &quot;SECrackRockProduct.h&quot;</span>
+
+
+<span class="k">@interface</span> <span class="nc">SECrackRock</span> <span class="p">()</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">bool</span> <span class="n">isCurrentlyRestoringMultiplePurchases</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">bool</span> <span class="n">restoreWasInitiatedByUser</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">SKProductsRequest</span> <span class="o">*</span><span class="n">productsRequest</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSMutableSet</span> <span class="o">*</span><span class="n">activeTransactions</span><span class="p">;</span>
+<span class="k">@end</span>
+
+
+
+<span class="k">@implementation</span> <span class="nc">SECrackRock</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="class-methods">
+  <h2>
+    <a href="#class-methods" class="pilcrow">&#182;</a>
+    Class methods
+  </h2>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- Class methods</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="sharedinstance">
+  <h4>
+    <a href="#sharedinstance" class="pilcrow">&#182;</a>
+    sharedInstance
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">SECrackRock*</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">+</span> <span class="p">(</span><span class="n">SECrackRock</span> <span class="o">*</span><span class="p">)</span> <span class="nf">sharedInstance</span> <span class="p">{</span>
+  <span class="k">static</span> <span class="n">SECrackRock</span> <span class="o">*</span><span class="n">instance</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+  
+  <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+  <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+    <span class="n">instance</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SECrackRock</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+  <span class="p">});</span>
+  
+  <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="instance-methods">
+  <h2>
+    <a href="#instance-methods" class="pilcrow">&#182;</a>
+    Instance methods
+  </h2>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- Lifecycle</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="startmonitoringtransactions">
+  <h4>
+    <a href="#startmonitoringtransactions" class="pilcrow">&#182;</a>
+    startMonitoringTransactions
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">bool</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="n">bool</span><span class="p">)</span> <span class="nf">startMonitoringTransactions</span> <span class="p">{</span>
+  
+  <span class="c1">// set up our two observed states</span>
+  <span class="p">[[</span><span class="n">SEStatelyNotificationRobot</span> <span class="n">sharedRobot</span><span class="p">]</span> <span class="nl">changeStateOf:</span> <span class="n">SECrackRockState_TransactionState</span>
+                                                       <span class="nl">to:</span> <span class="n">SECrackRockTransactionStateAsleep</span><span class="p">];</span>
+  
+  <span class="p">[[</span><span class="n">SEStatelyNotificationRobot</span> <span class="n">sharedRobot</span><span class="p">]</span> <span class="nl">changeStateOf:</span> <span class="n">SECrackRockState_ProductsRequestState</span>
+                                                       <span class="nl">to:</span> <span class="n">SECrackRockProductsRequestStateUnfinished</span><span class="p">];</span>
+  
+  <span class="c1">// if IAP is disabled on this device, return immediately</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">NO</span> <span class="o">==</span> <span class="p">[</span><span class="n">SKPaymentQueue</span> <span class="n">canMakePayments</span><span class="p">])</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) startMonitoringTransactions: IAP Disabled&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// add an observer to monitor the transaction status</span>
+  <span class="p">[[</span><span class="n">SKPaymentQueue</span> <span class="n">defaultQueue</span><span class="p">]</span> <span class="nl">addTransactionObserver:</span> <span class="n">self</span><span class="p">];</span>
+  
+  
+  <span class="c1">// get definitions for our free and paid products from the dataSource</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">freeProducts</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">dataSource</span> <span class="n">freeProducts</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">dataSource</span> <span class="n">paidProducts</span><span class="p">];</span>
+  
+  
+  <span class="c1">// create a list of product IDs sorted into: 1) free, 2) purchased, and</span>
+  <span class="c1">// finally, 3) not-yet-purchased products</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">sortedProductIDs</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">createSortedProductIDList</span><span class="p">];</span>
+  
+  <span class="c1">// create a dictionary of products keyed by productID</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">productsByID</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">createProductDictionary</span><span class="p">];</span>
+  
+  
+  <span class="c1">// *** request IAP product info and availability *** //</span>
+  
+  
+  <span class="c1">// if there are no paid products, just fire the &quot;finished gathering paid product info&quot; handler and bail</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span> <span class="o">==</span> <span class="nb">nil</span> <span class="o">||</span> <span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span><span class="p">.</span><span class="n">count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;No paid products&quot;</span><span class="p">);</span> <span class="c1">// @@REMOVE</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">didFinishPreparingProductInfo:</span><span class="n">YES</span><span class="p">];</span>
+    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  
+  <span class="c1">// if there are actual, non-free in-app purchases to retrieve from apple, then start retrieving them</span>
+  <span class="n">NSMutableSet</span> <span class="o">*</span><span class="n">productsForRequest</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableSet</span> <span class="nl">setWithCapacity:</span><span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span><span class="p">.</span><span class="n">count</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">product</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">productsForRequest</span> <span class="nl">addObject:</span> <span class="n">product</span><span class="p">.</span><span class="n">productID</span><span class="p">];</span>
+  <span class="p">}</span>
+  
+  <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionWillBegin:</span><span class="n">SECrackRockStoreTransactionTypeProductsRequest</span><span class="p">];</span>
+  
+  <span class="c1">// if there&#39;s an immediate failure (e.g. if IAP is turned off on the user&#39;s</span>
+  <span class="c1">// device), call the &quot;didFinish&quot; method immediately but flag the error</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">NO</span> <span class="o">==</span> <span class="p">[</span><span class="n">self</span> <span class="nl">requestProducts:</span><span class="n">productsForRequest</span><span class="p">])</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;IAP failure&quot;</span><span class="p">);</span> <span class="c1">// @@REMOVE</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionDidEnd:</span><span class="n">SECrackRockStoreTransactionTypeProductsRequest</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">didFinishPreparingProductInfo:</span><span class="n">NO</span><span class="p">];</span>
+    <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="stopmonitoringtransactions">
+  <h4>
+    <a href="#stopmonitoringtransactions" class="pilcrow">&#182;</a>
+    stopMonitoringTransactions
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">stopMonitoringTransactions</span> <span class="p">{</span>
+  <span class="p">[[</span><span class="n">SKPaymentQueue</span> <span class="n">defaultQueue</span><span class="p">]</span> <span class="nl">removeTransactionObserver:</span> <span class="n">self</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="init">
+  <h4>
+    <a href="#init" class="pilcrow">&#182;</a>
+    init
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">id</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">init</span> <span class="p">{</span>
+  <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">_isCurrentlyRestoringMultiplePurchases</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+    <span class="n">_restoreWasInitiatedByUser</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+    <span class="n">_activeTransactions</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableSet</span> <span class="n">set</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="dealloc">
+  <h4>
+    <a href="#dealloc" class="pilcrow">&#182;</a>
+    dealloc
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">dealloc</span> <span class="p">{</span>
+  
+  <span class="c1">// Unset the SKProductsRequest&#39;s delegate property (if it points to self) before</span>
+  <span class="c1">// we dealloc (otherwise we risk an EXC_BAD_ACCESS)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span><span class="p">.</span><span class="n">delegate</span> <span class="o">==</span> <span class="n">self</span><span class="p">)</span>
+      <span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+    
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="n">cancel</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Unset self as an observer of the default payment queue (same issue as above</span>
+  <span class="c1">// with unsetting delegates).</span>
+  <span class="p">[[</span><span class="n">SKPaymentQueue</span> <span class="n">defaultQueue</span><span class="p">]</span> <span class="nl">removeTransactionObserver:</span><span class="n">self</span><span class="p">];</span>
+  
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Helpers for determining which items have been purchased</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="purchaseditems">
+  <h4>
+    <a href="#purchaseditems" class="pilcrow">&#182;</a>
+    purchasedItems
+  </h4>
+</div>
+</div><div class="body"><p>Property getter that lazy-loads the list of purchased items from
+NSUserDefaults.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">NSMutableArray*</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="n">NSMutableArray</span> <span class="o">*</span><span class="p">)</span> <span class="nf">purchasedItems</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">_purchasedItems</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">_purchasedItems</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">objectForKey:</span> <span class="n">SECrackRockUserDefaultsKey_purchasedItems</span><span class="p">];</span>
+    
+    <span class="c1">// if the purchased items array has never been written to disk, create an empty array and save it</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">_purchasedItems</span> <span class="o">==</span> <span class="nb">nil</span> <span class="o">||</span> <span class="p">[</span><span class="n">_purchasedItems</span> <span class="nl">isKindOfClass:</span><span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">class</span><span class="p">]]</span> <span class="o">==</span> <span class="n">NO</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">_purchasedItems</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">array</span><span class="p">];</span>
+      <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">setObject:</span><span class="n">_purchasedItems</span> <span class="nl">forKey:</span><span class="n">SECrackRockUserDefaultsKey_purchasedItems</span><span class="p">];</span>
+      <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="n">synchronize</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">_purchasedItems</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="hasproductbeenpurchased-">
+  <h4>
+    <a href="#hasproductbeenpurchased-" class="pilcrow">&#182;</a>
+    hasProductBeenPurchased:
+  </h4>
+</div>
+</div><div class="body"><p>Determine if a product has been purchased or not (based on the
+possibly-incorrect record of purchased items stored locally on the user's
+phone using NSUserDefaults).</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productID</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">bool</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="n">bool</span><span class="p">)</span> <span class="nf">hasProductBeenPurchased:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productID</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productID</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productID argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="k">return</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">purchasedItems</span> <span class="nl">containsObject:</span> <span class="n">productID</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="setproduct-hasbeenpurchased-">
+  <h4>
+    <a href="#setproduct-hasbeenpurchased-" class="pilcrow">&#182;</a>
+    setProduct:hasBeenPurchased:
+  </h4>
+</div>
+</div><div class="body"><p>Set whether or not a given product has been purchased (written into the
+locally-cached record of purchased items in NSUserDefaults).</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productID</code></div><div class="dox_tag_detail"><span class="dox_type">BOOL</span><code class="name">hasBeenPurchased</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setProduct:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productID</span> <span class="nf">hasBeenPurchased:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">hasBeenPurchased</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productID</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productID argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productsByID</span><span class="p">[</span> <span class="n">productID</span> <span class="p">]</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;No known product for the given productID.&quot;</span><span class="p">);</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="n">hasBeenPurchased</span> <span class="o">==</span> <span class="n">YES</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">purchasedItems</span> <span class="nl">addObject:</span> <span class="n">productID</span><span class="p">];</span>
+  <span class="k">else</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">purchasedItems</span> <span class="nl">removeObject:</span> <span class="n">productID</span><span class="p">];</span>
+  
+  <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">setObject:</span> <span class="n">self</span><span class="p">.</span><span class="n">purchasedItems</span> <span class="nl">forKey:</span> <span class="n">SECrackRockUserDefaultsKey_purchasedItems</span><span class="p">];</span>
+  <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="n">synchronize</span><span class="p">];</span>
+  
+  
+  <span class="c1">// also update the product in the productsByID dictionary for consistency&#39;s sake</span>
+  
+  <span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">product</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">productsByID</span><span class="p">[</span> <span class="n">productID</span> <span class="p">];</span>
+  <span class="n">product</span><span class="p">.</span><span class="n">purchaseStatus</span> <span class="o">=</span> <span class="p">(</span><span class="n">hasBeenPurchased</span> <span class="o">?</span> <span class="n">SECrackRockPurchaseStatusNonfreePurchased</span>
+                                             <span class="o">:</span> <span class="n">SECrackRockPurchaseStatusNonfreeUnpurchased</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+
+
+<span class="cp">#pragma mark- Transaction state toggle</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="storetransactionwillbegin-">
+  <h4>
+    <a href="#storetransactionwillbegin-" class="pilcrow">&#182;</a>
+    storeTransactionWillBegin:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SECrackRockStoreTransactionType</span><code class="name">type</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">storeTransactionWillBegin:</span><span class="p">(</span><span class="n">SECrackRockStoreTransactionType</span><span class="p">)</span><span class="nv">type</span> <span class="p">{</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Store transaction will begin. (%@)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">type</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">?</span> <span class="s">@&quot;purchase&quot;</span> <span class="o">:</span> <span class="p">(</span><span class="n">type</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">?</span> <span class="s">@&quot;restore&quot;</span> <span class="o">:</span> <span class="s">@&quot;products request&quot;</span><span class="p">)));</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">NO</span> <span class="o">==</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">activeTransactions</span> <span class="nl">containsObject:</span><span class="err">@</span><span class="p">(</span><span class="n">type</span><span class="p">)],</span> <span class="s">@&quot;A transaction of the given type is already underway. (type = %d)&quot;</span><span class="p">,</span> <span class="n">type</span><span class="p">);</span>
+  <span class="kt">BOOL</span> <span class="n">wasEmpty</span> <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">activeTransactions</span><span class="p">.</span><span class="n">count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">);</span>
+
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">activeTransactions</span> <span class="nl">addObject:</span><span class="err">@</span><span class="p">(</span><span class="n">type</span><span class="p">)];</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="n">wasEmpty</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[[</span><span class="n">SEStatelyNotificationRobot</span> <span class="n">sharedRobot</span><span class="p">]</span> <span class="nl">changeStateOf:</span> <span class="n">SECrackRockState_TransactionState</span>
+                                                         <span class="nl">to:</span> <span class="n">SECrackRockTransactionStateInProgress</span>
+                                                  <span class="nl">stateInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span><span class="p">,</span>
+                                                                <span class="n">SECrackRockUserInfoKey_TransactionType</span> <span class="o">:</span> <span class="err">@</span><span class="p">(</span><span class="n">type</span><span class="p">)</span> <span class="p">}];</span>
+  <span class="p">}</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="storetransactiondidend-">
+  <h4>
+    <a href="#storetransactiondidend-" class="pilcrow">&#182;</a>
+    storeTransactionDidEnd:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SECrackRockStoreTransactionType</span><code class="name">type</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">storeTransactionDidEnd:</span><span class="p">(</span><span class="n">SECrackRockStoreTransactionType</span><span class="p">)</span><span class="nv">type</span> <span class="p">{</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Store transaction did end. (%@)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">type</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">?</span> <span class="s">@&quot;purchase&quot;</span> <span class="o">:</span> <span class="p">(</span><span class="n">type</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">?</span> <span class="s">@&quot;restore&quot;</span> <span class="o">:</span> <span class="s">@&quot;products request&quot;</span><span class="p">)));</span>
+
+  <span class="k">if</span> <span class="p">([</span><span class="n">self</span><span class="p">.</span><span class="n">activeTransactions</span> <span class="nl">containsObject:</span><span class="err">@</span><span class="p">(</span><span class="n">type</span><span class="p">)])</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">activeTransactions</span> <span class="nl">removeObject:</span><span class="err">@</span><span class="p">(</span><span class="n">type</span><span class="p">)];</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">activeTransactions</span><span class="p">.</span><span class="n">count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[[</span><span class="n">SEStatelyNotificationRobot</span> <span class="n">sharedRobot</span><span class="p">]</span> <span class="nl">changeStateOf:</span> <span class="n">SECrackRockState_TransactionState</span>
+                                                         <span class="nl">to:</span> <span class="n">SECrackRockTransactionStateAsleep</span>
+                                                  <span class="nl">stateInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span><span class="p">,</span>
+                                                                <span class="n">SECrackRockUserInfoKey_TransactionType</span> <span class="o">:</span> <span class="err">@</span><span class="p">(</span><span class="n">type</span><span class="p">)</span> <span class="p">}];</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Purchase/restore/request outcomes</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="requestedproductvalidated-productid-name-price-description-">
+  <h4>
+    <a href="#requestedproductvalidated-productid-name-price-description-" class="pilcrow">&#182;</a>
+    requestedProductValidated:productID:name:price:description:
+  </h4>
+</div>
+</div><div class="body"><p>Request for product information to app store servers has returned. If the
+product was found and is available for purchase, it's handed to this method.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SKProduct*</span><code class="name">skProduct</code></div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productID</code></div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productName</code></div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productPrice</code></div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productDescription</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">requestedProductValidated:</span> <span class="p">(</span><span class="n">SKProduct</span> <span class="o">*</span><span class="p">)</span><span class="nv">skProduct</span>
+                         <span class="nf">productID:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productID</span>
+                              <span class="nf">name:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productName</span>
+                             <span class="nf">price:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productPrice</span>
+                       <span class="nf">description:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productDescription</span> <span class="p">{</span>
+  
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">skProduct</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;skProduct argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productID</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productID argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) requestedProductValidated: %@&quot;</span><span class="p">,</span> <span class="n">productID</span><span class="p">);</span>
+  
+  <span class="c1">// find the product in our local product list and update it with whatever apple sent</span>
+  <span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">updatedProduct</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">productsByID</span><span class="p">[</span> <span class="n">productID</span> <span class="p">];</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">updatedProduct</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;updatedProduct is nil.&quot;</span><span class="p">);</span>
+  
+<span class="c1">//  if (updatedProduct == nil) {</span>
+<span class="c1">//    // the productID returned by the app store servers couldn&#39;t</span>
+<span class="c1">//    // be found in the productList (this would be bizarre)</span>
+<span class="c1">//    NSLog(@&quot;(SECrackRock) requestedProductValidated: Product not in productList&quot;);</span>
+<span class="c1">//    [self requestedProductNotValid:productID];</span>
+<span class="c1">//    return;</span>
+<span class="c1">//  }</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="n">productPrice</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>       <span class="n">updatedProduct</span><span class="p">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">productPrice</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">productName</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>        <span class="n">updatedProduct</span><span class="p">.</span><span class="n">readableName</span> <span class="o">=</span> <span class="n">productName</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">productDescription</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="n">updatedProduct</span><span class="p">.</span><span class="n">productDescription</span> <span class="o">=</span> <span class="n">productDescription</span><span class="p">;</span>
+
+  <span class="n">updatedProduct</span><span class="p">.</span><span class="n">skProduct</span> <span class="o">=</span> <span class="n">skProduct</span><span class="p">;</span>
+  <span class="n">updatedProduct</span><span class="p">.</span><span class="n">isAvailableInStore</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+  <span class="n">updatedProduct</span><span class="p">.</span><span class="n">purchaseStatus</span> <span class="o">=</span> <span class="p">([</span><span class="n">self</span> <span class="nl">hasProductBeenPurchased:</span><span class="n">productID</span><span class="p">]</span>
+                                   <span class="o">?</span> <span class="n">SECrackRockPurchaseStatusNonfreePurchased</span>
+                                   <span class="o">:</span> <span class="n">SECrackRockPurchaseStatusNonfreeUnpurchased</span><span class="p">);</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="requestedproductnotvalid-">
+  <h4>
+    <a href="#requestedproductnotvalid-" class="pilcrow">&#182;</a>
+    requestedProductNotValid:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productID</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">requestedProductNotValid:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productID</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productID</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productID argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) requestedProductNotValid: Product &#39;%@&#39; unavailable&quot;</span><span class="p">,</span> <span class="n">productID</span><span class="p">);</span>
+  
+  <span class="c1">// the request failed and the product is unavailable</span>
+  
+  <span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">product</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">productsByID</span><span class="p">[</span> <span class="n">productID</span> <span class="p">];</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">product</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;product is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="n">product</span><span class="p">.</span><span class="n">isAvailableInStore</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+  <span class="n">product</span><span class="p">.</span><span class="n">purchaseStatus</span> <span class="o">=</span> <span class="n">SECrackRockPurchaseStatusError</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="successfulpurchase-receipt-">
+  <h4>
+    <a href="#successfulpurchase-receipt-" class="pilcrow">&#182;</a>
+    successfulPurchase:receipt:
+  </h4>
+</div>
+</div><div class="body"><p>Purchase request was successful, so unlock the new content for your new
+customer and notify them that the transaction was successful.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productID</code></div><div class="dox_tag_detail"><span class="dox_type">NSData*</span><code class="name">transactionReceipt</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">successfulPurchase:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productID</span>
+                    <span class="nf">receipt:</span> <span class="p">(</span><span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">transactionReceipt</span> <span class="p">{</span>
+  
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productID</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productID argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">transactionReceipt</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;transactionReceipt argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) successfulPurchase (productID: %@)&quot;</span><span class="p">,</span> <span class="n">productID</span><span class="p">);</span>
+  
+  <span class="c1">// save a record that this has been purchased locally to the phone (ends up in NSUserDefaults)</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">setProduct:</span><span class="n">productID</span> <span class="nl">hasBeenPurchased:</span><span class="n">YES</span><span class="p">];</span>
+  <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">postNotificationName:</span> <span class="n">SECrackRockNotification_SuccessfulPurchase</span>
+                                                      <span class="nl">object:</span> <span class="n">self</span>
+                                                    <span class="nl">userInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span><span class="p">,</span>
+                                                                 <span class="n">SECrackRockUserInfoKey_ProductID</span> <span class="o">:</span> <span class="n">productID</span><span class="p">,</span>
+                                                                 <span class="n">SECrackRockUserInfoKey_Receipt</span> <span class="o">:</span> <span class="n">transactionReceipt</span> <span class="p">}];</span>
+  
+  <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionDidEnd:</span><span class="n">SECrackRockStoreTransactionTypePurchase</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="successfulrestore-receipt-">
+  <h4>
+    <a href="#successfulrestore-receipt-" class="pilcrow">&#182;</a>
+    successfulRestore:receipt:
+  </h4>
+</div>
+</div><div class="body"><p>Restore request was successful, so unlock the purchased content for your
+customer and notify them that the transaction was successful.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productID</code></div><div class="dox_tag_detail"><span class="dox_type">NSData*</span><code class="name">transactionReceipt</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">successfulRestore:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productID</span>
+                   <span class="nf">receipt:</span> <span class="p">(</span><span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">transactionReceipt</span> <span class="p">{</span>
+  
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productID</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productID argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">transactionReceipt</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;transactionReceipt argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) successfulRestore (productID: %@)&quot;</span><span class="p">,</span> <span class="n">productID</span><span class="p">);</span>
+  
+  <span class="c1">// save a record that this has been purchased locally to the phone (ends up in NSUserDefaults)</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">setProduct:</span><span class="n">productID</span> <span class="nl">hasBeenPurchased:</span><span class="n">YES</span><span class="p">];</span>
+  <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">postNotificationName:</span> <span class="n">SECrackRockNotification_SuccessfulRestore</span>
+                                                      <span class="nl">object:</span> <span class="n">self</span>
+                                                    <span class="nl">userInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span><span class="p">,</span>
+                                                                 <span class="n">SECrackRockUserInfoKey_ProductID</span> <span class="o">:</span> <span class="n">productID</span><span class="p">,</span>
+                                                                 <span class="n">SECrackRockUserInfoKey_Receipt</span> <span class="o">:</span> <span class="n">transactionReceipt</span> <span class="p">}];</span>
+
+  
+  <span class="c1">// if it&#39;s a single item restore initiated by the user, end the transaction state</span>
+  <span class="k">if</span> <span class="p">(</span>   <span class="n">self</span><span class="p">.</span><span class="n">restoreWasInitiatedByUser</span> <span class="o">==</span> <span class="n">YES</span>
+      <span class="o">&amp;&amp;</span> <span class="n">self</span><span class="p">.</span><span class="n">isCurrentlyRestoringMultiplePurchases</span> <span class="o">==</span> <span class="n">NO</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;self.restoreWasInitiatedByUser == YES  and  isCurrentlyRestoringMultiplePurchases == NO&quot;</span><span class="p">);</span>
+    
+    <span class="n">self</span><span class="p">.</span><span class="n">restoreWasInitiatedByUser</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionDidEnd:</span><span class="n">SECrackRockStoreTransactionTypeRestore</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="successfulmultiplerestorecomplete">
+  <h4>
+    <a href="#successfulmultiplerestorecomplete" class="pilcrow">&#182;</a>
+    successfulMultipleRestoreComplete
+  </h4>
+</div>
+</div><div class="body"><p>All restore requests in the transaction queue have succeeded.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">successfulMultipleRestoreComplete</span> <span class="p">{</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) successfulMultipleRestoreComplete&quot;</span><span class="p">);</span>
+  
+  <span class="c1">// unset flags describing the user-initiated multiple restore state</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">restoreWasInitiatedByUser</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionDidEnd:</span><span class="n">SECrackRockStoreTransactionTypeRestore</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">isCurrentlyRestoringMultiplePurchases</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">restoreWasInitiatedByUser</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+  
+  <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">postNotificationName:</span> <span class="n">SECrackRockNotification_MultipleRestoreComplete</span>
+                                                      <span class="nl">object:</span> <span class="n">self</span>
+                                                    <span class="nl">userInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span> <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="cancelledpurchase-">
+  <h4>
+    <a href="#cancelledpurchase-" class="pilcrow">&#182;</a>
+    cancelledPurchase:
+  </h4>
+</div>
+</div><div class="body"><p>Purchase request was cancelled.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">errorMessage</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">cancelledPurchase:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">errorMessage</span> <span class="p">{</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) cancelledPurchase&quot;</span><span class="p">);</span>
+  
+  <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionDidEnd:</span><span class="n">SECrackRockStoreTransactionTypePurchase</span><span class="p">];</span>
+  <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">postNotificationName:</span> <span class="n">SECrackRockNotification_CancelledPurchase</span>
+                                                      <span class="nl">object:</span> <span class="n">self</span>
+                                                    <span class="nl">userInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span><span class="p">,</span>
+                                                                 <span class="n">SECrackRockUserInfoKey_Message</span> <span class="o">:</span> <span class="n">errorMessage</span> <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="failedpurchase-message-">
+  <h4>
+    <a href="#failedpurchase-message-" class="pilcrow">&#182;</a>
+    failedPurchase:message:
+  </h4>
+</div>
+</div><div class="body"><p>Purchase request failed.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSInteger</span><code class="name">errorCode</code></div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">errorMessage</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">failedPurchase:</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">errorCode</span>
+                <span class="nf">message:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">errorMessage</span> <span class="p">{</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) failedPurchase&quot;</span><span class="p">);</span>
+  
+  <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionDidEnd:</span><span class="n">SECrackRockStoreTransactionTypePurchase</span><span class="p">];</span>
+  
+  <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">postNotificationName:</span> <span class="n">SECrackRockNotification_FailedPurchase</span>
+                                                      <span class="nl">object:</span> <span class="n">self</span>
+                                                    <span class="nl">userInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span><span class="p">,</span>
+                                                                 <span class="n">SECrackRockUserInfoKey_ErrorCode</span> <span class="o">:</span> <span class="err">@</span><span class="p">(</span><span class="n">errorCode</span><span class="p">),</span>
+                                                                 <span class="n">SECrackRockUserInfoKey_Message</span> <span class="o">:</span> <span class="n">errorMessage</span> <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="incompleterestore">
+  <h4>
+    <a href="#incompleterestore" class="pilcrow">&#182;</a>
+    incompleteRestore
+  </h4>
+</div>
+</div><div class="body"><p>Restore queue did not include any transactions, so either the user has not yet made a purchase
+or the user's prior purchase is unavailable, so notify user to make a purchase within the app.
+If the user previously purchased the item, they will NOT be re-charged again, but it should 
+restore their purchase. </p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">incompleteRestore</span> <span class="p">{</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) incompleteRestore&quot;</span><span class="p">);</span>
+  
+  <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionDidEnd:</span><span class="n">SECrackRockStoreTransactionTypeRestore</span><span class="p">];</span>
+  
+  <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">postNotificationName:</span> <span class="n">SECrackRockNotification_IncompleteRestore</span>
+                                                      <span class="nl">object:</span> <span class="n">self</span>
+                                                    <span class="nl">userInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span> <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="failedrestore-message-">
+  <h4>
+    <a href="#failedrestore-message-" class="pilcrow">&#182;</a>
+    failedRestore:message:
+  </h4>
+</div>
+</div><div class="body"><p>Restore request failed or was cancelled, so notify the user.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSInteger</span><code class="name">errorCode</code></div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">errorMessage</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">failedRestore:</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span> <span class="n">errorCode</span>
+               <span class="nl">message:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="n">errorMessage</span> <span class="p">{</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) failedRestore&quot;</span><span class="p">);</span>
+  
+  <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionDidEnd:</span><span class="n">SECrackRockStoreTransactionTypeRestore</span><span class="p">];</span>
+  
+  <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">postNotificationName:</span> <span class="n">SECrackRockNotification_FailedRestore</span>
+                                                      <span class="nl">object:</span> <span class="n">self</span>
+                                                    <span class="nl">userInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span><span class="p">,</span>
+                                                                 <span class="n">SECrackRockUserInfoKey_ErrorCode</span> <span class="o">:</span> <span class="err">@</span><span class="p">(</span><span class="n">errorCode</span><span class="p">),</span>
+                                                                 <span class="n">SECrackRockUserInfoKey_Message</span> <span class="o">:</span> <span class="n">errorMessage</span> <span class="p">}];</span>
+<span class="p">}</span>
+
+
+
+
+
+
+
+<span class="cp">#pragma mark- Product data</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="createsortedproductidlist">
+  <h4>
+    <a href="#createsortedproductidlist" class="pilcrow">&#182;</a>
+    createSortedProductIDList
+  </h4>
+</div>
+</div><div class="body"><p>Creates an array of all visible products (free and purchaseable) in the order
+that they ought to appear in the springboard view.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">NSMutableArray*</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">NSMutableArray</span> <span class="o">*</span><span class="p">)</span> <span class="n">createSortedProductIDList</span> <span class="p">{</span>
+  
+  <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">productList</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="nl">arrayWithCapacity:</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">freeProducts</span><span class="p">.</span><span class="n">count</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span><span class="p">.</span><span class="n">count</span><span class="p">)];</span>
+  
+  <span class="c1">// Populate the arrays that the SEBlingLord view draws on for its contents:</span>
+  
+  <span class="c1">// ... first add all of the free/default products to the list</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">product</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">freeProducts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">productList</span> <span class="nl">addObject:</span> <span class="n">product</span><span class="p">.</span><span class="n">productID</span><span class="p">];</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// ... then add all of the purchased products to the list</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">product</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">([</span><span class="n">self</span> <span class="nl">hasProductBeenPurchased:</span> <span class="n">product</span><span class="p">.</span><span class="n">productID</span><span class="p">]</span> <span class="o">==</span> <span class="n">YES</span><span class="p">)</span>
+      <span class="p">[</span><span class="n">productList</span> <span class="nl">addObject:</span> <span class="n">product</span><span class="p">.</span><span class="n">productID</span><span class="p">];</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// ... finally add all of the unpurchased products to the list</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">product</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">([</span><span class="n">self</span> <span class="nl">hasProductBeenPurchased:</span> <span class="n">product</span><span class="p">.</span><span class="n">productID</span><span class="p">]</span> <span class="o">==</span> <span class="n">NO</span><span class="p">)</span>
+      <span class="p">[</span><span class="n">productList</span> <span class="nl">addObject:</span> <span class="n">product</span><span class="p">.</span><span class="n">productID</span><span class="p">];</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="n">productList</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="createproductdictionary">
+  <h4>
+    <a href="#createproductdictionary" class="pilcrow">&#182;</a>
+    createProductDictionary
+  </h4>
+</div>
+</div><div class="body"><p>Creates a dictionary of all products (free and purchaseable) keyed by product ID.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">NSMutableDictionary*</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="p">)</span> <span class="n">createProductDictionary</span> <span class="p">{</span>
+  
+  <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">productDict</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableDictionary</span> <span class="nl">dictionaryWithCapacity:</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">freeProducts</span><span class="p">.</span><span class="n">count</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span><span class="p">.</span><span class="n">count</span><span class="p">)];</span>
+  
+  <span class="c1">// ... first add all of the free/default products</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">product</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">freeProducts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">product</span><span class="p">.</span><span class="n">purchaseStatus</span> <span class="o">=</span> <span class="n">SECrackRockPurchaseStatusFree</span><span class="p">;</span>
+    <span class="n">productDict</span><span class="p">[</span> <span class="n">product</span><span class="p">.</span><span class="n">productID</span> <span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// ... then add all of the paid products</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">product</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">paidProducts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">product</span><span class="p">.</span><span class="n">purchaseStatus</span> <span class="o">=</span> <span class="n">SECrackRockPurchaseStatusUnknown</span><span class="p">;</span>
+    <span class="n">product</span><span class="p">.</span><span class="n">isAvailableInStore</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span> <span class="c1">// set to NO until we get confirmation of YES from apple</span>
+    <span class="n">productDict</span><span class="p">[</span> <span class="n">product</span><span class="p">.</span><span class="n">productID</span> <span class="p">]</span> <span class="o">=</span> <span class="n">product</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="n">productDict</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Purchasing/restoring convenience methods</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="didfinishpreparingproductinfo-">
+  <h4>
+    <a href="#didfinishpreparingproductinfo-" class="pilcrow">&#182;</a>
+    didFinishPreparingProductInfo:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">BOOL</span><code class="name">success</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">didFinishPreparingProductInfo:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="n">success</span> <span class="p">{</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;didFinishPreparingProductInfo (success: %@)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">success</span> <span class="o">?</span> <span class="s">@&quot;YES&quot;</span> <span class="o">:</span> <span class="s">@&quot;NO&quot;</span><span class="p">));</span>
+  
+  <span class="p">[[</span><span class="n">SEStatelyNotificationRobot</span> <span class="n">sharedRobot</span><span class="p">]</span> <span class="nl">changeStateOf:</span> <span class="n">SECrackRockState_ProductsRequestState</span>
+                                                       <span class="nl">to:</span> <span class="n">SECrackRockProductsRequestStateFinished</span>
+                                                <span class="nl">stateInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">:</span> <span class="n">self</span><span class="p">,</span>
+                                                              <span class="n">SECrackRockUserInfoKey_Success</span> <span class="o">:</span> <span class="p">(</span><span class="n">success</span> <span class="o">?</span> <span class="err">@</span><span class="n">YES</span> <span class="o">:</span> <span class="err">@</span><span class="n">NO</span><span class="p">)</span> <span class="p">}];</span>
+<span class="p">}</span>
+
+
+
+
+
+<span class="cp">#pragma mark- Public methods for purchasing/restoring</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="trytopurchaseproduct-">
+  <h4>
+    <a href="#trytopurchaseproduct-" class="pilcrow">&#182;</a>
+    tryToPurchaseProduct:
+  </h4>
+</div>
+</div><div class="body"><p>Attempt to purchase a product with a given product ID.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productID</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">bool</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">bool</span><span class="p">)</span> <span class="nl">tryToPurchaseProduct:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">productID</span> <span class="p">{</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) tryToPurchaseProduct: %@&quot;</span><span class="p">,</span> <span class="n">productID</span><span class="p">);</span>
+  
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productID</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productID argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="c1">// First, ensure that the SKProduct that was retrieved by the requestProduct</span>
+  <span class="c1">// method in the viewWillAppear event is valid before trying to purchase it</span>
+  
+  <span class="n">SECrackRockProduct</span> <span class="o">*</span><span class="n">product</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">productsByID</span><span class="p">[</span> <span class="n">productID</span> <span class="p">];</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="n">product</span> <span class="o">==</span> <span class="nb">nil</span> <span class="o">||</span> <span class="n">product</span><span class="p">.</span><span class="n">isAvailableInStore</span> <span class="o">==</span> <span class="n">NO</span> <span class="o">||</span> <span class="n">product</span><span class="p">.</span><span class="n">skProduct</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) tryToPurchaseProduct: product &#39;%@&#39; not found&quot;</span><span class="p">,</span> <span class="n">productID</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// IAP is enabled on this device.  proceed with purchase.</span>
+  <span class="k">if</span> <span class="p">([</span><span class="n">SKPaymentQueue</span> <span class="n">canMakePayments</span><span class="p">])</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionWillBegin:</span><span class="n">SECrackRockStoreTransactionTypePurchase</span><span class="p">];</span>
+    
+    <span class="c1">// create a payment request using the SKProduct we got back from our SKProductsRequest</span>
+    <span class="n">SKPayment</span> <span class="o">*</span><span class="n">paymentRequest</span> <span class="o">=</span> <span class="p">[</span><span class="n">SKPayment</span> <span class="nl">paymentWithProduct:</span><span class="n">product</span><span class="p">.</span><span class="n">skProduct</span><span class="p">];</span>
+    
+    <span class="c1">// request a purchase of the product</span>
+    <span class="p">[[</span><span class="n">SKPaymentQueue</span> <span class="n">defaultQueue</span><span class="p">]</span> <span class="nl">addPayment:</span><span class="n">paymentRequest</span><span class="p">];</span>
+    
+    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) tryToPurchaseProduct: IAP disabled&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="trytorestorepurchase-">
+  <h4>
+    <a href="#trytorestorepurchase-" class="pilcrow">&#182;</a>
+    tryToRestorePurchase:
+  </h4>
+</div>
+</div><div class="body"><p>Attempt to restore a customer's previous non-consumable or subscription
+In-App Purchase with a given product ID.  Required if a user reinstalled app
+on same device or another device.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productID</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">bool</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">bool</span><span class="p">)</span> <span class="nl">tryToRestorePurchase:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">productID</span> <span class="p">{</span>
+
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productID</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productID argument is nil.&quot;</span><span class="p">);</span>
+  
+<span class="c1">//  [self storeTransactionWillBegin:SECrackRockStoreTransactionTypeRestore];</span>
+<span class="c1">//  </span>
+<span class="c1">//  //@@TODO: do we need to verify that the productID is valid as we do above in -tryToPurchaseProduct: ?</span>
+<span class="c1">//  </span>
+<span class="c1">//  // call restore method</span>
+<span class="c1">//  //@@TODO: need to figure out the correct way of making this request specific to a single product ID</span>
+<span class="c1">//  bool success = [[EBPurchase sharedInstance] restorePurchase];</span>
+<span class="c1">//  </span>
+<span class="c1">//  // if things didn&#39;t work out, pop out of the &quot;in transaction&quot; state as soon as possible</span>
+<span class="c1">//  if (success == NO)</span>
+<span class="c1">//    [self storeTransactionDidEnd:SECrackRockStoreTransactionTypeRestore];</span>
+<span class="c1">//  </span>
+<span class="c1">//  return success;</span>
+  
+  <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="trytorestoreallpurchases">
+  <h4>
+    <a href="#trytorestoreallpurchases" class="pilcrow">&#182;</a>
+    tryToRestoreAllPurchases
+  </h4>
+</div>
+</div><div class="body"><p>Attempt to restore all purchases made with the current apple ID.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">bool</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">bool</span><span class="p">)</span> <span class="n">tryToRestoreAllPurchases</span> <span class="p">{</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) tryToRestoreAllPurchases&quot;</span><span class="p">);</span>
+  
+  <span class="c1">// IAP is enabled on this device.  proceed with restore.</span>
+  <span class="k">if</span> <span class="p">([</span><span class="n">SKPaymentQueue</span> <span class="n">canMakePayments</span><span class="p">])</span> <span class="p">{</span>
+    
+    <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionWillBegin:</span><span class="n">SECrackRockStoreTransactionTypeRestore</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">isCurrentlyRestoringMultiplePurchases</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">restoreWasInitiatedByUser</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    
+    <span class="p">[[</span><span class="n">SKPaymentQueue</span> <span class="n">defaultQueue</span><span class="p">]</span> <span class="n">restoreCompletedTransactions</span><span class="p">];</span>
+    
+    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// IAP is disabled</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Requesting info</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="requestproduct-">
+  <h4>
+    <a href="#requestproduct-" class="pilcrow">&#182;</a>
+    requestProduct:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">productID</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">bool</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">bool</span><span class="p">)</span> <span class="nl">requestProduct:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">productID</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productID</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productID argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) requestProduct: %@&quot;</span><span class="p">,</span> <span class="n">productID</span><span class="p">);</span>
+  
+  <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">requestProducts:</span><span class="p">[</span><span class="n">NSSet</span> <span class="nl">setWithObject:</span><span class="n">productID</span><span class="p">]];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="requestproducts-">
+  <h4>
+    <a href="#requestproducts-" class="pilcrow">&#182;</a>
+    requestProducts:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSSet*</span><code class="name">productIDs</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">bool</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">bool</span><span class="p">)</span> <span class="nl">requestProducts:</span><span class="p">(</span><span class="n">NSSet</span> <span class="o">*</span><span class="p">)</span><span class="n">productIDs</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productIDs</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;productIDs argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">productIDs</span><span class="p">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s">@&quot;productIDs argument is empty.&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) requestProducts: %@&quot;</span><span class="p">,</span> <span class="n">productIDs</span><span class="p">);</span>
+  
+  <span class="c1">// IAP is enabled on this device.  proceed with products request.</span>
+  <span class="k">if</span> <span class="p">([</span><span class="n">SKPaymentQueue</span> <span class="n">canMakePayments</span><span class="p">])</span> <span class="p">{</span>
+    
+    <span class="c1">// cancel any existing, pending (possibly hung) request</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="n">cancel</span><span class="p">];</span>
+      <span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// initiate new product request for specified productIDs</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SKProductsRequest</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithProductIdentifiers:</span><span class="n">productIDs</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="n">start</span><span class="p">];</span>
+    
+    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// IAP is disabled</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) requestProducts: IAP Disabled&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">NO</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark -</span>
+<span class="cp">#pragma mark SKProductsRequestDelegate Methods</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="productsrequest-didreceiveresponse-">
+  <h4>
+    <a href="#productsrequest-didreceiveresponse-" class="pilcrow">&#182;</a>
+    productsRequest:didReceiveResponse:
+  </h4>
+</div>
+</div><div class="body"><p>Store Kit returns a response from an SKProductsRequest.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SKProductsRequest*</span><code class="name">request</code></div><div class="dox_tag_detail"><span class="dox_type">SKProductsResponse*</span><code class="name">response</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">productsRequest:</span> <span class="p">(</span><span class="n">SKProductsRequest</span> <span class="o">*</span><span class="p">)</span><span class="n">request</span>
+      <span class="nl">didReceiveResponse:</span> <span class="p">(</span><span class="n">SKProductsResponse</span> <span class="o">*</span><span class="p">)</span><span class="n">response</span> <span class="p">{</span>
+  
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">request</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;request argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">response</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;response argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) productsRequest:didReceiveResponse: -- %d requested products available&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">products</span><span class="p">.</span><span class="n">count</span><span class="p">);</span>
+  
+  <span class="c1">// release our reference to the SKProductsRequest</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+  
+  <span class="c1">// update our cached products with the received product info</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">SKProduct</span> <span class="o">*</span><span class="n">product</span> <span class="k">in</span> <span class="n">response</span><span class="p">.</span><span class="n">products</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSAssert</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productsByID</span><span class="p">[</span> <span class="n">product</span><span class="p">.</span><span class="n">productIdentifier</span> <span class="p">]</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;SKProductsRequest was returned a productID that was not requested.&quot;</span><span class="p">);</span>
+    
+    <span class="n">NSNumberFormatter</span> <span class="o">*</span><span class="n">formatter</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSNumberFormatter</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="n">formatter</span><span class="p">.</span><span class="n">numberStyle</span> <span class="o">=</span> <span class="n">NSNumberFormatterCurrencyStyle</span><span class="p">;</span>
+    <span class="n">formatter</span><span class="p">.</span><span class="n">locale</span> <span class="o">=</span> <span class="n">product</span><span class="p">.</span><span class="n">priceLocale</span><span class="p">;</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">currencyString</span> <span class="o">=</span> <span class="p">[</span><span class="n">formatter</span> <span class="nl">stringFromNumber:</span><span class="n">product</span><span class="p">.</span><span class="n">price</span><span class="p">];</span>
+
+    
+    <span class="p">[</span><span class="n">self</span> <span class="nl">requestedProductValidated:</span> <span class="n">product</span>
+                          <span class="nl">productID:</span> <span class="n">product</span><span class="p">.</span><span class="n">productIdentifier</span>
+                               <span class="nl">name:</span> <span class="n">product</span><span class="p">.</span><span class="n">localizedTitle</span>
+                              <span class="nl">price:</span> <span class="n">currencyString</span>
+                        <span class="nl">description:</span> <span class="n">product</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">];</span>
+  <span class="p">}</span>
+
+  <span class="c1">// if any of the requested product IDs were not valid, mark them as such</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) productsRequest:didReceiveResponse: -- %d invalid product IDs&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">invalidProductIdentifiers</span><span class="p">.</span><span class="n">count</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">invalidProductID</span> <span class="k">in</span> <span class="n">response</span><span class="p">.</span><span class="n">invalidProductIdentifiers</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">requestedProductNotValid:</span><span class="n">invalidProductID</span><span class="p">];</span>
+  <span class="p">}</span>
+  
+  
+  <span class="c1">// signal that we have processed all of the information from the SKProductsRequest</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">storeTransactionDidEnd:</span><span class="n">SECrackRockStoreTransactionTypeProductsRequest</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">didFinishPreparingProductInfo:</span><span class="n">YES</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark -</span>
+<span class="cp">#pragma mark SKPaymentTransactionObserver Methods</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="paymentqueue-updatedtransactions-">
+  <h4>
+    <a href="#paymentqueue-updatedtransactions-" class="pilcrow">&#182;</a>
+    paymentQueue:updatedTransactions:
+  </h4>
+</div>
+</div><div class="body"><p>The transaction status of the SKPaymentQueue is sent here.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SKPaymentQueue*</span><code class="name">queue</code></div><div class="dox_tag_detail"><span class="dox_type">NSArray*</span><code class="name">transactions</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">paymentQueue:</span><span class="p">(</span><span class="n">SKPaymentQueue</span> <span class="o">*</span><span class="p">)</span><span class="n">queue</span> <span class="nl">updatedTransactions:</span><span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="n">transactions</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">queue</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;queue argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">transactions</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;transactions argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) updatedTransactions&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">restores</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">array</span><span class="p">];</span>
+  
+  <span class="k">for</span> <span class="p">(</span><span class="n">SKPaymentTransaction</span> <span class="o">*</span><span class="n">transaction</span> <span class="k">in</span> <span class="n">transactions</span><span class="p">)</span> <span class="p">{</span>
+    
+    <span class="k">switch</span> <span class="p">(</span><span class="n">transaction</span><span class="p">.</span><span class="n">transactionState</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="nl">SKPaymentTransactionStatePurchasing:</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) updatedTransactions: Purchasing&quot;</span><span class="p">);</span>
+        <span class="c1">// Item is still in the process of being purchased</span>
+      <span class="p">}</span> <span class="k">break</span><span class="p">;</span>
+        
+      <span class="k">case</span> <span class="nl">SKPaymentTransactionStatePurchased:</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) updatedTransactions: Purchased&quot;</span><span class="p">);</span>
+        <span class="c1">// Item was successfully purchased!</span>
+        
+        <span class="c1">// Return transaction data. App should provide user with purchased product.</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">successfulPurchase:</span> <span class="n">transaction</span><span class="p">.</span><span class="n">payment</span><span class="p">.</span><span class="n">productIdentifier</span>
+                         <span class="nl">receipt:</span> <span class="n">transaction</span><span class="p">.</span><span class="n">transactionReceipt</span><span class="p">];</span>
+        
+        <span class="c1">// After customer has successfully received purchased content,</span>
+        <span class="c1">// remove the finished transaction from the payment queue.</span>
+        <span class="p">[[</span><span class="n">SKPaymentQueue</span> <span class="n">defaultQueue</span><span class="p">]</span> <span class="nl">finishTransaction:</span> <span class="n">transaction</span><span class="p">];</span>
+      <span class="p">}</span> <span class="k">break</span><span class="p">;</span>
+        
+      <span class="k">case</span> <span class="nl">SKPaymentTransactionStateRestored:</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) updatedTransactions: Restored&quot;</span><span class="p">);</span>
+        <span class="c1">// Verified that user has already paid for this item.</span>
+        <span class="c1">// Ideal for restoring item across all devices of this customer.</span>
+        
+        <span class="p">[</span><span class="n">restores</span> <span class="nl">addObject:</span><span class="n">transaction</span><span class="p">];</span>
+      <span class="p">}</span> <span class="k">break</span><span class="p">;</span>
+        
+      <span class="k">case</span> <span class="nl">SKPaymentTransactionStateFailed:</span> <span class="p">{</span>
+        <span class="c1">// Purchase was either cancelled by user or an error occurred.</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">transaction</span><span class="p">.</span><span class="n">error</span><span class="p">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">SKErrorPaymentCancelled</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) updatedTransactions: Cancelled&quot;</span><span class="p">);</span>
+          
+          <span class="p">[</span><span class="n">self</span> <span class="nl">cancelledPurchase:</span><span class="n">transaction</span><span class="p">.</span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+          <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) updatedTransactions: Failed&quot;</span><span class="p">);</span>
+          
+          <span class="p">[</span><span class="n">self</span> <span class="nl">failedPurchase:</span><span class="n">transaction</span><span class="p">.</span><span class="n">error</span><span class="p">.</span><span class="n">code</span> <span class="nl">message:</span><span class="n">transaction</span><span class="p">.</span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">];</span>
+        <span class="p">}</span>
+        
+        <span class="c1">// Finished transactions should be removed from the payment queue.</span>
+        <span class="p">[[</span><span class="n">SKPaymentQueue</span> <span class="n">defaultQueue</span><span class="p">]</span> <span class="nl">finishTransaction:</span> <span class="n">transaction</span><span class="p">];</span>
+      <span class="p">}</span> <span class="k">break</span><span class="p">;</span>
+        
+        
+      <span class="k">default</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// automatically throw an assertion failure exception if the transactionState is not a defined value</span>
+        <span class="n">NSAssert</span><span class="p">(</span><span class="n">NO</span><span class="p">,</span> <span class="s">@&quot;transactionState is an unknown value.&quot;</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  
+  <span class="c1">// process restores separately so that we can accurately set the &quot;restoring</span>
+  <span class="c1">// multiple purchases&quot; flag if necessary</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="n">restores</span><span class="p">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">isCurrentlyRestoringMultiplePurchases</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    
+  <span class="k">for</span> <span class="p">(</span><span class="n">SKPaymentTransaction</span> <span class="o">*</span><span class="n">transaction</span> <span class="k">in</span> <span class="n">restores</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Return transaction data. App should provide user with purchased product.</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">successfulRestore:</span> <span class="n">transaction</span><span class="p">.</span><span class="n">payment</span><span class="p">.</span><span class="n">productIdentifier</span>
+                    <span class="nl">receipt:</span> <span class="n">transaction</span><span class="p">.</span><span class="n">transactionReceipt</span><span class="p">];</span>
+    
+    <span class="c1">// After customer has restored purchased content on this device,</span>
+    <span class="c1">// remove the finished transaction from the payment queue.</span>
+    <span class="p">[[</span><span class="n">SKPaymentQueue</span> <span class="n">defaultQueue</span><span class="p">]</span> <span class="nl">finishTransaction:</span> <span class="n">transaction</span><span class="p">];</span>
+  <span class="p">}</span>
+  
+  <span class="n">self</span><span class="p">.</span><span class="n">isCurrentlyRestoringMultiplePurchases</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="paymentqueue-removedtransactions-">
+  <h4>
+    <a href="#paymentqueue-removedtransactions-" class="pilcrow">&#182;</a>
+    paymentQueue:removedTransactions:
+  </h4>
+</div>
+</div><div class="body"><p>Called when one or more transactions have been removed from the queue.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SKPaymentQueue*</span><code class="name">queue</code></div><div class="dox_tag_detail"><span class="dox_type">NSArray*</span><code class="name">transactions</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">paymentQueue:</span><span class="p">(</span><span class="n">SKPaymentQueue</span> <span class="o">*</span><span class="p">)</span><span class="n">queue</span> <span class="nl">removedTransactions:</span><span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="n">transactions</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">queue</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;queue argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">transactions</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;transactions argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) removedTransactions&quot;</span><span class="p">);</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="paymentqueuerestorecompletedtransactionsfinished-">
+  <h4>
+    <a href="#paymentqueuerestorecompletedtransactionsfinished-" class="pilcrow">&#182;</a>
+    paymentQueueRestoreCompletedTransactionsFinished:
+  </h4>
+</div>
+</div><div class="body"><p>Called when SKPaymentQueue has finished sending restored transactions.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SKPaymentQueue*</span><code class="name">queue</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">paymentQueueRestoreCompletedTransactionsFinished:</span><span class="p">(</span><span class="n">SKPaymentQueue</span> <span class="o">*</span><span class="p">)</span><span class="n">queue</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">queue</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;queue argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) paymentQueueRestoreCompletedTransactionsFinished&quot;</span><span class="p">);</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="n">queue</span><span class="p">.</span><span class="n">transactions</span><span class="p">.</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) restore queue.transactions count == 0&quot;</span><span class="p">);</span>
+    
+    <span class="c1">// Queue does not include any transactions, so either user has not yet made a purchase</span>
+    <span class="c1">// or the user&#39;s prior purchase is unavailable, so notify app (and user) accordingly.</span>
+    
+    <span class="p">[</span><span class="n">self</span> <span class="n">incompleteRestore</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// Queue does contain one or more transactions, so return transaction data.</span>
+    <span class="c1">// App should provide user with purchased product.</span>
+    
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) restore queue.transactions available&quot;</span><span class="p">);</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="n">SKPaymentTransaction</span> <span class="o">*</span><span class="n">transaction</span> <span class="k">in</span> <span class="n">queue</span><span class="p">.</span><span class="n">transactions</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) restore queue.transactions - transaction data found&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) multiple restore was successful&quot;</span><span class="p">);</span>
+    <span class="p">[</span><span class="n">self</span> <span class="n">successfulMultipleRestoreComplete</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="paymentqueue-restorecompletedtransactionsfailedwitherror-">
+  <h4>
+    <a href="#paymentqueue-restorecompletedtransactionsfailedwitherror-" class="pilcrow">&#182;</a>
+    paymentQueue:restoreCompletedTransactionsFailedWithError:
+  </h4>
+</div>
+</div><div class="body"><p>Called if an error occurred while restoring transactions.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SKPaymentQueue*</span><code class="name">queue</code></div><div class="dox_tag_detail"><span class="dox_type">NSError*</span><code class="name">error</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">paymentQueue:</span><span class="p">(</span><span class="n">SKPaymentQueue</span> <span class="o">*</span><span class="p">)</span><span class="n">queue</span> <span class="nl">restoreCompletedTransactionsFailedWithError:</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="n">error</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">queue</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;queue argument is nil.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">error</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;error argument is nil.&quot;</span><span class="p">);</span>
+  
+  <span class="c1">// Restore was cancelled or an error occurred, so notify user.</span>
+  <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;(SECrackRock) restoreCompletedTransactionsFailedWithError&quot;</span><span class="p">);</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">failedRestore:</span><span class="n">error</span><span class="p">.</span><span class="n">code</span> <span class="nl">message:</span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

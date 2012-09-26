@@ -1,0 +1,63 @@
+<!DOCTYPE html><html><head><title>SECrackRock.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#secrackrockdatasource">SECrackRockDataSource</a></div><div class="heading h1"><a href="#secrackrock">SECrackRock</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><h1>SECrackRock.h</h1></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">//</span>
+<span class="cp">//  SECrackRock.h</span>
+<span class="cp">//  iOS-CrackRock iOS in-app purchase framework</span>
+<span class="cp">//</span>
+<span class="cp">//  Created by bryn austin bellomy on 7/16/12.</span>
+<span class="cp">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
+<span class="cp">//</span>
+
+<span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+<span class="cp">#import &lt;StoreKit/StoreKit.h&gt;</span>
+<span class="cp">#import &quot;SECrackRockCommon.h&quot;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="secrackrockdatasource">
+  <h1>
+    <a href="#secrackrockdatasource" class="pilcrow">&#182;</a>
+    SECrackRockDataSource
+  </h1>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">@protocol</span> <span class="nc">SECrackRockDataSource</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>Must be overridden by subclasses.  This method must return an NSArray
+containing SECrackRockItem objects representing the free items to which the user
+already has access by default upon installing the app.</p></div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span> <span class="n">freeProducts</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>Must be overridden by subclasses.  This method must return an NSArray
+containing SECrackRockItem objects representing the purchaseable/paid items that
+the user is able to buy.</p></div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span> <span class="nf">paidProducts</span><span class="p">;</span>
+
+<span class="k">@end</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="secrackrock">
+  <h1>
+    <a href="#secrackrock" class="pilcrow">&#182;</a>
+    SECrackRock
+  </h1>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">@interface</span> <span class="nc">SECrackRock</span> : <span class="nc">NSObject</span> <span class="o">&lt;</span><span class="n">SKPaymentTransactionObserver</span><span class="p">,</span> <span class="n">SKProductsRequestDelegate</span><span class="o">&gt;</span>
+
+<span class="o">+</span> <span class="p">(</span><span class="n">SECrackRock</span> <span class="o">*</span><span class="p">)</span> <span class="n">sharedInstance</span><span class="p">;</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">startMonitoringTransactions</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">stopMonitoringTransactions</span><span class="p">;</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">tryToPurchaseProduct:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productID</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">tryToRestorePurchase:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">productID</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">tryToRestoreAllPurchases</span><span class="p">;</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">weak</span><span class="p">,</span>   <span class="n">readwrite</span><span class="p">)</span> <span class="kt">id</span><span class="o">&lt;</span><span class="n">SECrackRockDataSource</span><span class="o">&gt;</span> <span class="n">dataSource</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSArray</span> <span class="o">*</span><span class="n">freeProducts</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSArray</span> <span class="o">*</span><span class="n">paidProducts</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">sortedProductIDs</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">productsByID</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">purchasedItems</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span>  <span class="kt">BOOL</span> <span class="n">isCurrentlyRestoringMultiplePurchases</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>
