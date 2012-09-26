@@ -2,15 +2,16 @@ Pod::Spec.new do |s|
   s.name         = "iOS-CrackRock"
   s.version      = "0.0.1"
 
-  # s.summary      = "A short description of BrynKit."
-  # s.homepage     = "http://github.com/brynbellomy/BrynKit"
-  # s.author       = { "Bryn Austin Bellomy" => "bryn@signals.io" }
+  s.summary      = "In-app purchase helper classes."
+  s.homepage     = "http://github.com/brynbellomy/iOS-CrackRock"
+  s.author       = { "bryn austin bellomy" => "bryn.bellomy@gmail.com" }
 
-  s.platform     = :ios #, '4.3'
   s.source       = { :git => "https://github.com/brynbellomy/iOS-CrackRock.git" }
-  s.source_files = 'iOS-CrackRock/*.{h,m}'
+  s.source_files = "iOS-CrackRock/*.{h,m}"
+
+  s.platform     = :ios
   s.requires_arc = true
-  s.xcconfig = { 'PUBLIC_HEADERS_FOLDER_PATH' => 'include/$(TARGET_NAME)' }
+  s.xcconfig = { "PUBLIC_HEADERS_FOLDER_PATH" => "include/$(TARGET_NAME)" }
 
   s.frameworks   = "StoreKit"
 

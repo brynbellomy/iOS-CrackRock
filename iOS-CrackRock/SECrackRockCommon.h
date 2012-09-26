@@ -1,6 +1,6 @@
 //
 //  SECrackRockCommon.h
-//  iOS-CrackRock
+//  iOS-CrackRock iOS in-app purchase framework
 //
 //  Created by bryn austin bellomy on 7/23/12.
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
@@ -10,7 +10,9 @@
 
 static NSString *const SECrackRockUserDefaultsKey_purchasedItems = @"SECrackRockUserDefaultsKey_purchasedItems";
 
-/** notification names **/
+/**!
+ * ## Notification names
+ */
 static NSString *const SECrackRockNotification_SuccessfulPurchase = @"SECrackRockNotification_SuccessfulPurchase";
 static NSString *const SECrackRockNotification_CancelledPurchase = @"SECrackRockNotification_CancelledPurchase";
 static NSString *const SECrackRockNotification_FailedPurchase = @"SECrackRockNotification_FailedPurchase";
@@ -24,7 +26,9 @@ static NSString *const SECrackRockNotification_DidFinishPreparingProductInfo = @
 static NSString *const SECrackRockNotification_StoreTransactionWillBegin = @"SECrackRockNotification_StoreTransactionWillBegin";
 static NSString *const SECrackRockNotification_StoreTransactionDidEnd = @"SECrackRockNotification_StoreTransactionDidEnd";
 
-/** notification user info dictionary keys **/
+/**!
+ * ## Notification user info dictionary keys
+ */
 static NSString *const SECrackRockUserInfoKey_TransactionType = @"SECrackRockUserInfoKey_TransactionType";
 static NSString *const SECrackRockUserInfoKey_CrackRock = @"SECrackRockUserInfoKey_CrackRock";
 static NSString *const SECrackRockUserInfoKey_ProductID = @"SECrackRockUserInfoKey_ProductID";
@@ -33,7 +37,9 @@ static NSString *const SECrackRockUserInfoKey_Receipt = @"SECrackRockUserInfoKey
 static NSString *const SECrackRockUserInfoKey_Message = @"SECrackRockUserInfoKey_Message";
 static NSString *const SECrackRockUserInfoKey_ErrorCode = @"SECrackRockUserInfoKey_ErrorCode";
 
-/** observable states (see SEStatelyNotificationRobot in Vendor/iOS-StatefulNotifications) **/
+/**!
+ * ## Observable states (see SEStatelyNotificationRobot in Vendor/iOS-StatefulNotifications)
+ */
 static NSString *const SECrackRockState_TransactionState = @"SECrackRockState_TransactionState";
 static NSString *const SECrackRockState_ProductsRequestState = @"SECrackRockState_ProductsRequestState";
 

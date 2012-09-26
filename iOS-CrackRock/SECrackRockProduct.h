@@ -1,6 +1,6 @@
 //
 //  SECrackRockProduct.h
-//  SECrackRock iOS in-app purchase framework
+//  iOS-CrackRock iOS in-app purchase framework
 //
 //  Created by bryn austin bellomy on 7/8/12.
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.

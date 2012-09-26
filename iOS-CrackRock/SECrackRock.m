@@ -1,25 +1,18 @@
 //
 //  SECrackRock.m
-//  SECrackRock iOS in-app purchase framework
+//  iOS-CrackRock iOS in-app purchase framework
 //
 //  Created by bryn austin bellomy on 7/16/12.
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
 //
 
 #import <ObjC-StatelyNotificationRobot/SEStatelyNotificationRobot.h>
-#import <BrynKit/Bryn.h>
+#import <BrynKit/BrynKit.h>
 #import "SECrackRock.h"
 #import "SECrackRockProduct.h"
 
 
 @interface SECrackRock ()
-#if DEBUG
-{
-//  bool _storeTransactionIsUnderway;
-  bool _isMonitoringTransactions;
-}
-#endif
-
   @property (nonatomic, assign, readwrite) bool isCurrentlyRestoringMultiplePurchases;
   @property (nonatomic, assign, readwrite) bool restoreWasInitiatedByUser;
   @property (nonatomic, strong, readwrite) SKProductsRequest *productsRequest;
@@ -31,16 +24,26 @@
 @implementation SECrackRock
 
 
-
+/**!
+ * ## Class methods
+ */
 #pragma mark- Class methods
 #pragma mark-
+
+
+
+/**!
+ * #### sharedInstance
+ * 
+ * @return {SECrackRock*}
+ */
 
 + (SECrackRock *) sharedInstance {
   static SECrackRock *instance = nil;
   
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    instance = $new(SECrackRock);
+    instance = [[SECrackRock alloc] init];
   });
   
   return instance;
@@ -48,15 +51,20 @@
 
 
 
+/**!
+ * ## Instance methods
+ */
 #pragma mark- Lifecycle
 #pragma mark-
 
+
+/**!
+ * #### startMonitoringTransactions
+ * 
+ * @return {bool}
+ */
+
 - (bool) startMonitoringTransactions {
-#if DEBUG
-  NSAssert(_isMonitoringTransactions == NO, @"Transactions are already being monitored, or SECrackRock is in an inconsistent state.");
-  _isMonitoringTransactions = YES;
-#endif
-  NSLog(@"(SECrackRock) startMonitoringTransactions");
   
   // set up our two observed states
   [[SEStatelyNotificationRobot sharedRobot] changeStateOf: SECrackRockState_TransactionState
@@ -121,33 +129,41 @@
 
 
 
+/**!
+ * #### stopMonitoringTransactions
+ * 
+ * @return {void}
+ */
+
 - (void) stopMonitoringTransactions {
-#if DEBUG
-  NSAssert(_isMonitoringTransactions == YES, @"Transactions are not being monitored, or SECrackRock is in an inconsistent state.");
-  _isMonitoringTransactions = NO;
-#endif
-  
   [[SKPaymentQueue defaultQueue] removeTransactionObserver: self];
 }
 
 
 
 
+/**!
+ * #### init
+ * 
+ * @return {id}
+ */
+
 - (id) init {
   self = [super init];
   if (self) {
     _isCurrentlyRestoringMultiplePurchases = NO;
     _restoreWasInitiatedByUser = NO;
-    _activeTransactions = $msetnew;
-    
-#if DEBUG
-//    _storeTransactionIsUnderway = NO;
-    _isMonitoringTransactions = NO;
-#endif
+    _activeTransactions = [NSMutableSet set];
   }
   return self;
 }
 
+
+/**!
+ * #### dealloc
+ * 
+ * @return {void}
+ */
 
 - (void) dealloc {
   
@@ -172,9 +188,13 @@
 #pragma mark- Helpers for determining which items have been purchased
 #pragma mark-
 
-/**
+/**!
+ * #### purchasedItems
+ *
  * Property getter that lazy-loads the list of purchased items from
  * NSUserDefaults.
+ * 
+ * @return {NSMutableArray*}
  */
 
 - (NSMutableArray *) purchasedItems {
@@ -183,8 +203,7 @@
     
     // if the purchased items array has never been written to disk, create an empty array and save it
     if (_purchasedItems == nil || [_purchasedItems isKindOfClass:[NSMutableArray class]] == NO) {
-      NSLog(@"WRITING NEW BLANK PURCHASEDITEMS ARRAY TO USER DEFAULTS");
-      _purchasedItems = $marrnew;
+      _purchasedItems = [NSMutableArray array];
       [[NSUserDefaults standardUserDefaults] setObject:_purchasedItems forKey:SECrackRockUserDefaultsKey_purchasedItems];
       [[NSUserDefaults standardUserDefaults] synchronize];
     }
@@ -194,10 +213,15 @@
 
 
 
-/**
+/**!
+ * #### hasProductBeenPurchased:
+ *
  * Determine if a product has been purchased or not (based on the
  * possibly-incorrect record of purchased items stored locally on the user's
  * phone using NSUserDefaults).
+ * 
+ * @param {NSString*} productID
+ * @return {bool}
  */
 
 - (bool) hasProductBeenPurchased: (NSString *)productID {
@@ -208,9 +232,15 @@
 
 
 
-/**
+/**!
+ * #### setProduct:hasBeenPurchased:
+ *
  * Set whether or not a given product has been purchased (written into the
  * locally-cached record of purchased items in NSUserDefaults).
+ * 
+ * @param {NSString*} productID
+ * @param {BOOL} hasBeenPurchased
+ * @return {void}
  */
 
 - (void) setProduct:(NSString *)productID hasBeenPurchased:(BOOL)hasBeenPurchased {
@@ -239,51 +269,48 @@
 #pragma mark- Transaction state toggle
 #pragma mark-
 
-/**
- *
+/**!
+ * #### storeTransactionWillBegin:
+ * 
+ * @param {SECrackRockStoreTransactionType} type
+ * @return {void}
  */
 
 - (void) storeTransactionWillBegin:(SECrackRockStoreTransactionType)type {
   NSLog(@"Store transaction will begin. (%@)", (type == 2 ? @"purchase" : (type == 4 ? @"restore" : @"products request")));
-  NSAssert(NO == [self.activeTransactions containsObject:b(type)], @"A transaction of the given type is already underway. (type = %d)", type);
-//#if DEBUG
-//  NSAssert(_storeTransactionIsUnderway == NO, @"A store transaction is already underway, or SECrackRock is in an inconsistent state.");
-//  _storeTransactionIsUnderway = YES;
-//#endif
-    
+  NSAssert(NO == [self.activeTransactions containsObject:@(type)], @"A transaction of the given type is already underway. (type = %d)", type);
   BOOL wasEmpty = (self.activeTransactions.count <= 0);
 
-  [self.activeTransactions addObject:b(type)];
+  [self.activeTransactions addObject:@(type)];
   
   if (wasEmpty) {
     [[SEStatelyNotificationRobot sharedRobot] changeStateOf: SECrackRockState_TransactionState
                                                          to: SECrackRockTransactionStateInProgress
                                                   stateInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
-                                                                SECrackRockUserInfoKey_TransactionType : b(type) }];
+                                                                SECrackRockUserInfoKey_TransactionType : @(type) }];
   }
 }
 
 
 
-/**
- *
+/**!
+ * #### storeTransactionDidEnd:
+ * 
+ * @param {SECrackRockStoreTransactionType} type
+ * @return {void}
  */
 
 - (void) storeTransactionDidEnd:(SECrackRockStoreTransactionType)type {
   NSLog(@"Store transaction did end. (%@)", (type == 2 ? @"purchase" : (type == 4 ? @"restore" : @"products request")));
-//#if DEBUG
-//  NSAssert(_storeTransactionIsUnderway == YES, @"No store transaction is currently active, or SECrackRock is in an inconsistent state.");
-//  _storeTransactionIsUnderway = NO;
-//#endif
 
-  if ([self.activeTransactions containsObject:b(type)])
-    [self.activeTransactions removeObject:b(type)];
+  if ([self.activeTransactions containsObject:@(type)])
+    [self.activeTransactions removeObject:@(type)];
   
   if (self.activeTransactions.count <= 0) {
     [[SEStatelyNotificationRobot sharedRobot] changeStateOf: SECrackRockState_TransactionState
                                                          to: SECrackRockTransactionStateAsleep
                                                   stateInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
-                                                                SECrackRockUserInfoKey_TransactionType : b(type) }];
+                                                                SECrackRockUserInfoKey_TransactionType : @(type) }];
   }
 }
 
@@ -292,9 +319,18 @@
 #pragma mark- Purchase/restore/request outcomes
 #pragma mark-
 
-/**
+/**!
+ * #### requestedProductValidated:productID:name:price:description:
+ *
  * Request for product information to app store servers has returned. If the
  * product was found and is available for purchase, it's handed to this method.
+ * 
+ * @param {SKProduct*} skProduct
+ * @param {NSString*} productID
+ * @param {NSString*} productName
+ * @param {NSString*} productPrice
+ * @param {NSString*} productDescription
+ * @return {void}
  */
 
 - (void) requestedProductValidated: (SKProduct *)skProduct
@@ -323,6 +359,7 @@
   if (productPrice != nil)       updatedProduct.price = productPrice;
   if (productName != nil)        updatedProduct.readableName = productName;
   if (productDescription != nil) updatedProduct.productDescription = productDescription;
+
   updatedProduct.skProduct = skProduct;
   updatedProduct.isAvailableInStore = YES;
   updatedProduct.purchaseStatus = ([self hasProductBeenPurchased:productID]
@@ -332,8 +369,11 @@
 
 
 
-/**
- *
+/**!
+ * #### requestedProductNotValid:
+ * 
+ * @param {NSString*} productID
+ * @return {void}
  */
 
 - (void) requestedProductNotValid:(NSString *)productID {
@@ -352,9 +392,15 @@
 
 
 
-/**
+/**!
+ * #### successfulPurchase:receipt:
+ *
  * Purchase request was successful, so unlock the new content for your new
  * customer and notify them that the transaction was successful.
+ * 
+ * @param {NSString*} productID
+ * @param {NSData*} transactionReceipt
+ * @return {void}
  */
 
 - (void) successfulPurchase: (NSString *)productID
@@ -377,9 +423,16 @@
 }
 
 
-/**
+
+/**!
+ * #### successfulRestore:receipt:
+ *
  * Restore request was successful, so unlock the purchased content for your
  * customer and notify them that the transaction was successful.
+ * 
+ * @param {NSString*} productID
+ * @param {NSData*} transactionReceipt
+ * @return {void}
  */
 
 - (void) successfulRestore: (NSString *)productID
@@ -411,8 +464,12 @@
 
 
 
-/**
+/**!
+ * #### successfulMultipleRestoreComplete
+ *
  * All restore requests in the transaction queue have succeeded.
+ * 
+ * @return {void}
  */
 
 - (void) successfulMultipleRestoreComplete {
@@ -432,8 +489,13 @@
 
 
 
-/**
+/**!
+ * #### cancelledPurchase:
+ *
  * Purchase request was cancelled.
+ * 
+ * @param {NSString*} errorMessage
+ * @return {void}
  */
 
 - (void) cancelledPurchase: (NSString *)errorMessage {
@@ -448,8 +510,14 @@
 
 
 
-/**
+/**!
+ * #### failedPurchase:message:
+ *
  * Purchase request failed.
+ * 
+ * @param {NSInteger} errorCode
+ * @param {NSString*} errorMessage
+ * @return {void}
  */
 
 - (void) failedPurchase: (NSInteger)errorCode
@@ -462,17 +530,21 @@
   [[NSNotificationCenter defaultCenter] postNotificationName: SECrackRockNotification_FailedPurchase
                                                       object: self
                                                     userInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
-                                                                 SECrackRockUserInfoKey_ErrorCode : b(errorCode),
+                                                                 SECrackRockUserInfoKey_ErrorCode : @(errorCode),
                                                                  SECrackRockUserInfoKey_Message : errorMessage }];
 }
 
 
 
-/**
+/**!
+ * #### incompleteRestore
+ *
  * Restore queue did not include any transactions, so either the user has not yet made a purchase
  * or the user's prior purchase is unavailable, so notify user to make a purchase within the app.
  * If the user previously purchased the item, they will NOT be re-charged again, but it should 
  * restore their purchase. 
+ * 
+ * @return {void}
  */
 
 - (void) incompleteRestore {
@@ -488,8 +560,14 @@
 
 
 
-/**
+/**!
+ * #### failedRestore:message:
+ *
  * Restore request failed or was cancelled, so notify the user.
+ * 
+ * @param {NSInteger} errorCode
+ * @param {NSString*} errorMessage
+ * @return {void}
  */
 
 - (void) failedRestore: (NSInteger) errorCode
@@ -502,7 +580,7 @@
   [[NSNotificationCenter defaultCenter] postNotificationName: SECrackRockNotification_FailedRestore
                                                       object: self
                                                     userInfo: @{ SECrackRockUserInfoKey_CrackRock : self,
-                                                                 SECrackRockUserInfoKey_ErrorCode : b(errorCode),
+                                                                 SECrackRockUserInfoKey_ErrorCode : @(errorCode),
                                                                  SECrackRockUserInfoKey_Message : errorMessage }];
 }
 
@@ -515,9 +593,13 @@
 #pragma mark- Product data
 #pragma mark-
 
-/**
+/**!
+ * #### createSortedProductIDList
+ *
  * Creates an array of all visible products (free and purchaseable) in the order
  * that they ought to appear in the springboard view.
+ * 
+ * @return {NSMutableArray*}
  */
 
 - (NSMutableArray *) createSortedProductIDList {
@@ -547,8 +629,12 @@
 }
 
 
-/**
+/**!
+ * #### createProductDictionary
+ *
  * Creates a dictionary of all products (free and purchaseable) keyed by product ID.
+ * 
+ * @return {NSMutableDictionary*}
  */
 
 - (NSMutableDictionary *) createProductDictionary {
@@ -576,11 +662,12 @@
 #pragma mark- Purchasing/restoring convenience methods
 #pragma mark-
 
-
-
-
-/**
- *
+/**!
+ * #### didFinishPreparingProductInfo:
+ * 
+ * @param {BOOL} success
+ * 
+ * @return {void}
  */
 
 - (void) didFinishPreparingProductInfo:(BOOL)success {
@@ -599,8 +686,13 @@
 #pragma mark- Public methods for purchasing/restoring
 #pragma mark-
 
-/**
+/**!
+ * #### tryToPurchaseProduct:
+ *
  * Attempt to purchase a product with a given product ID.
+ * 
+ * @param {NSString*} productID
+ * @return {bool}
  */
 
 - (bool) tryToPurchaseProduct:(NSString *)productID {
@@ -638,14 +730,20 @@
 
 
 
-/**
+/**!
+ * #### tryToRestorePurchase:
+ *
  * Attempt to restore a customer's previous non-consumable or subscription
  * In-App Purchase with a given product ID.  Required if a user reinstalled app
  * on same device or another device.
+ * 
+ * @param {NSString*} productID
+ * 
+ * @return {bool}
  */
 
 - (bool) tryToRestorePurchase: (NSString *)productID {
-  
+
   NSAssert(productID != nil, @"productID argument is nil.");
   
 //  [self storeTransactionWillBegin:SECrackRockStoreTransactionTypeRestore];
@@ -662,14 +760,17 @@
 //  
 //  return success;
   
-  NSLog(@">>>>>>>>>>>>>> tryToRestorePurchase <<<<<<<<<<<<<<");
   return NO;
 }
 
 
 
-/**
+/**!
+ * #### tryToRestoreAllPurchases
+ *
  * Attempt to restore all purchases made with the current apple ID.
+ * 
+ * @return {bool}
  */
 
 - (bool) tryToRestoreAllPurchases {
@@ -694,8 +795,16 @@
 
 
 
-#pragma mark- ??? (needs section name)
+#pragma mark- Requesting info
 #pragma mark-
+
+/**!
+ * #### requestProduct:
+ * 
+ * @param {NSString*} productID
+ * 
+ * @return {bool}
+ */
 
 - (bool) requestProduct:(NSString *)productID {
   NSAssert(productID != nil, @"productID argument is nil.");
@@ -704,6 +813,15 @@
   return [self requestProducts:[NSSet setWithObject:productID]];
 }
 
+
+
+/**!
+ * #### requestProducts:
+ * 
+ * @param {NSSet*} productIDs
+ * 
+ * @return {bool}
+ */
 
 - (bool) requestProducts:(NSSet *)productIDs {
   NSAssert(productIDs != nil, @"productIDs argument is nil.");
@@ -740,8 +858,15 @@
 #pragma mark -
 #pragma mark SKProductsRequestDelegate Methods
 
-/**
+/**!
+ * #### productsRequest:didReceiveResponse:
+ *
  * Store Kit returns a response from an SKProductsRequest.
+ * 
+ * @param {SKProductsRequest*} request
+ * @param {SKProductsResponse*} response
+ * 
+ * @return {void}
  */
 
 - (void) productsRequest: (SKProductsRequest *)request
@@ -758,9 +883,8 @@
   // update our cached products with the received product info
   for (SKProduct *product in response.products) {
     NSAssert(self.productsByID[ product.productIdentifier ] != nil, @"SKProductsRequest was returned a productID that was not requested.");
-//      [self requestedProductNotValid: product.productIdentifier];
     
-    NSNumberFormatter *formatter = $new(NSNumberFormatter);
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = NSNumberFormatterCurrencyStyle;
     formatter.locale = product.priceLocale;
     NSString *currencyString = [formatter stringFromNumber:product.price];
@@ -786,11 +910,19 @@
 }
 
 
+
 #pragma mark -
 #pragma mark SKPaymentTransactionObserver Methods
 
-/**
+/**!
+ * #### paymentQueue:updatedTransactions:
+ *
  * The transaction status of the SKPaymentQueue is sent here.
+ * 
+ * @param {SKPaymentQueue*} queue
+ * @param {NSArray*} transactions
+ * 
+ * @return {void}
  */
 
 - (void) paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
@@ -799,41 +931,41 @@
   
   NSLog(@"(SECrackRock) updatedTransactions");
   
-  NSMutableArray *restores = $marrnew;
+  NSMutableArray *restores = [NSMutableArray array];
   
-	for (SKPaymentTransaction *transaction in transactions) {
+  for (SKPaymentTransaction *transaction in transactions) {
     
-		switch (transaction.transactionState) {
-			case SKPaymentTransactionStatePurchasing: {
+    switch (transaction.transactionState) {
+      case SKPaymentTransactionStatePurchasing: {
         NSLog(@"(SECrackRock) updatedTransactions: Purchasing");
-				// Item is still in the process of being purchased
-      }	break;
-				
-			case SKPaymentTransactionStatePurchased: {
+        // Item is still in the process of being purchased
+      } break;
+        
+      case SKPaymentTransactionStatePurchased: {
         NSLog(@"(SECrackRock) updatedTransactions: Purchased");
-				// Item was successfully purchased!
-				
-				// Return transaction data. App should provide user with purchased product.
+        // Item was successfully purchased!
+        
+        // Return transaction data. App should provide user with purchased product.
         [self successfulPurchase: transaction.payment.productIdentifier
                          receipt: transaction.transactionReceipt];
-				
-				// After customer has successfully received purchased content,
-				// remove the finished transaction from the payment queue.
-				[[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+        
+        // After customer has successfully received purchased content,
+        // remove the finished transaction from the payment queue.
+        [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
       } break;
-				
-			case SKPaymentTransactionStateRestored: {
+        
+      case SKPaymentTransactionStateRestored: {
         NSLog(@"(SECrackRock) updatedTransactions: Restored");
-				// Verified that user has already paid for this item.
-				// Ideal for restoring item across all devices of this customer.
-				
+        // Verified that user has already paid for this item.
+        // Ideal for restoring item across all devices of this customer.
+        
         [restores addObject:transaction];
       } break;
-				
-			case SKPaymentTransactionStateFailed: {
-				// Purchase was either cancelled by user or an error occurred.
-				
-				if (transaction.error.code == SKErrorPaymentCancelled) {
+        
+      case SKPaymentTransactionStateFailed: {
+        // Purchase was either cancelled by user or an error occurred.
+        
+        if (transaction.error.code == SKErrorPaymentCancelled) {
           NSLog(@"(SECrackRock) updatedTransactions: Cancelled");
           
           [self cancelledPurchase:transaction.error.localizedDescription];
@@ -842,10 +974,10 @@
           NSLog(@"(SECrackRock) updatedTransactions: Failed");
           
           [self failedPurchase:transaction.error.code message:transaction.error.localizedDescription];
-				}
+        }
         
-				// Finished transactions should be removed from the payment queue.
-				[[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+        // Finished transactions should be removed from the payment queue.
+        [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
       } break;
         
         
@@ -853,8 +985,8 @@
         // automatically throw an assertion failure exception if the transactionState is not a defined value
         NSAssert(NO, @"transactionState is an unknown value.");
       } break;
-		}
-	}
+    }
+  }
   
   
   // process restores separately so that we can accurately set the "restoring
@@ -878,8 +1010,14 @@
 
 
 
-/**
+/**!
+ * #### paymentQueue:removedTransactions:
+ *
  * Called when one or more transactions have been removed from the queue.
+ * 
+ * @param {SKPaymentQueue*} queue
+ * @param {NSArray*} transactions
+ * @return {void}
  */
 
 - (void)paymentQueue:(SKPaymentQueue *)queue removedTransactions:(NSArray *)transactions {
@@ -891,8 +1029,13 @@
 
 
 
-/**
+/**!
+ * #### paymentQueueRestoreCompletedTransactionsFinished:
+ *
  * Called when SKPaymentQueue has finished sending restored transactions.
+ * 
+ * @param {SKPaymentQueue*} queue
+ * @return {void}
  */
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
@@ -925,8 +1068,15 @@
 
 
 
-/**
+/**!
+ * #### paymentQueue:restoreCompletedTransactionsFailedWithError:
+ * 
  * Called if an error occurred while restoring transactions.
+ *
+ * @param {SKPaymentQueue*} queue
+ * @param {NSError*} error
+ * 
+ * @return {void}
  */
 
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
@@ -943,6 +1093,7 @@
 
 
 @end
+
 
 
 

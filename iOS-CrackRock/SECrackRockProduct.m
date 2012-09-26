@@ -1,6 +1,6 @@
 //
 //  SECrackRockProduct.m
-//  SECrackRock iOS in-app purchase framework
+//  iOS-CrackRock iOS in-app purchase framework
 //
 //  Created by bryn austin bellomy on 7/8/12.
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
@@ -9,23 +9,18 @@
 #import <StoreKit/StoreKit.h>
 #import "SECrackRockProduct.h"
 
-@interface SECrackRockProduct ()
-@end
-
 
 
 @implementation SECrackRockProduct
 
-@synthesize productID = _productID;
-@synthesize readableName = _readableName;
-@synthesize productDescription = _productDescription;
-@synthesize price = _price;
-@synthesize purchaseStatus = _purchaseStatus;
-@synthesize isAvailableInStore = _isAvailableInStore;
-@synthesize thumbnailPNGFilename = _thumbnailPNGFilename;
-@synthesize skProduct = _skProduct;
 
-
+/**!
+ * #### initWithProductID:thumbnailPNGFilename:
+ * 
+ * @param {NSString*} productID
+ * @param {NSString*} thumbnailPNGFilename
+ * @return {id}
+ */
 
 - (id) initWithProductID: (NSString *)productID
     thumbnailPNGFilename: (NSString *)thumbnailPNGFilename {
@@ -39,6 +34,16 @@
 }
 
 
+
+/**!
+ * #### initWithProductID:readableName:description:thumbnailPNGFilename:
+ * 
+ * @param {NSString*} productID
+ * @param {NSString*} readableName
+ * @param {NSString*} description
+ * @param {NSString*} thumbnailPNGFilename
+ * @return {id}
+ */
 
 - (id) initWithProductID: (NSString *)productID
             readableName: (NSString *)readableName
@@ -54,6 +59,13 @@
 }
 
 
+
+/**!
+ * #### copyWithZone:
+ * 
+ * @param {NSZone*} zone
+ * @return {id}
+ */
 
 - (id) copyWithZone:(NSZone *)zone {
   
@@ -72,3 +84,4 @@
 }
 
 @end
+

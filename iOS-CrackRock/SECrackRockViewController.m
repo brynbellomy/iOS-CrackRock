@@ -1,6 +1,6 @@
 //
 //  SECrackRockViewController.m
-//  SECrackRock in-app purchase framework
+//  iOS-CrackRock in-app purchase framework
 //
 //  Created by bryn austin bellomy on 6/19/12.
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
@@ -15,15 +15,10 @@
 #import "SECrackRockProduct.h"
 #import "UIImage+SECrackRock.h"
 
-//#import "MBProgressHUD.h" // @@TODO: implement MBProgressHUD
-
 
 static NSString *const SECrackRockTransactionStateObserver_SpringboardView = @"SECrackRockTransactionStateObserver_SpringboardView";
 static NSString *const SECrackRockTransactionStateObserver_RestorePurchasesButton = @"SECrackRockTransactionStateObserver_RestorePurchasesButton";
 static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewController = @"SECrackRockProductsRequestStateObserver_SECrackRockViewController";
-
-
-
 
 
 @implementation SECrackRockMenuItem
@@ -33,22 +28,26 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 @interface SECrackRockViewController ()
-  @property (nonatomic, bryn_weak, readwrite) UIBarButtonItem *restorePurchasesButton;
+  @property (nonatomic, weak, readwrite) UIBarButtonItem *restorePurchasesButton;
 @end
 
 
+/**!
+ * ## SECrackRockViewController
+ */
 @implementation SECrackRockViewController
-
-@synthesize springboardView = _springboardView;
-@synthesize restorePurchasesButton = _restorePurchasesButton;
-@synthesize springboardItemSize = _springboardItemSize;
-@synthesize springboardItemMargins = _springboardItemMargins;
-@synthesize springboardOuterMargins = _springboardOuterMargins;
-
 
 
 #pragma mark- View lifecycle
 #pragma mark-
+
+/**!
+ * #### initWithNibName:bundle:
+ * 
+ * @param {NSString*} nibNameOrNil
+ * @param {NSBundle*} nibBundleOrNil
+ * @return {id}
+ */
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -60,17 +59,36 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
+/**!
+ * #### viewDidLoad
+ * 
+ * @return {void}
+ */
+
 - (void) viewDidLoad {
   [super viewDidLoad];
 }
 
 
 
+/**!
+ * #### viewDidUnload
+ * 
+ * @return {void}
+ */
+
 - (void) viewDidUnload {
   [super viewDidUnload];
 }
 
 
+
+/**!
+ * #### viewWillAppear:
+ * 
+ * @param {BOOL} animated
+ * @return {void}
+ */
 
 - (void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear: animated];
@@ -123,6 +141,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
+/**!
+ * #### viewWillDisappear:
+ * 
+ * @param {BOOL} animated
+ * @return {void}
+ */
+
 - (void) viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
     
@@ -135,12 +160,25 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
+/**!
+ * #### didReceiveMemoryWarning
+ * 
+ * @return {void}
+ */
+
 - (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 
+
+/**!
+ * #### shouldAutorotateToInterfaceOrientation:
+ * 
+ * @param {UIInterfaceOrientation} interfaceOrientation
+ * @return {BOOL}
+ */
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -150,6 +188,12 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 #pragma mark- Notification handling
 #pragma mark-
+
+/**!
+ * #### registerForAllNotifications
+ * 
+ * @return {void}
+ */
 
 - (void) registerForAllNotifications {
   [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(successfulPurchase:)
@@ -168,6 +212,12 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
                                                name: SECrackRockNotification_FailedRestore           object:[SECrackRock sharedInstance]];
 }
 
+/**!
+ * #### unregisterForAllNotifications
+ * 
+ * @return {void}
+ */
+
 - (void) unregisterForAllNotifications {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:SECrackRockNotification_SuccessfulPurchase object:[SECrackRock sharedInstance]];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:SECrackRockNotification_CancelledPurchase object:[SECrackRock sharedInstance]];
@@ -182,6 +232,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 #pragma mark- BlingLord springboard view (+ misc. graphics)
 #pragma mark-
+
+/**!
+ * #### shouldDisplayProductInStore:
+ * 
+ * @param {SECrackRockProduct*} product
+ * @return {BOOL}
+ */
 
 - (BOOL) shouldDisplayProductInStore:(SECrackRockProduct *)product {
   NSAssert(product != nil, @"product argument is nil.");
@@ -213,10 +270,25 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
+/**!
+ * #### purchaseableIndicatorForProduct:
+ * 
+ * @param {SECrackRockProduct*} product
+ * @return {UIImage*}
+ */
+
 - (UIImage *) purchaseableIndicatorForProduct: (SECrackRockProduct *)product {
   return nil;
 }
 
+
+/**!
+ * #### iconForProduct:withPurchaseableIndicator:
+ * 
+ * @param {SECrackRockProduct*} product
+ * @param {BOOL} withPurchaseableIndicator
+ * @return {UIImage*}
+ */
 
 - (UIImage *) iconForProduct:(SECrackRockProduct *)product withPurchaseableIndicator:(BOOL)withPurchaseableIndicator {
   NSAssert(product != nil, @"product argument is nil.");
@@ -237,6 +309,12 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
   return icon;
 }
 
+
+/**!
+ * #### initializeMenuItems
+ * 
+ * @return {NSMutableArray*}
+ */
 
 - (NSMutableArray *) initializeMenuItems {
   
@@ -277,6 +355,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
+/**!
+ * #### menuItemForProductID:
+ * 
+ * @param {NSString*} productID
+ * @return {SECrackRockMenuItem*}
+ */
+
 - (SECrackRockMenuItem *) menuItemForProductID:(NSString *)productID {
   if (productID != nil) {
     for (SECrackRockMenuItem *menuItem in self.springboardView.items) {
@@ -291,6 +376,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 #pragma mark- User interaction
 #pragma mark-
+
+/**!
+ * #### iconWasTappedForProduct:
+ * 
+ * @param {SECrackRockProduct*} product
+ * @return {void}
+ */
 
 - (void) iconWasTappedForProduct: (SECrackRockProduct *)product {
   NSAssert(product != nil, @"product argument is nil.");
@@ -319,8 +411,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 #pragma mark- Public methods for purchasing/restoring
 #pragma mark-
 
-/**
+/**!
+ * #### tryToPurchaseProduct:
+ *
  * Attempt to purchase a product with a given product ID.
+ * 
+ * @param {NSString*} productID
+ * @return {void}
  */
 
 - (void) tryToPurchaseProduct:(NSString *)productID {
@@ -337,10 +434,15 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
-/**
+/**!
+ * #### tryToRestorePurchase:
+ *
  * Attempt to restore a customer's previous non-consumable or subscription
  * In-App Purchase with a given product ID.  Required if a user reinstalled app
  * on same device or another device.
+ * 
+ * @param {NSString*} productID
+ * @return {void}
  */
 
 - (void) tryToRestorePurchase: (NSString *)productID {
@@ -355,8 +457,12 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 }
 
 
-/**
+/**!
+ * #### tryToRestoreAllPurchases
+ *
  * Attempt to restore all purchases made with the current apple ID.
+ * 
+ * @return {void}
  */
 
 - (void) tryToRestoreAllPurchases {
@@ -375,14 +481,18 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
-/**
- * Called in response to SECrackRockNotification_DidFinishPreparingProductInfo.
+/**!
+ * #### didFinishPreparingProductInfo
+ *
+ * Called in response to `SECrackRockNotification_DidFinishPreparingProductInfo`.
  *
  * Sets up the springboard view and creates a menu item for each product that
  * was verified as purchaseable by the app store.
  *
  * Note: if you override this method in a subclass, you really oughta call the
- * superclass's method (i.e., [super didFinishPreparingProductInfo]).
+ * superclass's method (i.e., `[super didFinishPreparingProductInfo]`).
+ * 
+ * @return {void}
  */
 
 - (void) didFinishPreparingProductInfo {
@@ -440,9 +550,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
-/**
+/**!
+ * #### restorePurchasesButtonClicked
+ * 
  * Called when the user has clicked the 'restore all purchases' button.  Can
  * be rigged up to a button using Interface Builder, but does not need to be.
+ * 
+ * @return {IBAction}
  */
 
 - (IBAction) restorePurchasesButtonClicked {
@@ -453,6 +567,14 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**
  *
+ */
+
+/**!
+ * #### recreateProductIconWithoutPurchaseableIndicator:
+ * 
+ * @param {NSString*} productID
+ * 
+ * @return {void}
  */
 
 - (void) recreateProductIconWithoutPurchaseableIndicator:(NSString *)productID {
@@ -473,11 +595,28 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 }
 
 
+/**!
+ * #### displayAlertToUserWithTitle:text:dismissText:
+ * 
+ * @param {NSString*} title
+ * @param {NSString*} text
+ * @param {NSString*} dismissText
+ * 
+ * @return {void}
+ */
+
 - (void) displayAlertToUserWithTitle:(NSString *)title text:(NSString *)text dismissText:(NSString *)dismissText {
   [[[UIAlertView alloc] initWithTitle:title message:text delegate:nil cancelButtonTitle:dismissText otherButtonTitles:nil] show];
 }
 
 
+
+/**!
+ * #### successfulPurchase:
+ * 
+ * @param {NSNotification*} notification
+ * @return {void}
+ */
 
 - (void) successfulPurchase:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
@@ -493,12 +632,26 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
+/**!
+ * #### cancelledPurchase:
+ * 
+ * @param {NSNotification*} notification
+ * @return {void}
+ */
+
 - (void) cancelledPurchase:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
   // no-op
 }
 
 
+
+/**!
+ * #### failedPurchase:
+ * 
+ * @param {NSNotification*} notification
+ * @return {void}
+ */
 
 - (void) failedPurchase:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
@@ -509,6 +662,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 }
 
 
+
+/**!
+ * #### successfulRestore:
+ * 
+ * @param {NSNotification*} notification
+ * @return {void}
+ */
 
 - (void) successfulRestore:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
@@ -526,6 +686,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
+/**!
+ * #### multipleRestoreComplete:
+ * 
+ * @param {NSNotification*} notification
+ * @return {void}
+ */
+
 - (void) multipleRestoreComplete:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
   
@@ -536,6 +703,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 
+/**!
+ * #### incompleteRestore:
+ * 
+ * @param {NSNotification*} notification
+ * @return {void}
+ */
+
 - (void) incompleteRestore:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
   
@@ -545,6 +719,13 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 }
 
 
+
+/**!
+ * #### failedRestore:
+ * 
+ * @param {NSNotification*} notification
+ * @return {void}
+ */
 
 - (void) failedRestore:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
@@ -559,6 +740,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 
 @end
+
 
 
 
