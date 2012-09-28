@@ -9,6 +9,7 @@
 #import <iOS-BlingLord/SEBlingLordView.h>
 #import <iOS-BlingLord/SEBlingLordMenuItem.h>
 #import <ObjC-StatelyNotificationRobot/SEStatelyNotificationRobot.h>
+#import <BrynKit/BrynKit.h>
 
 #import "SECrackRockViewController.h"
 #import "SECrackRock.h"
@@ -43,7 +44,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### initWithNibName:bundle:
- * 
+ *
  * @param {NSString*} nibNameOrNil
  * @param {NSBundle*} nibBundleOrNil
  * @return {id}
@@ -61,7 +62,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### viewDidLoad
- * 
+ *
  * @return {void}
  */
 
@@ -73,7 +74,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### viewDidUnload
- * 
+ *
  * @return {void}
  */
 
@@ -85,17 +86,17 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### viewWillAppear:
- * 
+ *
  * @param {bool} animated
  * @return {void}
  */
 
-- (void) viewWillAppear:(bool)animated {
+- (void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear: animated];
-  
+
   // provide a default title on the view's navigation bar
   self.navigationItem.title = @"Store";
-  
+
   // add the 'restore purchases' button to the navigation bar
   UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle: @"Restore Purchases"
                                                              style: UIBarButtonItemStylePlain target: self
@@ -103,36 +104,36 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
   button.enabled = NO;
   self.navigationItem.rightBarButtonItem = button;
   self.restorePurchasesButton = button;
-  
+
   // remove any existing observer
   [[SEStatelyNotificationRobot sharedRobot] removeHandlerWithID: SECrackRockTransactionStateObserver_RestorePurchasesButton];
   [[SEStatelyNotificationRobot sharedRobot] removeHandlerWithID: SECrackRockProductsRequestStateObserver_SECrackRockViewController];
-  
-  __bryn_weak SECrackRockViewController *weakSelf = self;
+
+  @weakify(self);
   [[SEStatelyNotificationRobot sharedRobot] handleStateOf: SECrackRockState_TransactionState
                                                 handlerID: SECrackRockTransactionStateObserver_RestorePurchasesButton
                                                   onQueue: [NSOperationQueue mainQueue]
                                                 withBlock: ^(SEState newState, NSDictionary *stateInfo) {
-                                                  
+
                                                     NSLog(@"handler for TransactionState state change: newState == %d", newState);
-                                                    __strong SECrackRockViewController *strongSelf = weakSelf;
-                                                    
+                                                    @strongify(self);
+
                                                     bool enabled = (newState == SECrackRockTransactionStateAsleep);
-                                                    strongSelf.restorePurchasesButton.enabled = enabled;
-                                                  
+                                                    self.restorePurchasesButton.enabled = enabled;
+
                                                 }];
-  
+
   [[SEStatelyNotificationRobot sharedRobot] handleStateOf: SECrackRockState_ProductsRequestState
                                                 handlerID: SECrackRockProductsRequestStateObserver_SECrackRockViewController
                                                   onQueue: [NSOperationQueue mainQueue]
                                                 withBlock: ^(SEState newState, NSDictionary *stateInfo) {
-                                                  
+
                                                     NSLog(@"handler for ProductsRequestState state change: newState == %d", newState);
-                                                    __strong SECrackRockViewController *strongSelf = weakSelf;
+                                                    @strongify(self);
                                                     if (newState == SECrackRockProductsRequestStateFinished) {
-                                                      [strongSelf didFinishPreparingProductInfo];
+                                                      [self didFinishPreparingProductInfo];
                                                     }
-                                                  
+
                                                 }];
 
   // register for the notifications posted by SECrackRock
@@ -143,14 +144,14 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### viewWillDisappear:
- * 
+ *
  * @param {bool} animated
  * @return {void}
  */
 
-- (void) viewWillDisappear:(bool)animated {
+- (void) viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-    
+
   // remove all notification handlers and SEStatelyNotificationRobot state handlers
   [self unregisterForAllNotifications];
   [[SEStatelyNotificationRobot sharedRobot] removeHandlerWithID: SECrackRockTransactionStateObserver_SpringboardView];
@@ -162,7 +163,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### didReceiveMemoryWarning
- * 
+ *
  * @return {void}
  */
 
@@ -175,7 +176,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### shouldAutorotateToInterfaceOrientation:
- * 
+ *
  * @param {UIInterfaceOrientation} interfaceOrientation
  * @return {bool}
  */
@@ -191,7 +192,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### registerForAllNotifications
- * 
+ *
  * @return {void}
  */
 
@@ -214,7 +215,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### unregisterForAllNotifications
- * 
+ *
  * @return {void}
  */
 
@@ -235,16 +236,16 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### shouldDisplayProductInStore:
- * 
+ *
  * @param {SECrackRockProduct*} product
  * @return {bool}
  */
 
 - (bool) shouldDisplayProductInStore:(SECrackRockProduct *)product {
   NSAssert(product != nil, @"product argument is nil.");
-  
+
   bool shouldDisplayItem = YES;
-  
+
   switch (product.purchaseStatus) {
     // products that returned errors or nothing when app store was queried
     default:
@@ -252,19 +253,19 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
     case SECrackRockPurchaseStatusError:
       shouldDisplayItem = NO;
       break;
-      
+
     // paid/purchaseable products
     case SECrackRockPurchaseStatusNonfreePurchased:
     case SECrackRockPurchaseStatusNonfreeUnpurchased: {
       shouldDisplayItem = product.isAvailableInStore;
     } break;
-      
+
     // free items might as well always show up, right?
     case SECrackRockPurchaseStatusFree:
       shouldDisplayItem = YES;
       break;
   }
-  
+
   return shouldDisplayItem;
 }
 
@@ -272,7 +273,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### purchaseableIndicatorForProduct:
- * 
+ *
  * @param {SECrackRockProduct*} product
  * @return {UIImage*}
  */
@@ -284,7 +285,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### iconForProduct:withPurchaseableIndicator:
- * 
+ *
  * @param {SECrackRockProduct*} product
  * @param {bool} withPurchaseableIndicator
  * @return {UIImage*}
@@ -292,43 +293,43 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 - (UIImage *) iconForProduct:(SECrackRockProduct *)product withPurchaseableIndicator:(bool)withPurchaseableIndicator {
   NSAssert(product != nil, @"product argument is nil.");
-  
+
   // load the product's icon, add the 'purchaseable' indicator overlay if it hasn't been purchased yet
   UIImage *icon = UIImageWithBundlePNG(product.thumbnailPNGFilename);
-  NSAssert(icon != nil, @"icon is nil.");   
-  
+  NSAssert(icon != nil, @"icon is nil.");
+
   if (withPurchaseableIndicator == YES) {
     UIImage *purchaseableIndicator = [self purchaseableIndicatorForProduct: product];
-    
+
     // if a purchaseableIndicator was provided, replace the existing icon with one that has the indicator overlaid
     if (purchaseableIndicator != nil) {
       icon = [icon imageWithOverlay:purchaseableIndicator atPosition:CGPointZero withSize:icon.size];
     }
   }
-  
+
   return icon;
 }
 
 
 /**!
  * #### initializeMenuItems
- * 
+ *
  * @return {NSMutableArray*}
  */
 
 - (NSMutableArray *) initializeMenuItems {
-  
+
   // create an array of SEBlingLord objects
   NSMutableArray *items = [NSMutableArray arrayWithCapacity: [SECrackRock sharedInstance].sortedProductIDs.count];
-  
+
   __bryn_weak SECrackRockViewController *weakSelf = self;
   for (NSString *productID in [SECrackRock sharedInstance].sortedProductIDs) {
     SECrackRockProduct *product = [SECrackRock sharedInstance].productsByID[ productID ];
-    
-    // make sure we want to display each product (i.e. the request to the app store was successful) 
+
+    // make sure we want to display each product (i.e. the request to the app store was successful)
     if ([self shouldDisplayProductInStore: product] == NO)
       continue;
-    
+
     // generate the product's icon
     bool showPurchaseableIndicator = (product.purchaseStatus == SECrackRockPurchaseStatusNonfreeUnpurchased);
     UIImage *icon = [self iconForProduct:product withPurchaseableIndicator:showPurchaseableIndicator];
@@ -342,14 +343,14 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
                                      __strong SECrackRockViewController *strongSelf = weakSelf;
                                      SECrackRockProduct *blockProduct = [SECrackRock sharedInstance].productsByID[ productID ];
                                      NSAssert(blockProduct != nil, @"blockProduct is nil.");
-                                     
+
                                      [strongSelf iconWasTappedForProduct: blockProduct];
                                  }];
-      
+
     menuItem.productID = product.productID;
     [items addObject: menuItem];
   }
-  
+
   return items;
 }
 
@@ -357,7 +358,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### menuItemForProductID:
- * 
+ *
  * @param {NSString*} productID
  * @return {SECrackRockMenuItem*}
  */
@@ -379,24 +380,24 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### iconWasTappedForProduct:
- * 
+ *
  * @param {SECrackRockProduct*} product
  * @return {void}
  */
 
 - (void) iconWasTappedForProduct: (SECrackRockProduct *)product {
   NSAssert(product != nil, @"product argument is nil.");
-  
+
   switch (product.purchaseStatus) {
     case SECrackRockPurchaseStatusFree:
     case SECrackRockPurchaseStatusNonfreePurchased:
       // this is where you'd probably want to let the user use the purchase
       break;
-      
+
     case SECrackRockPurchaseStatusNonfreeUnpurchased: {
       [self tryToPurchaseProduct: product.productID];
     } break;
-      
+
     default: {
       NSAssert(NO, @"SECrackRockProduct purchaseStatus is unknown.");
       [[[UIAlertView alloc] initWithTitle: @"Our bad"
@@ -415,20 +416,20 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
  * #### tryToPurchaseProduct:
  *
  * Attempt to purchase a product with a given product ID.
- * 
+ *
  * @param {NSString*} productID
  * @return {void}
  */
 
 - (void) tryToPurchaseProduct:(NSString *)productID {
-  
+
   bool success = [[SECrackRock sharedInstance] tryToPurchaseProduct:productID];
   if (success == NO) {
     // Returned NO, so notify user that In-App Purchase is Disabled in their Settings.
     [[[UIAlertView alloc] initWithTitle: @"Allow Purchases"
                                 message: @"You must first enable In-App Purchase in your iOS Settings before making this purchase."
                                delegate: nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-    
+
   }
 }
 
@@ -440,19 +441,19 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
  * Attempt to restore a customer's previous non-consumable or subscription
  * In-App Purchase with a given product ID.  Required if a user reinstalled app
  * on same device or another device.
- * 
+ *
  * @param {NSString*} productID
  * @return {void}
  */
 
 - (void) tryToRestorePurchase: (NSString *)productID {
-  
+
   bool success = [[SECrackRock sharedInstance] tryToRestorePurchase:productID];
-  
+
   if (success == NO) {
     [[[UIAlertView alloc] initWithTitle: @"Allow Purchases"
                                 message: @"You must first enable In-App Purchase in your iOS Settings before restoring a previous purchase."
-                               delegate: nil cancelButtonTitle: @"OK" otherButtonTitles: nil] show]; 
+                               delegate: nil cancelButtonTitle: @"OK" otherButtonTitles: nil] show];
   }
 }
 
@@ -461,14 +462,14 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
  * #### tryToRestoreAllPurchases
  *
  * Attempt to restore all purchases made with the current apple ID.
- * 
+ *
  * @return {void}
  */
 
 - (void) tryToRestoreAllPurchases {
-  
+
   bool success = [[SECrackRock sharedInstance] tryToRestoreAllPurchases];
-  
+
   if (success == NO) {
     // notify user that In-App Purchase is Disabled in their Settings.
     [[[UIAlertView alloc] initWithTitle: @"Allow Purchases"
@@ -491,60 +492,60 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
  *
  * Note: if you override this method in a subclass, you really oughta call the
  * superclass's method (i.e., `[super didFinishPreparingProductInfo]`).
- * 
+ *
  * @return {void}
  */
 
 - (void) didFinishPreparingProductInfo {
-  
+
   // initialize the menu items
-  
+
   NSMutableArray *menuItems = [self initializeMenuItems];
-  
+
   NSAssert(menuItems != nil, @"menuItems array is nil.");
-  
+
   // pass the array to a new instance of SEBlingLord and add it to the view
-  
+
   CGRect frame;
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     frame = CGRectMake(0.0f, 0.0f, 320.0f, 480.0f - 20.0f); // 20.0f = status bar
   else
     frame = CGRectMake(0.0f, 0.0f, 768.0f, 1024.0f - 20.0f); // @@TODO: is this correct for an iPad?
-  
+
   SEBlingLordView *board = [[SEBlingLordView alloc] initWithFrame:frame];
   board.itemSize = self.springboardItemSize;
   board.itemMargins = self.springboardItemMargins; //  CGSizeMake(15.0f, 15.0f);
   board.outerMargins = self.springboardOuterMargins; // CGSizeMake(10.0f, 10.0f);
   board.allowsEditing = NO;
   [board addMenuItems:menuItems];
-  
-  
+
+
   if (self.springboardView != nil) {
     [self.springboardView removeFromSuperview];
     self.springboardView = nil;
   }
-  
+
   [self.view addSubview: board];
   self.springboardView = board;
-  
-  
+
+
   // register a block to respond to the transaction state (i.e. whether or not a
   // transaction with the app store servers is pending).  this block toggles
   // user interaction with the springboard off when a transaction is underway,
   // and back on when it is done.
-  
+
   [[SEStatelyNotificationRobot sharedRobot] removeHandlerWithID: SECrackRockTransactionStateObserver_SpringboardView]; // remove any existing observer
-  
+
   __bryn_weak SECrackRockViewController *weakSelf = self;
   [[SEStatelyNotificationRobot sharedRobot] handleStateOf: SECrackRockState_TransactionState
                                                 handlerID: SECrackRockTransactionStateObserver_SpringboardView
                                                   onQueue: [NSOperationQueue mainQueue]
                                                 withBlock: ^(SEState newState, NSDictionary *stateInfo) {
-                                                  
+
                                                     __strong SECrackRockViewController *strongSelf = weakSelf;
                                                     bool enabled = (newState == SECrackRockTransactionStateAsleep);
                                                     strongSelf.springboardView.userInteractionEnabled = enabled;
-                                                  
+
                                                 }];
 }
 
@@ -552,10 +553,10 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### restorePurchasesButtonClicked
- * 
+ *
  * Called when the user has clicked the 'restore all purchases' button.  Can
  * be rigged up to a button using Interface Builder, but does not need to be.
- * 
+ *
  * @return {IBAction}
  */
 
@@ -571,9 +572,9 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### recreateProductIconWithoutPurchaseableIndicator:
- * 
+ *
  * @param {NSString*} productID
- * 
+ *
  * @return {void}
  */
 
@@ -581,27 +582,27 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
   NSAssert(productID != nil, @"productID argument is nil.");
 
   // recreate the product's icon without the purchaseable indicator
-  
+
   __bryn_weak SECrackRockViewController *weakSelf = self;
   dispatch_async(dispatch_get_main_queue(), ^{
     __strong SECrackRockViewController *strongSelf = weakSelf;
-    
+
     SECrackRockMenuItem *springboardMenuItem = [strongSelf menuItemForProductID:productID];
     SECrackRockProduct *product = [SECrackRock sharedInstance].productsByID[ productID ];
-    
+
     springboardMenuItem.imageView.image = [strongSelf iconForProduct:product withPurchaseableIndicator:NO];
   });
-  
+
 }
 
 
 /**!
  * #### displayAlertToUserWithTitle:text:dismissText:
- * 
+ *
  * @param {NSString*} title
  * @param {NSString*} text
  * @param {NSString*} dismissText
- * 
+ *
  * @return {void}
  */
 
@@ -613,17 +614,17 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### successfulPurchase:
- * 
+ *
  * @param {NSNotification*} notification
  * @return {void}
  */
 
 - (void) successfulPurchase:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
-  
+
   NSString *productID = notification.userInfo[ SECrackRockUserInfoKey_ProductID ];
   [self recreateProductIconWithoutPurchaseableIndicator:productID];
-    
+
   // notify the user that the purchase was successful
   [self displayAlertToUserWithTitle: @"Thank You!"
                                text: @"Your purchase was successful!"
@@ -634,7 +635,7 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### cancelledPurchase:
- * 
+ *
  * @param {NSNotification*} notification
  * @return {void}
  */
@@ -648,14 +649,14 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### failedPurchase:
- * 
+ *
  * @param {NSNotification*} notification
  * @return {void}
  */
 
 - (void) failedPurchase:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
-  
+
   [self displayAlertToUserWithTitle: @"Purchase Failed"
                                text: @"There was a transaction error. Please try again later, or contact customer support for assistance."
                         dismissText: @"OK"];
@@ -665,17 +666,17 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### successfulRestore:
- * 
+ *
  * @param {NSNotification*} notification
  * @return {void}
  */
 
 - (void) successfulRestore:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
-  
+
   NSString *productID = notification.userInfo[ SECrackRockUserInfoKey_ProductID ];
   [self recreateProductIconWithoutPurchaseableIndicator:productID];
-  
+
   // if it's a single item restore, notify the user that the restore was successful
   if (NO == [SECrackRock sharedInstance].isCurrentlyRestoringMultiplePurchases) {
     [self displayAlertToUserWithTitle: @"Thank You!"
@@ -688,14 +689,14 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### multipleRestoreComplete:
- * 
+ *
  * @param {NSNotification*} notification
  * @return {void}
  */
 
 - (void) multipleRestoreComplete:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
-  
+
   [self displayAlertToUserWithTitle: @"Success!"
                                text: @"Your purchases were successfully restored!"
                         dismissText: @"OK"];
@@ -705,14 +706,14 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### incompleteRestore:
- * 
+ *
  * @param {NSNotification*} notification
  * @return {void}
  */
 
 - (void) incompleteRestore:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
-  
+
   [self displayAlertToUserWithTitle: @"Restore Issue"
                                text: @"A prior purchase transaction could not be found. To restore the purchased product, tap the product's icon. Paid customers will NOT be charged again, but the purchase will be restored."
                         dismissText: @"OK"];
@@ -722,14 +723,14 @@ static NSString *const SECrackRockProductsRequestStateObserver_SECrackRockViewCo
 
 /**!
  * #### failedRestore:
- * 
+ *
  * @param {NSNotification*} notification
  * @return {void}
  */
 
 - (void) failedRestore:(NSNotification *)notification {
   NSAssert(notification != nil, @"notification argument is nil.");
-  
+
   [self displayAlertToUserWithTitle: @"Restore Stopped"
                                text: @"Either you cancelled the request or your prior purchase could not be restored. Please try again later, or contact customer support for assistance."
                         dismissText: @"OK"];
