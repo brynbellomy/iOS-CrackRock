@@ -3,7 +3,7 @@
 //  iOS-CrackRock iOS in-app purchase framework
 //
 //  Created by bryn austin bellomy on 7/16/12.
-//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -51,7 +51,11 @@
 - (bool) tryToRestorePurchase:(NSString *)productID;
 - (bool) tryToRestoreAllPurchases;
 
+- (bool) hasProductBeenPurchased: (NSString *)productID;
++ (bool) hasProductBeenPurchased: (NSString *)productID;
+
 @property (nonatomic, weak,   readwrite) id<SECrackRockDataSource> dataSource;
+@property (nonatomic, strong, readwrite) NSString *userDefaultsKey;
 @property (nonatomic, strong, readwrite) NSArray *freeProducts;
 @property (nonatomic, strong, readwrite) NSArray *paidProducts;
 @property (nonatomic, strong, readwrite) NSMutableArray *sortedProductIDs;

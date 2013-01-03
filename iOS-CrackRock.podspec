@@ -1,1 +1,1 @@
-podspecs/0.0.1/iOS-CrackRock.podspec
+./podspecs/0.1.0/iOS-CrackRock.podspec

@@ -3,45 +3,45 @@
 //  iOS-CrackRock iOS in-app purchase framework
 //
 //  Created by bryn austin bellomy on 7/23/12.
-//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
 
 
-static NSString *const SECrackRockUserDefaultsKey_purchasedItems = @"SECrackRockUserDefaultsKey_purchasedItems";
+Key(SECrackRockUserDefaultsKey_purchasedItems);
 
 /**!
  * ## Notification names
  */
-static NSString *const SECrackRockNotification_SuccessfulPurchase = @"SECrackRockNotification_SuccessfulPurchase";
-static NSString *const SECrackRockNotification_CancelledPurchase = @"SECrackRockNotification_CancelledPurchase";
-static NSString *const SECrackRockNotification_FailedPurchase = @"SECrackRockNotification_FailedPurchase";
-static NSString *const SECrackRockNotification_SuccessfulRestore = @"SECrackRockNotification_SuccessfulRestore";
-static NSString *const SECrackRockNotification_MultipleRestoreComplete = @"SECrackRockNotification_MultipleRestoreComplete";
-static NSString *const SECrackRockNotification_IncompleteRestore = @"SECrackRockNotification_IncompleteRestore";
-static NSString *const SECrackRockNotification_FailedRestore = @"SECrackRockNotification_FailedRestore";
-static NSString *const SECrackRockNotification_ProductWasValidated = @"SECrackRockNotification_ProductWasValidated";
-static NSString *const SECrackRockNotification_ProductWasNotValidated = @"SECrackRockNotification_ProductWasNotValidated";
-static NSString *const SECrackRockNotification_DidFinishPreparingProductInfo = @"SECrackRockNotification_DidFinishPreparingProductInfo";
-static NSString *const SECrackRockNotification_StoreTransactionWillBegin = @"SECrackRockNotification_StoreTransactionWillBegin";
-static NSString *const SECrackRockNotification_StoreTransactionDidEnd = @"SECrackRockNotification_StoreTransactionDidEnd";
+Key(SECrackRockNotification_SuccessfulPurchase);
+Key(SECrackRockNotification_CancelledPurchase);
+Key(SECrackRockNotification_FailedPurchase);
+Key(SECrackRockNotification_SuccessfulRestore);
+Key(SECrackRockNotification_MultipleRestoreComplete);
+Key(SECrackRockNotification_IncompleteRestore);
+Key(SECrackRockNotification_FailedRestore);
+Key(SECrackRockNotification_ProductWasValidated);
+Key(SECrackRockNotification_ProductWasNotValidated);
+Key(SECrackRockNotification_DidFinishPreparingProductInfo);
+Key(SECrackRockNotification_StoreTransactionWillBegin);
+Key(SECrackRockNotification_StoreTransactionDidEnd);
 
 /**!
  * ## Notification user info dictionary keys
  */
-static NSString *const SECrackRockUserInfoKey_TransactionType = @"SECrackRockUserInfoKey_TransactionType";
-static NSString *const SECrackRockUserInfoKey_CrackRock = @"SECrackRockUserInfoKey_CrackRock";
-static NSString *const SECrackRockUserInfoKey_ProductID = @"SECrackRockUserInfoKey_ProductID";
-static NSString *const SECrackRockUserInfoKey_Success = @"SECrackRockUserInfoKey_Success";
-static NSString *const SECrackRockUserInfoKey_Receipt = @"SECrackRockUserInfoKey_Receipt";
-static NSString *const SECrackRockUserInfoKey_Message = @"SECrackRockUserInfoKey_Message";
-static NSString *const SECrackRockUserInfoKey_ErrorCode = @"SECrackRockUserInfoKey_ErrorCode";
+Key(SECrackRockUserInfoKey_TransactionType);
+Key(SECrackRockUserInfoKey_CrackRock);
+Key(SECrackRockUserInfoKey_ProductID);
+Key(SECrackRockUserInfoKey_Success);
+Key(SECrackRockUserInfoKey_Receipt);
+Key(SECrackRockUserInfoKey_Message);
+Key(SECrackRockUserInfoKey_ErrorCode);
 
 /**!
  * ## Observable states (see SEStatelyNotificationRobot in Vendor/iOS-StatefulNotifications)
  */
-static NSString *const SECrackRockState_TransactionState = @"SECrackRockState_TransactionState";
-static NSString *const SECrackRockState_ProductsRequestState = @"SECrackRockState_ProductsRequestState";
+Key(ObservableState_Transaction);
+Key(ObservableState_ProductsRequest);
 
 
 typedef enum {
