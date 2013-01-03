@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.author       = { "bryn austin bellomy" => "bryn.bellomy@gmail.com" }
   s.license      = "WTFPL"
 
-  #s.source       = { :git => "https://github.com/brynbellomy/iOS-CrackRock.git", :commit => "f99087a0442a68476eb79c39c56323ea34b4237c" }
+  #s.source       = { :git => "https://github.com/brynbellomy/iOS-CrackRock.git", :commit => "eac715423c2c3f5a420cc27c5576121917c5909d" }
   s.source_files = "iOS-CrackRock/*.{h,m}"
 
   s.platform     = :ios, "5.0"
