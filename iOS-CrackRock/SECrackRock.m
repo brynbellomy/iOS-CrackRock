@@ -633,22 +633,15 @@
     // Populate the arrays that the SEBlingLord view draws on for its contents:
     
     // ... first add all of the free/default products to the list
-    [productList addObjectsFromArray: _array(self.freeProducts).pluck(@"productID").unwrap];
-//    for (SECrackRockProduct *product in self.freeProducts) {
-//        [productList addObject: product.productID];
-//    }
+    [productList addObjectsFromArray: _.array(self.freeProducts).pluck(@"productID").unwrap];
     
-    USArrayWrapper *_paidProductList = _array(self.paidProducts);
+    USArrayWrapper *_paidProductList = _.array(self.paidProducts);
     // ... then add all of the purchased products to the list
     [productList addObjectsFromArray:
         _paidProductList
             .filter(^BOOL (SECrackRockProduct *product) { return [self hasProductBeenPurchased: product.productID]; })
             .pluck(@"productID")
             .unwrap];
-//    for (SECrackRockProduct *product in self.paidProducts) {
-//        if ([self hasProductBeenPurchased: product.productID] == YES)
-//            [productList addObject: product.productID];
-//    }
     
     // ... finally add all of the unpurchased products to the list
     [productList addObjectsFromArray:
@@ -656,10 +649,6 @@
             .filter(^BOOL (SECrackRockProduct *product) { return NO == [self hasProductBeenPurchased: product.productID]; })
             .pluck(@"productID")
             .unwrap];
-//    for (SECrackRockProduct *product in self.paidProducts) {
-//        if ([self hasProductBeenPurchased: product.productID] == NO)
-//            [productList addObject: product.productID];
-//    }
     
     return productList;
 }
