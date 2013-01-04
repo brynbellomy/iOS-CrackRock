@@ -188,6 +188,17 @@
 
 
 
+#pragma mark- Settings
+#pragma mark-
+
+- (NSString *) userDefaultsKey {
+    return (_userDefaultsKey != nil
+                 ? _userDefaultsKey
+                 : [NSString stringWithFormat:@"%@-%@", SECrackRockUserDefaultsKey_purchasedItems, NSBundle.mainBundle.bundleIdentifier]);
+}
+
+
+
 #pragma mark- Helpers for determining which items have been purchased
 #pragma mark-
 
@@ -276,12 +287,8 @@
     
     // make a note that the product has been purchased in the NSUserDefaults database
     {
-        NSString *userDefaultsKey = (self.userDefaultsKey != nil
-                                        ? self.userDefaultsKey
-                                        : [NSString stringWithFormat:@"%@-%@", SECrackRockUserDefaultsKey_purchasedItems, NSBundle.mainBundle.bundleIdentifier]);
-        
-        BrynFnLog(@"userDefaultsKey = %@", userDefaultsKey);
-        [[NSUserDefaults standardUserDefaults] setObject: self.purchasedItems forKey: userDefaultsKey];
+        BrynFnLog(@"userDefaultsKey = %@", self.userDefaultsKey);
+        [[NSUserDefaults standardUserDefaults] setObject: self.purchasedItems forKey: self.userDefaultsKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
