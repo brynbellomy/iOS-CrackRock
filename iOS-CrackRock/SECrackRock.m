@@ -13,6 +13,9 @@
 #import "SECrackRockProduct.h"
 
 
+#define _ Underscore
+
+
 @interface SECrackRock ()
     @property (nonatomic, assign, readwrite) bool isCurrentlyRestoringMultiplePurchases;
     @property (nonatomic, assign, readwrite) bool restoreWasInitiatedByUser;
