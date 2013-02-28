@@ -1,27 +1,27 @@
+////
+////  UIImage+SECrackRock.m
+////  iOS-CrackRock
+////
+////  Created by bryn austin bellomy on 7/12/12.
+////  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
+////
 //
-//  UIImage+SECrackRock.m
-//  iOS-CrackRock
+//#import "UIImage+SECrackRock.h"
 //
-//  Created by bryn austin bellomy on 7/12/12.
-//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
-
-#import "UIImage+SECrackRock.h"
-
-
-@implementation UIImage (SECrackRock)
-
-- (UIImage *)imageWithOverlay:(UIImage *)overlay atPosition:(CGPoint)position withSize:(CGSize)size {
-  CGSize finalSize = self.size;
-  
-  UIGraphicsBeginImageContext(finalSize);
-  [self drawInRect: CGRectMake(0, 0, finalSize.width, finalSize.height)];
-  [overlay drawInRect: CGRectMake(position.x, position.y, size.width, size.height)];
-  
-  UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-  
-  return newImage;
-}
-
-@end
+//@implementation UIImage (SECrackRock)
+//
+//- (UIImage *)imageWithOverlay:(UIImage *)overlay atPosition:(CGPoint)position withSize:(CGSize)size {
+//  CGSize finalSize = self.size;
+//  
+//  UIGraphicsBeginImageContext(finalSize);
+//  [self drawInRect: CGRectMake(0, 0, finalSize.width, finalSize.height)];
+//  [overlay drawInRect: CGRectMake(position.x, position.y, size.width, size.height)];
+//  
+//  UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+//  UIGraphicsEndImageContext();
+//  
+//  return newImage;
+//}
+//
+//@end

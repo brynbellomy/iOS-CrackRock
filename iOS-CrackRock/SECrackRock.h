@@ -8,60 +8,51 @@
 
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
+#import <CocoaLumberjack/DDLog.h>
 #import "SECrackRockCommon.h"
 
 
+@class RACSignal;
 
-/**!
- * # SECrackRockDataSource
- */
-@protocol SECrackRockDataSource <NSObject>
-
-/**!
- * Must be overridden by subclasses.  This method must return an NSArray
- * containing SECrackRockItem objects representing the free items to which the user
- * already has access by default upon installing the app.
- */
-- (NSArray *) freeProducts;
-
-
-/**!
- * Must be overridden by subclasses.  This method must return an NSArray
- * containing SECrackRockItem objects representing the purchaseable/paid items that
- * the user is able to buy.
- */
-- (NSArray *) paidProducts;
-
-@end
-
-
+typedef void(^SECrackRockTransactionResponseBlock)(NSError *error);
 
 
 /**!
  * # SECrackRock
  */
-@interface SECrackRock : NSObject <SKPaymentTransactionObserver, SKProductsRequestDelegate>
+@interface SECrackRock : NSObject <DDRegisteredDynamicLogging>
 
-+ (SECrackRock *) sharedInstance;
+- (instancetype) initWithFreeProductIDs: (NSSet *)freeProductIDs
+                         paidProductIDs: (NSSet *)paidProductIDs;
 
-- (bool) startMonitoringTransactions;
-- (void) stopMonitoringTransactions;
+- (void)   purchase: (NSString *)productID
+         completion: (SECrackRockTransactionResponseBlock)blockCompletion;
 
-- (bool) tryToPurchaseProduct:(NSString *)productID;
-- (bool) tryToRestorePurchase:(NSString *)productID;
-- (bool) tryToRestoreAllPurchases;
+- (void) restoreAllPurchases:(SECrackRockTransactionResponseBlock)blockTransactionCompletion;
 
-- (bool) hasProductBeenPurchased: (NSString *)productID;
-+ (bool) hasProductBeenPurchased: (NSString *)productID;
+//
+// RAC-KVO generated properties
+//
+@property (nonatomic, strong, readonly) NSSet *products;
+@property (nonatomic, strong, readonly) NSSet *purchasedItems;
+@property (nonatomic, strong, readonly) NSDictionary *productsByID;
 
-@property (nonatomic, weak,   readwrite) id<SECrackRockDataSource> dataSource;
-@property (nonatomic, strong, readwrite) NSString *userDefaultsKey;
-@property (nonatomic, strong, readwrite) NSArray *freeProducts;
-@property (nonatomic, strong, readwrite) NSArray *paidProducts;
-@property (nonatomic, strong, readwrite) NSMutableArray *sortedProductIDs;
-@property (nonatomic, strong, readwrite) NSMutableDictionary *productsByID;
-@property (nonatomic, strong, readwrite) NSMutableArray *purchasedItems;
-@property (nonatomic, assign, readonly)  bool isCurrentlyRestoringMultiplePurchases;
+@property (nonatomic, strong, readonly) RACSignal *rac_products;
+@property (nonatomic, strong, readonly) RACSignal *rac_freeProducts;
+@property (nonatomic, strong, readonly) RACSignal *rac_paidProducts;
+@property (nonatomic, strong, readonly) RACSignal *rac_state;
+
+//
+// backing stores for RAC-KVO properties
+//
+@property (nonatomic, strong, readonly) NSSet *freeProducts;
+@property (nonatomic, strong, readonly) NSSet *paidProducts;
+@property (nonatomic, copy,   readonly) NSString *state;
+
+//
+// other properties
+//
+@property (nonatomic, assign, readonly) BOOL isCurrentlyRestoringMultiplePurchases;
 
 @end
 

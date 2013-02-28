@@ -6,6 +6,7 @@ module.exports = {
   colourScheme: "friendly",
   ignoreHidden: true,
   sidebarState: true,
+  tolerant: true,
   index: "SECrackRock.h.html",
   exclude: "*.png,*.plist,*.pch"
 };

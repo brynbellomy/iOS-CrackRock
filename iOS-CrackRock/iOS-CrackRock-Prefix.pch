@@ -3,7 +3,17 @@
 //
 
 #ifdef __OBJC__
-  #import <Foundation/Foundation.h>
+    #import <Foundation/Foundation.h>
 
-  #import <BrynKit/Bryn.h>
+    #if defined(DD_LOG_LEVEL)
+    #   undef DD_LOG_LEVEL
+    #endif
+    #define DD_LOG_LEVEL(...) ([SECrackRock ddLogLevel])
+
+    #import <BrynKit/BrynKitEDColor.h>
+    #import <BrynKit/BrynKitCocoaLumberjack.h>
+    #import <BrynKit/BrynKit.h>
+    #import <CocoaLumberjack/DDLog.h>
+    #import <CocoaLumberjack/DDTTYLogger.h>
+
 #endif

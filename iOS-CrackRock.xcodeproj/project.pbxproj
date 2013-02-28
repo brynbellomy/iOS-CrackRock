@@ -28,7 +28,12 @@
 		C56D0D7B15BC85F500358BA6 /* SECrackRockStoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D7315BC85F400358BA6 /* SECrackRockStoreController.m */; };
 		C56D0D7C15BC85F500358BA6 /* UIImage+SECrackRock.h in Headers */ = {isa = PBXBuildFile; fileRef = C56D0D7415BC85F400358BA6 /* UIImage+SECrackRock.h */; };
 		C56D0D7D15BC85F500358BA6 /* UIImage+SECrackRock.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D0D7515BC85F400358BA6 /* UIImage+SECrackRock.m */; };
-		C591518015BCDBA10062C02E /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C591517F15BCDBA10062C02E /* libKiwi.a */; };
+		C578E37316D95FF40037C46F /* SECrackRockProductsRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = C578E37116D95FF40037C46F /* SECrackRockProductsRequest.h */; };
+		C578E37416D95FF40037C46F /* SECrackRockProductsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = C578E37216D95FF40037C46F /* SECrackRockProductsRequest.m */; };
+		C57BC1E916DDEC2F00B690E0 /* SECrackRockProductSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C57BC1E816DDEC2F00B690E0 /* SECrackRockProductSpec.m */; };
+		C5D5CF9916DEF41F00A806DB /* libTropicalKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D5CF9816DEF41F00A806DB /* libTropicalKiwi.a */; };
+		C5D5CF9D16DEF4BF00A806DB /* libTropicalKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D5CF9C16DEF4BF00A806DB /* libTropicalKiwi.a */; };
+		EBB2327AB7004ED8ADB5C328 /* libPods-iOS-CrackRockTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1113EF1E8541D98E5CD56D /* libPods-iOS-CrackRockTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E1113EF1E8541D98E5CD56D /* libPods-iOS-CrackRockTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOS-CrackRockTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		757363DDA0F945AABF16C6F6 /* Pods-iOS-CrackRockTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-CrackRockTests.xcconfig"; path = "Pods/Pods-iOS-CrackRockTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		C02AC70241664ED59A2C8A23 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		C5133BFB15BD8E060026E5ED /* SECrackRockCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRockCommon.h; sourceTree = "<group>"; };
 		C5133BFD15BD9C710026E5ED /* StoreKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -64,7 +71,13 @@
 		C56D0D7415BC85F400358BA6 /* UIImage+SECrackRock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+SECrackRock.h"; sourceTree = "<group>"; };
 		C56D0D7515BC85F400358BA6 /* UIImage+SECrackRock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SECrackRock.m"; sourceTree = "<group>"; };
 		C56D0D9115BC866400358BA6 /* SECrackRockSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockSpec.m; sourceTree = "<group>"; };
+		C578E37116D95FF40037C46F /* SECrackRockProductsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SECrackRockProductsRequest.h; sourceTree = "<group>"; };
+		C578E37216D95FF40037C46F /* SECrackRockProductsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockProductsRequest.m; sourceTree = "<group>"; };
+		C57BC1E816DDEC2F00B690E0 /* SECrackRockProductSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockProductSpec.m; sourceTree = "<group>"; };
 		C591517F15BCDBA10062C02E /* libKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libKiwi.a; path = "Vendor/Kiwi/build/Release-iphoneos/libKiwi.a"; sourceTree = "<group>"; };
+		C5D5CF9816DEF41F00A806DB /* libTropicalKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTropicalKiwi.a; sourceTree = "<group>"; };
+		C5D5CF9C16DEF4BF00A806DB /* libTropicalKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTropicalKiwi.a; path = "../../../Library/Developer/Xcode/DerivedData/TropicalKiwi-amtdwfayakbohdckaguvwbxnajzr/Build/Products/Debug-iphoneos/libTropicalKiwi.a"; sourceTree = "<group>"; };
+		C5D5CF9E16DF0DD500A806DB /* TestOutputGatherer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestOutputGatherer.h; sourceTree = "<group>"; };
 		F6376896C9CD4AE2A434784E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -74,6 +87,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5133BFE15BD9C710026E5ED /* StoreKit.framework in Frameworks */,
+				C5D5CF9D16DEF4BF00A806DB /* libTropicalKiwi.a in Frameworks */,
 				C56D0D4815BC7D8900358BA6 /* Foundation.framework in Frameworks */,
 				3D4D196EAB1548528CA00265 /* libPods.a in Frameworks */,
 			);
@@ -89,8 +103,9 @@
 				C5133C3B15BDD19A0026E5ED /* StoreKit.framework in Frameworks */,
 				C56D0D5915BC7D8900358BA6 /* Foundation.framework in Frameworks */,
 				C56D0D5615BC7D8900358BA6 /* SenTestingKit.framework in Frameworks */,
-				C591518015BCDBA10062C02E /* libKiwi.a in Frameworks */,
 				C56D0D5C15BC7D8900358BA6 /* libiOS-CrackRock.a in Frameworks */,
+				EBB2327AB7004ED8ADB5C328 /* libPods-iOS-CrackRockTests.a in Frameworks */,
+				C5D5CF9916DEF41F00A806DB /* libTropicalKiwi.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,11 +115,14 @@
 		C56D0D3915BC7D8900358BA6 = {
 			isa = PBXGroup;
 			children = (
+				C5D5CF9E16DF0DD500A806DB /* TestOutputGatherer.h */,
+				C5D5CF9C16DEF4BF00A806DB /* libTropicalKiwi.a */,
 				C56D0D4915BC7D8900358BA6 /* iOS-CrackRock */,
 				C56D0D5D15BC7D8900358BA6 /* iOS-CrackRockTests */,
 				C56D0D4615BC7D8900358BA6 /* Frameworks */,
 				C56D0D4515BC7D8900358BA6 /* Products */,
 				C02AC70241664ED59A2C8A23 /* Pods.xcconfig */,
+				757363DDA0F945AABF16C6F6 /* Pods-iOS-CrackRockTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,6 +146,7 @@
 				C56D0D5515BC7D8900358BA6 /* SenTestingKit.framework */,
 				C591517F15BCDBA10062C02E /* libKiwi.a */,
 				F6376896C9CD4AE2A434784E /* libPods.a */,
+				0E1113EF1E8541D98E5CD56D /* libPods-iOS-CrackRockTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -135,6 +154,8 @@
 		C56D0D4915BC7D8900358BA6 /* iOS-CrackRock */ = {
 			isa = PBXGroup;
 			children = (
+				C578E37116D95FF40037C46F /* SECrackRockProductsRequest.h */,
+				C578E37216D95FF40037C46F /* SECrackRockProductsRequest.m */,
 				C5133BFB15BD8E060026E5ED /* SECrackRockCommon.h */,
 				C56D0D6E15BC85F400358BA6 /* SECrackRock.h */,
 				C56D0D6F15BC85F400358BA6 /* SECrackRock.m */,
@@ -160,6 +181,8 @@
 		C56D0D5D15BC7D8900358BA6 /* iOS-CrackRockTests */ = {
 			isa = PBXGroup;
 			children = (
+				C5D5CF9816DEF41F00A806DB /* libTropicalKiwi.a */,
+				C57BC1E816DDEC2F00B690E0 /* SECrackRockProductSpec.m */,
 				C56D0D5E15BC7D8900358BA6 /* Supporting Files */,
 				C56D0D9115BC866400358BA6 /* SECrackRockSpec.m */,
 			);
@@ -187,6 +210,7 @@
 				C56D0D7A15BC85F500358BA6 /* SECrackRockStoreController.h in Headers */,
 				C5133BFC15BD8E060026E5ED /* SECrackRockCommon.h in Headers */,
 				C56D0D7C15BC85F500358BA6 /* UIImage+SECrackRock.h in Headers */,
+				C578E37316D95FF40037C46F /* SECrackRockProductsRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +243,7 @@
 				C56D0D5015BC7D8900358BA6 /* Frameworks */,
 				C56D0D5115BC7D8900358BA6 /* Resources */,
 				C56D0D5215BC7D8900358BA6 /* ShellScript */,
+				E762F40C399E4BE98AD71BD7 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -296,6 +321,20 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		E762F40C399E4BE98AD71BD7 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-iOS-CrackRockTests-resources.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -307,6 +346,7 @@
 				C56D0D7915BC85F500358BA6 /* SECrackRockProduct.m in Sources */,
 				C56D0D7B15BC85F500358BA6 /* SECrackRockStoreController.m in Sources */,
 				C56D0D7D15BC85F500358BA6 /* UIImage+SECrackRock.m in Sources */,
+				C578E37416D95FF40037C46F /* SECrackRockProductsRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +355,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5133C3A15BDC7550026E5ED /* SECrackRockSpec.m in Sources */,
+				C57BC1E916DDEC2F00B690E0 /* SECrackRockProductSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +404,7 @@
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -390,7 +431,7 @@
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -416,6 +457,7 @@
 					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
 					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/TropicalKiwi-amtdwfayakbohdckaguvwbxnajzr/Build/Products/Debug-iphoneos\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -436,6 +478,7 @@
 					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
 					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/TropicalKiwi-amtdwfayakbohdckaguvwbxnajzr/Build/Products/Debug-iphoneos\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -444,6 +487,7 @@
 		};
 		C56D0D6C15BC7D8900358BA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 757363DDA0F945AABF16C6F6 /* Pods-iOS-CrackRockTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/libiOS-CrackRock.a";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -452,11 +496,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"$(OBJROOT)/UninstalledProducts/include\"",
-					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
-					Vendor/Kiwi/Kiwi,
-				);
+				HEADER_SEARCH_PATHS = "$(PODS_HEADERS_SEARCH_PATHS)";
 				INFOPLIST_FILE = "iOS-CrackRockTests/iOS-CrackRockTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -465,6 +505,7 @@
 					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
 					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/iOS-CrackRockTests\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -474,6 +515,7 @@
 		};
 		C56D0D6D15BC7D8900358BA6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 757363DDA0F945AABF16C6F6 /* Pods-iOS-CrackRockTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/libiOS-CrackRock.a";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -482,11 +524,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOS-CrackRock/iOS-CrackRock-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"$(OBJROOT)/UninstalledProducts/include\"",
-					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
-					Vendor/Kiwi/Kiwi,
-				);
+				HEADER_SEARCH_PATHS = "$(PODS_HEADERS_SEARCH_PATHS)";
 				INFOPLIST_FILE = "iOS-CrackRockTests/iOS-CrackRockTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -495,6 +533,7 @@
 					"\"$(SRCROOT)/Vendor/iOS-StatefulNotifications/Vendor/Kiwi/build/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphoneos\"",
 					"\"$(SRCROOT)/Vendor/Kiwi/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/iOS-CrackRockTests\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";

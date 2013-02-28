@@ -1,7 +1,13 @@
-platform :ios
+#
+# CocoaPods podfile: iOS-CrackRock
+# bryn austin bellomy <bryn.bellomy@gmail.com>
+#
 
-#pod 'iOS-BlingLord'
-#pod 'iOS-CrackRock'
-pod 'BrynKit'
-pod 'ObjC-StatelyNotificationRobot'
-pod 'Underscore.m'
+platform :ios, '5.1'
+
+podspec :path => 'iOS-CrackRock.podspec'
+
+target 'iOS-CrackRockTests', :exclusive => true do
+    pod 'Kiwi'
+end
+

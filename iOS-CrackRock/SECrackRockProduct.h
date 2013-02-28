@@ -9,20 +9,48 @@
 #import <Foundation/Foundation.h>
 #import "SECrackRock.h"
 
+typedef enum : NSUInteger {
+    SECrackRockTransactionOutcome_Cancelled = 1,
+    SECrackRockTransactionOutcome_Purchased = 2,
+    SECrackRockTransactionOutcome_Restored  = 3
+} SECrackRockTransactionOutcome;
+
 @class SKProduct;
 
 @interface SECrackRockProduct : NSObject <NSCopying>
-  
-@property (nonatomic, strong, readwrite) NSString *productID;
-@property (nonatomic, strong, readwrite) NSString *readableName;
-@property (nonatomic, strong, readwrite) NSString *productDescription;
-@property (nonatomic, strong, readwrite) NSString *price;
-@property (nonatomic, assign, readwrite) SECrackRockPurchaseStatus purchaseStatus;
-@property (nonatomic, assign, readwrite) bool isAvailableInStore;
-@property (nonatomic, strong, readwrite) NSString *thumbnailPNGFilename;
-@property (nonatomic, strong, readwrite) SKProduct *skProduct;
 
-- (id) initWithProductID:(NSString *)productID thumbnailPNGFilename:(NSString *)thumbnailPNGFilename;
-- (id) initWithProductID:(NSString *)productID readableName:(NSString *)readableName description:(NSString *)description thumbnailPNGFilename:(NSString *)thumbnailPNGFilename;
+//
+// read-only properties
+//
+
+@property (nonatomic, copy,   readonly) NSString *productID;
+@property (nonatomic, copy,   readonly) NSString *readableName;
+@property (nonatomic, copy,   readonly) NSString *productDescription;
+@property (nonatomic, copy,   readonly) NSString *price;
+//@property (nonatomic, copy,   readonly) NSString *state;
+
+@property (nonatomic, assign, readonly) SECrackRockProductStatus productStatus;
+@property (nonatomic, assign, readonly) BOOL isAvailableInStore;
+@property (nonatomic, assign, readonly) BOOL hasBeenPurchased;
+
+@property (nonatomic, strong, readonly) SKProduct *skProduct;
+
+//
+// read-write properties
+//
+
+@property (nonatomic, copy, readwrite) NSString *thumbnailPNGFilename;
+
+//
+// methods
+//
+
+- (instancetype) initWithProductID:(NSString *)productID;
+- (instancetype) initWithProductID:(NSString *)productID thumbnailPNGFilename:(NSString *)thumbnailPNGFilename;
 
 @end
+
+
+
+
+
