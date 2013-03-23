@@ -19,6 +19,7 @@ Pod::Spec.new do |s|
   s.dependency 'BrynKit/GCDThreadsafe', '>= 1.2.0'
   s.dependency 'BrynKit/EDColor', '>= 1.2.0'
   s.dependency 'BrynKit/CocoaLumberjack', '>= 1.2.0'
+  s.dependency 'CocoaLumberjack'
 
   s.dependency 'ReactiveCocoa', '>= 1.4.0'
   s.dependency 'ReactiveCocoa/RACExtensions', '>= 1.4.0'
