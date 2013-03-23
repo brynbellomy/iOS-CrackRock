@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head><title>SECrackRockStoreController.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#import-">import </a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><p>//
+//  SECrackRockViewController.h
+//  iOS-CrackRock in-app purchase framework
+//
+//  Created by bryn austin bellomy on 6/19/12.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
+//</p>
+
+
+<div class="pilwrap" id="import-">
+  <h1>
+    <a href="#import-" class="pilcrow">&#182;</a>
+    import <UIKit/UIKit.h>
+  </h1>
+</div>
+
+
+<p>//#import <iOS-BlingLord/SEBlingLordView.h></p>
+
+<p>@class SECrackRockProduct;</p>
+
+<p>//@protocol SECrackRockView <NSObject>
+//@end</p>
+
+<p>@interface SECrackRockStoreController : NSObject</p>
+
+<p>/**!
+* ## Properties
+*/
+//@property (nonatomic, weak,   readwrite) SEBlingLordView *springboardView;
+//@property (nonatomic, weak,   readwrite) UIView<SECrackRockView> *storeView;
+//@property (nonatomic, assign, readwrite) CGSize springboardItemSize;
+//@property (nonatomic, assign, readwrite) CGSize springboardItemMargins;
+//@property (nonatomic, assign, readwrite) CGSize springboardOuterMargins;</p>
+
+<p>typedef void(^NotificationUserInfoBlock)(NSDictionary *);</p>
+
+<p>@property (nonatomic, copy, readwrite) NotificationUserInfoBlock successfulPurchase;
+@property (nonatomic, copy, readwrite) NotificationUserInfoBlock cancelledPurchase;
+@property (nonatomic, copy, readwrite) NotificationUserInfoBlock failedPurchase;
+@property (nonatomic, copy, readwrite) NotificationUserInfoBlock successfulRestore;
+@property (nonatomic, copy, readwrite) NotificationUserInfoBlock multipleRestoreComplete;
+@property (nonatomic, copy, readwrite) NotificationUserInfoBlock incompleteRestore;
+@property (nonatomic, copy, readwrite) NotificationUserInfoBlock failedRestore;
+@property (nonatomic, copy, readwrite) NotificationUserInfoBlock didFinishPreparingProductInfo;
+@property (nonatomic, copy, readwrite) NotificationUserInfoBlock transactionStateDidChange;
+@property (nonatomic, copy, readwrite) NotificationUserInfoBlock productsRequestStateDidChange;
+@property (nonatomic, copy, readwrite) void(^productAccessWasAttempted)(SECrackRockProduct *product);</p>
+
+<p>/**!
+* ## Instance methods
+*/</p>
+
+<ul>
+<li>(void) tryToPurchaseProduct: (NSString *)productID;</li>
+<li>(void) tryToRestorePurchase: (NSString *)productID;</li>
+<li>(void) tryToRestoreAllPurchases;</li>
+<li>(void) tryToAccessProduct: (NSString *)productID;</li>
+</ul>
+
+<p>//! these need to be overridden when you subclass SECrackRockViewController
+//- (UIImage *) purchaseableIndicatorForProduct: (SECrackRockProduct *)product;
+//- (void) productAccessWasAttempted: (SECrackRockProduct *)product;</p>
+
+<p>//! these are optionally overrideable
+//- (void) didFinishPreparingProductInfo;
+//- (void) displayAlertToUserWithTitle:(NSString *)title text:(NSString *)text dismissText:(NSString *)dismissText;
+//- (IBAction) restorePurchasesButtonClicked;</p>
+
+<p>@end</p>
+
+<p>//@interface SECrackRockMenuItem : SEBlingLordMenuItem
+//  @property (nonatomic, strong, readwrite) NSString *productID;
+//@end</p></td><td class="code highlight"><div class="highlight"><pre>
+</pre></div></td></tr></tbody></table></div></body></html>

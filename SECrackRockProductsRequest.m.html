@@ -1,0 +1,309 @@
+<!DOCTYPE html><html><head><title>SECrackRockProductsRequest.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h4"><a href="#performstorekitrequest-">performStoreKitRequest:</a></div><div class="heading h4"><a href="#productsrequest-didreceiveresponse-">productsRequest:didReceiveResponse:</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>SECrackRockProductsRequest.m
+ iOS-CrackRock iOS in-app purchase framework</p>
+
+<p>Created by bryn austin bellomy on 2.23.13.
+ Copyright (c) 2013 illumntr. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;StoreKit/StoreKit.h&gt;</span>
+<span class="cp">#import &lt;StateMachine-GCDThreadsafe/StateMachine.h&gt;</span>
+<span class="cp">#import &lt;BrynKit/BrynKit.h&gt;</span>
+<span class="cp">#import &lt;BrynKit/GCDThreadsafe.h&gt;</span>
+<span class="cp">#import &lt;ReactiveCocoa/ReactiveCocoa.h&gt;</span>
+<span class="cp">#import &lt;libextobjc/EXTScope.h&gt;</span>
+
+<span class="cp">#import &quot;SECrackRockProductsRequest.h&quot;</span>
+<span class="cp">#import &quot;SECrackRockProduct.h&quot;</span>
+<span class="cp">#import &quot;SECrackRockProduct-Private.h&quot;</span>
+<span class="cp">#import &quot;SECrackRockCommon-Private.h&quot;</span>
+
+<span class="k">@interface</span> <span class="nc">SECrackRockProductsRequest</span> <span class="p">()</span> <span class="o">&lt;</span><span class="n">SEThreadsafeStateMachine</span><span class="o">&gt;</span>
+    <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSSet</span> <span class="o">*</span><span class="n">productIDs</span><span class="p">;</span>
+    <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">SKProductsRequest</span>  <span class="o">*</span><span class="n">productsRequest</span><span class="p">;</span>
+    <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">SKProductsResponse</span> <span class="o">*</span><span class="n">productsResponse</span><span class="p">;</span>
+    <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span>   <span class="n">readwrite</span><span class="p">)</span> <span class="n">SEProductsRequestResponseBlock</span> <span class="n">blockCompletion</span><span class="p">;</span>
+    <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span>   <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">state</span><span class="p">;</span>
+    <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">;</span>
+<span class="k">@end</span>
+
+<span class="k">@interface</span> <span class="nc">SECrackRockProductsRequest</span> <span class="nl">(StateMachine_Private)</span>
+    <span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">initializeStateMachine</span><span class="p">;</span>
+
+    <span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">start</span><span class="p">;</span>
+    <span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">cancel</span><span class="p">;</span>
+    <span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">complete</span><span class="p">;</span>
+    <span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">error</span><span class="p">;</span>
+<span class="k">@end</span>
+
+
+
+<span class="k">@implementation</span> <span class="nc">SECrackRockProductsRequest</span>
+    <span class="err">@</span><span class="n">gcd_threadsafe</span>
+
+<span class="n">STATE_MACHINE</span><span class="p">(</span><span class="o">^</span><span class="p">(</span><span class="n">LSStateMachine</span> <span class="o">*</span><span class="n">sm</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">sm</span><span class="p">.</span><span class="n">initialState</span> <span class="o">=</span> <span class="s">@&quot;ready&quot;</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>states</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="p">[</span><span class="n">sm</span> <span class="nl">addState:</span><span class="s">@&quot;ready&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">addState:</span><span class="s">@&quot;running&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">addState:</span><span class="s">@&quot;complete&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">addState:</span><span class="s">@&quot;cancelled&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">addState:</span><span class="s">@&quot;error&quot;</span><span class="p">];</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>transitions</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="p">[</span><span class="n">sm</span> <span class="nl">when:</span> <span class="s">@&quot;start&quot;</span> <span class="nl">transitionFrom:</span><span class="s">@&quot;ready&quot;</span> <span class="nl">to:</span><span class="s">@&quot;running&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">after:</span><span class="s">@&quot;start&quot;</span> <span class="k">do</span><span class="o">:^</span><span class="p">(</span><span class="n">SECrackRockProductsRequest</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productIDs</span> <span class="o">==</span> <span class="nb">nil</span> <span class="o">||</span> <span class="n">self</span><span class="p">.</span><span class="n">productIDs</span><span class="p">.</span><span class="n">count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">lllog</span><span class="p">(</span><span class="n">Warn</span><span class="p">,</span> <span class="s">@&quot;No paid products&quot;</span><span class="p">);</span>
+            <span class="p">[</span><span class="n">self</span> <span class="nl">doComplete:</span><span class="nb">nil</span><span class="p">];</span>
+        <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>if there are actual, non-free in-app purchases to retrieve from apple, then start retrieving them</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="p">[</span><span class="n">self</span> <span class="n">performStoreKitRequest</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}];</span>
+
+
+
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">when:</span> <span class="s">@&quot;complete&quot;</span> <span class="nl">transitionFrom:</span><span class="s">@&quot;running&quot;</span> <span class="nl">to:</span><span class="s">@&quot;completed&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">after:</span><span class="s">@&quot;complete&quot;</span> <span class="k">do</span><span class="o">:^</span><span class="p">(</span><span class="n">SECrackRockProductsRequest</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">lllog</span><span class="p">(</span><span class="n">Info</span><span class="p">,</span> <span class="s">@&quot;%d requested products available&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">productsResponse</span><span class="p">.</span><span class="n">products</span><span class="p">.</span><span class="n">count</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>call the completion block</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="p">[</span><span class="n">self</span> <span class="n">callCompletionCallback</span><span class="p">];</span>
+    <span class="p">}];</span>
+
+
+
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">when:</span> <span class="s">@&quot;error&quot;</span> <span class="nl">transitionFrom:</span><span class="s">@&quot;ready&quot;</span> <span class="nl">to:</span><span class="s">@&quot;error&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">when:</span> <span class="s">@&quot;error&quot;</span> <span class="nl">transitionFrom:</span><span class="s">@&quot;running&quot;</span> <span class="nl">to:</span><span class="s">@&quot;error&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">when:</span> <span class="s">@&quot;error&quot;</span> <span class="nl">transitionFrom:</span><span class="s">@&quot;complete&quot;</span> <span class="nl">to:</span><span class="s">@&quot;error&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">when:</span> <span class="s">@&quot;error&quot;</span> <span class="nl">transitionFrom:</span><span class="s">@&quot;cancelled&quot;</span> <span class="nl">to:</span><span class="s">@&quot;error&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">after:</span><span class="s">@&quot;error&quot;</span> <span class="k">do</span><span class="o">:^</span><span class="p">(</span><span class="n">SECrackRockProductsRequest</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">callCompletionCallback</span><span class="p">];</span>
+    <span class="p">}];</span>
+
+
+
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">when:</span>  <span class="s">@&quot;cancel&quot;</span> <span class="nl">transitionFrom:</span><span class="s">@&quot;running&quot;</span> <span class="nl">to:</span><span class="s">@&quot;cancelled&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">before:</span><span class="s">@&quot;cancel&quot;</span> <span class="k">do</span><span class="o">:^</span><span class="p">(</span><span class="n">SECrackRockProductsRequest</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="n">cancel</span><span class="p">];</span>
+    <span class="p">}];</span>
+    <span class="p">[</span><span class="n">sm</span> <span class="nl">after:</span> <span class="s">@&quot;cancel&quot;</span> <span class="k">do</span><span class="o">:^</span><span class="p">(</span><span class="n">SECrackRockProductsRequest</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">callCompletionCallback</span><span class="p">];</span>
+    <span class="p">}];</span>
+
+<span class="p">});</span>
+
+
+
+<span class="k">+</span> <span class="p">(</span><span class="n">RACSignal</span> <span class="o">*</span><span class="p">)</span> <span class="nf">rac_productsRequestForProductIDs:</span><span class="p">(</span><span class="n">NSSet</span> <span class="o">*</span><span class="p">)</span><span class="nv">_productIDs</span>
+                                       <span class="nf">scheduler:</span><span class="p">(</span><span class="n">RACScheduler</span> <span class="o">*</span><span class="p">)</span><span class="nv">scheduler</span>
+<span class="p">{</span>
+    <span class="n">yssert_notNilAndIsClass</span><span class="p">(</span><span class="n">_productIDs</span><span class="p">,</span> <span class="n">NSSet</span><span class="p">);</span>
+    <span class="n">yssert_notNilAndIsClass</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">RACScheduler</span><span class="p">);</span>
+
+    <span class="n">__block</span> <span class="n">NSSet</span> <span class="o">*</span><span class="n">productIDs</span> <span class="o">=</span> <span class="p">[</span><span class="n">_productIDs</span> <span class="n">copy</span><span class="p">];</span>
+
+  <span class="n">RACReplaySubject</span> <span class="o">*</span><span class="n">subject</span> <span class="o">=</span> <span class="p">[</span><span class="n">RACReplaySubject</span> <span class="n">subject</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">subject</span> <span class="nl">setNameWithFormat:</span><span class="s">@&quot;+rac_productsRequestForProductIDs: %@ scheduler: %@&quot;</span><span class="p">,</span> <span class="n">productIDs</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">];</span>
+
+  <span class="p">[</span><span class="n">scheduler</span> <span class="nl">schedule:</span><span class="o">^</span><span class="p">{</span>
+        <span class="n">__block</span> <span class="n">SECrackRockProductsRequest</span> <span class="o">*</span><span class="n">request</span><span class="p">;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SECrackRockProductsRequest</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithProductIDs:</span><span class="p">[</span><span class="n">productIDs</span> <span class="n">copy</span><span class="p">]</span>
+                                                              <span class="nl">completion:</span><span class="o">^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">,</span> <span class="n">NSArray</span> <span class="o">*</span><span class="n">validProducts</span><span class="p">,</span> <span class="n">NSArray</span> <span class="o">*</span><span class="n">invalidProductIDs</span><span class="p">)</span> <span class="p">{</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>@@TODO: just have to hold on to the request somehow... this definitely oughta be refactored</p></td><td class="code highlight"><div class="highlight"><pre>                                                                  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">[@@TODO: refactor me!!!] inside products request completion block / productIDs = %s</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">description</span><span class="p">.</span><span class="n">UTF8String</span><span class="p">);</span>
+
+                                                                  <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+                                                                      <span class="n">lllog</span><span class="p">(</span><span class="n">Error</span><span class="p">,</span> <span class="s">@&quot;Error in products request: %@&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+                                                                      <span class="p">[</span><span class="n">subject</span> <span class="nl">sendError:</span><span class="n">error</span><span class="p">];</span>
+                                                                      <span class="k">return</span><span class="p">;</span>
+                                                                  <span class="p">}</span>
+
+                                                                  <span class="n">RACTuple</span> <span class="o">*</span><span class="n">tuple</span> <span class="o">=</span> <span class="n">RACTuplePack</span><span class="p">(</span><span class="n">validProducts</span><span class="p">,</span> <span class="n">invalidProductIDs</span><span class="p">);</span>
+                                                                  <span class="p">[</span><span class="n">subject</span> <span class="nl">sendNext:</span> <span class="n">tuple</span><span class="p">];</span>
+                                                                  <span class="p">[</span><span class="n">subject</span> <span class="n">sendCompleted</span><span class="p">];</span>
+                                                              <span class="p">}];</span>
+        <span class="p">[</span><span class="n">request</span> <span class="n">doStart</span><span class="p">];</span>
+  <span class="p">}];</span>
+
+  <span class="k">return</span> <span class="n">subject</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+
+<span class="cp">#pragma mark- Lifecycle</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithProductIDs:</span><span class="p">(</span><span class="n">NSSet</span> <span class="o">*</span><span class="p">)</span><span class="nv">productIDs</span>
+               <span class="nf">completion:</span><span class="p">(</span><span class="n">SEProductsRequestResponseBlock</span><span class="p">)</span><span class="nv">blockCompletion</span>
+<span class="p">{</span>
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">initializeStateMachine</span><span class="p">];</span>
+
+        <span class="n">_productIDs</span>      <span class="o">=</span> <span class="p">[</span><span class="n">productIDs</span> <span class="n">copy</span><span class="p">]</span> <span class="o">?:</span> <span class="n">NSSet</span><span class="p">.</span><span class="n">set</span><span class="p">;</span>
+        <span class="n">_blockCompletion</span> <span class="o">=</span> <span class="p">[</span><span class="n">blockCompletion</span> <span class="n">copy</span><span class="p">];</span>
+        <span class="n">_queueCritical</span>   <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.signalenvelope.SECrackRock.ProductsRequest.queueCritical&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">dealloc</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">_productsRequest</span><span class="p">.</span><span class="n">delegate</span> <span class="o">==</span> <span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">_productsRequest</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="p">[</span><span class="n">_productsRequest</span> <span class="n">cancel</span><span class="p">];</span>
+    <span class="n">_productsRequest</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- StoreKit</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="performstorekitrequest-">
+  <h4>
+    <a href="#performstorekitrequest-" class="pilcrow">&#182;</a>
+    performStoreKitRequest:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">performStoreKitRequest</span>
+<span class="p">{</span>
+    <span class="err">@</span><span class="n">weakify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">runCriticalMutableSection:</span><span class="o">^</span><span class="p">{</span>
+        <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+        <span class="n">yssert_notNilAndIsClass</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productIDs</span><span class="p">,</span> <span class="n">NSSet</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>IAP is disabled</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="n">NO</span> <span class="o">==</span> <span class="p">[</span><span class="n">SKPaymentQueue</span> <span class="n">canMakePayments</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="n">lllog</span><span class="p">(</span><span class="n">Error</span><span class="p">,</span> <span class="s">@&quot;IAP Disabled&quot;</span><span class="p">);</span>
+            <span class="p">[</span><span class="n">self</span> <span class="nl">doError:</span> <span class="p">[</span><span class="n">NSError</span> <span class="nl">errorWithDomain:</span> <span class="s">@&quot;com.signalenvelope.SECrackRock&quot;</span> <span class="nl">code:</span> <span class="mi">1</span>
+                                           <span class="nl">userInfo:</span> <span class="err">@</span><span class="p">{</span> <span class="s">@&quot;description&quot;</span><span class="o">:</span> <span class="s">@&quot;In-app purchasing is disabled on this device.&quot;</span> <span class="p">}]];</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>IAP is enabled on this device.  proceed with products request.</p></td><td class="code highlight"><div class="highlight"><pre></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>cancel any existing, pending (possibly hung) request</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="n">cancel</span><span class="p">];</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+        <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>initiate new product request for specified productIDs</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SKProductsRequest</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithProductIdentifiers:</span><span class="n">self</span><span class="p">.</span><span class="n">productIDs</span><span class="p">];</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="n">start</span><span class="p">];</span>
+    <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="productsrequest-didreceiveresponse-">
+  <h4>
+    <a href="#productsrequest-didreceiveresponse-" class="pilcrow">&#182;</a>
+    productsRequest:didReceiveResponse:
+  </h4>
+</div>
+</div><div class="body"><p>Store Kit returns a response from an SKProductsRequest.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SKProductsRequest*</span><code class="name">request</code></div><div class="dox_tag_detail"><span class="dox_type">SKProductsResponse*</span><code class="name">response</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">productsRequest:</span> <span class="p">(</span><span class="n">SKProductsRequest</span> <span class="o">*</span><span class="p">)</span><span class="nv">request</span>
+      <span class="nf">didReceiveResponse:</span> <span class="p">(</span><span class="n">SKProductsResponse</span> <span class="o">*</span><span class="p">)</span><span class="nv">response</span>
+<span class="p">{</span>
+    <span class="err">@</span><span class="n">weakify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">runCriticalMutableSection:</span><span class="o">^</span><span class="p">{</span>
+        <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+        <span class="n">yssert</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequest</span> <span class="o">==</span> <span class="n">request</span><span class="p">);</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">doComplete:</span><span class="n">response</span><span class="p">];</span>
+    <span class="p">}];</span>
+<span class="p">}</span>
+
+
+<span class="cp">#pragma mark- Misc.</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>doStart</p></div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">doStart</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="n">start</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>doError:</p></div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">doError:</span> <span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span>
+<span class="p">{</span>
+    <span class="err">@</span><span class="n">weakify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">runCriticalMutableSection:</span><span class="o">^</span><span class="p">{</span>
+        <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span><span class="p">;</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">error</span><span class="p">];</span>
+    <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>doCancel</p></div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">doCancel</span>
+<span class="p">{</span>
+    <span class="err">@</span><span class="n">weakify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">runCriticalMutableSection:</span><span class="o">^</span><span class="p">{</span>
+        <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">error</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSError</span> <span class="nl">errorWithDomain:</span> <span class="s">@&quot;com.signalenvelope.SECrackRock.ProductsRequest&quot;</span> <span class="nl">code:</span> <span class="mi">2</span>
+                                     <span class="nl">userInfo:</span> <span class="err">@</span><span class="p">{</span><span class="s">@&quot;description&quot;</span><span class="o">:</span> <span class="s">@&quot;Request cancelled&quot;</span><span class="p">}];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">cancel</span><span class="p">];</span>
+    <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>doComplete:</p></div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">doComplete:</span> <span class="p">(</span><span class="n">SKProductsResponse</span> <span class="o">*</span><span class="p">)</span><span class="nv">response</span>
+<span class="p">{</span>
+    <span class="err">@</span><span class="n">weakify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">runCriticalMutableSection:</span><span class="o">^</span><span class="p">{</span>
+        <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">productsResponse</span> <span class="o">=</span> <span class="n">response</span><span class="p">;</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">complete</span><span class="p">];</span>
+    <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>callCompletionCallback</p></div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">callCompletionCallback</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">blockCompletion</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="err">@</span><span class="n">weakify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+        <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
+            <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">blockCompletion</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">error</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">productsResponse</span><span class="p">.</span><span class="n">products</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">productsResponse</span><span class="p">.</span><span class="n">invalidProductIdentifiers</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

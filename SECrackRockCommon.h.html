@@ -1,82 +1,17 @@
-<!DOCTYPE html><html><head><title>SECrackRockCommon.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h2"><a href="#notification-names">Notification names</a></div><div class="heading h2"><a href="#notification-user-info-dictionary-keys">Notification user info dictionary keys</a></div><div class="heading h2"><a href="#observable-states--see-sestatelynotificationrobot-in-vendor-ios-statefulnotifications-">Observable states (see SEStatelyNotificationRobot in Vendor/iOS-StatefulNotifications)</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><h1>SECrackRockCommon.h</h1></td><td class="code highlight"></td></tr><tr><td class="docs">
+<!DOCTYPE html><html><head><title>SECrackRockCommon.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
 <div class="pilwrap">
   <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
 </div>
-</td><td class="code highlight"><div class="highlight"><pre><span class="c1">//</span>
-<span class="c1">//  SECrackRockCommon.h</span>
-<span class="c1">//  iOS-CrackRock iOS in-app purchase framework</span>
-<span class="c1">//</span>
-<span class="c1">//  Created by bryn austin bellomy on 7/23/12.</span>
-<span class="c1">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
-<span class="c1">//</span>
+<p>SECrackRockCommon.h
+ iOS-CrackRock iOS in-app purchase framework</p>
 
-
-
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockUserDefaultsKey_purchasedItems</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockUserDefaultsKey_purchasedItems&quot;</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
-<div class="pilwrap" id="notification-names">
-  <h2>
-    <a href="#notification-names" class="pilcrow">&#182;</a>
-    Notification names
-  </h2>
-</div>
-</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_SuccessfulPurchase</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_SuccessfulPurchase&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_CancelledPurchase</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_CancelledPurchase&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_FailedPurchase</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_FailedPurchase&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_SuccessfulRestore</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_SuccessfulRestore&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_MultipleRestoreComplete</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_MultipleRestoreComplete&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_IncompleteRestore</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_IncompleteRestore&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_FailedRestore</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_FailedRestore&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_ProductWasValidated</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_ProductWasValidated&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_ProductWasNotValidated</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_ProductWasNotValidated&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_DidFinishPreparingProductInfo</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_DidFinishPreparingProductInfo&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_StoreTransactionWillBegin</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_StoreTransactionWillBegin&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockNotification_StoreTransactionDidEnd</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockNotification_StoreTransactionDidEnd&quot;</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
-<div class="pilwrap" id="notification-user-info-dictionary-keys">
-  <h2>
-    <a href="#notification-user-info-dictionary-keys" class="pilcrow">&#182;</a>
-    Notification user info dictionary keys
-  </h2>
-</div>
-</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockUserInfoKey_TransactionType</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockUserInfoKey_TransactionType&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockUserInfoKey_CrackRock</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockUserInfoKey_CrackRock&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockUserInfoKey_ProductID</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockUserInfoKey_ProductID&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockUserInfoKey_Success</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockUserInfoKey_Success&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockUserInfoKey_Receipt</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockUserInfoKey_Receipt&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockUserInfoKey_Message</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockUserInfoKey_Message&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockUserInfoKey_ErrorCode</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockUserInfoKey_ErrorCode&quot;</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
-<div class="pilwrap" id="observable-states--see-sestatelynotificationrobot-in-vendor-ios-statefulnotifications-">
-  <h2>
-    <a href="#observable-states--see-sestatelynotificationrobot-in-vendor-ios-statefulnotifications-" class="pilcrow">&#182;</a>
-    Observable states (see SEStatelyNotificationRobot in Vendor/iOS-StatefulNotifications)
-  </h2>
-</div>
-</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockState_TransactionState</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockState_TransactionState&quot;</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SECrackRockState_ProductsRequestState</span> <span class="o">=</span> <span class="s">@&quot;SECrackRockState_ProductsRequestState&quot;</span><span class="p">;</span>
-
-
-<span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
-  <span class="n">SECrackRockTransactionStateInProgress</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">),</span>
-  <span class="n">SECrackRockTransactionStateAsleep</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span>
-<span class="p">}</span> <span class="n">SECrackRockTransactionState</span><span class="p">;</span>
-
-<span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
-  <span class="n">SECrackRockProductsRequestStateUnfinished</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">),</span>
-  <span class="n">SECrackRockProductsRequestStateFinished</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span>
-<span class="p">}</span> <span class="n">SECrackRockProductsRequestState</span><span class="p">;</span>
-
-
-<span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
-  <span class="n">SECrackRockStoreTransactionTypeUndefined</span>       <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">),</span>
-  <span class="n">SECrackRockStoreTransactionTypePurchase</span>        <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">),</span>
-  <span class="n">SECrackRockStoreTransactionTypeRestore</span>         <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">),</span>
-  <span class="n">SECrackRockStoreTransactionTypeProductsRequest</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">)</span>
-<span class="p">}</span> <span class="n">SECrackRockStoreTransactionType</span><span class="p">;</span>
-
-<span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
-  <span class="n">SECrackRockPurchaseStatusUnknown</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">),</span>
-  <span class="n">SECrackRockPurchaseStatusError</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">),</span>
-  <span class="n">SECrackRockPurchaseStatusFree</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">),</span>
-  <span class="n">SECrackRockPurchaseStatusNonfreeUnpurchased</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">),</span>
-  <span class="n">SECrackRockPurchaseStatusNonfreePurchased</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span>
-<span class="p">}</span> <span class="n">SECrackRockPurchaseStatus</span><span class="p">;</span>
+<p>Created by bryn austin bellomy on 7/23/12.
+ Copyright (c) 2012 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+<span class="cp">#import &lt;StoreKit/StoreKit.h&gt;</span>
+<span class="cp">#import &lt;BrynKit/BrynKit.h&gt;</span>
+<span class="cp">#import &lt;BrynKit/BrynKitEDColor.h&gt;</span>
+<span class="cp">#import &lt;BrynKit/BrynKitCocoaLumberjack.h&gt;</span>
+<span class="cp">#import &lt;libextobjc/metamacros.h&gt;</span>
+<span class="cp">#import &lt;CocoaLumberjack/DDLog.h&gt;</span>
+<span class="cp">#import &lt;CocoaLumberjack/DDTTYLogger.h&gt;</span>
 </pre></div></td></tr></tbody></table></div></body></html>

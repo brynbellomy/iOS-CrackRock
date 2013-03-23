@@ -1,0 +1,828 @@
+<!DOCTYPE html><html><head><title>SECrackRockStoreController.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#import-">import </a></div><div class="heading h1"><a href="#import-">import </a></div><div class="heading h1"><a href="#import--secrackrockstorecontroller.h-">import "SECrackRockStoreController.h"</a></div><div class="heading h1"><a href="#import--secrackrock.h-">import "SECrackRock.h"</a></div><div class="heading h1"><a href="#import--secrackrockproduct.h-">import "SECrackRockProduct.h"</a></div><div class="heading h1"><a href="#pragma-mark--view-lifecycle">pragma mark- View lifecycle</a></div><div class="heading h1"><a href="#pragma-mark-">pragma mark-</a></div><div class="heading h1"><a href="#pragma-mark--notification-handling">pragma mark- Notification handling</a></div><div class="heading h1"><a href="#pragma-mark-">pragma mark-</a></div><div class="heading h1"><a href="#pragma-mark--blinglord-springboard-view----misc.-graphics-">pragma mark- BlingLord springboard view (+ misc. graphics)</a></div><div class="heading h1"><a href="#pragma-mark-">pragma mark-</a></div><div class="heading h1"><a href="#pragma-mark--user-interaction">pragma mark- User interaction</a></div><div class="heading h1"><a href="#pragma-mark-">pragma mark-</a></div><div class="heading h1"><a href="#pragma-mark--public-methods-for-purchasing-restoring">pragma mark- Public methods for purchasing/restoring</a></div><div class="heading h1"><a href="#pragma-mark-">pragma mark-</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><p>//
+//  SECrackRockViewController.m
+//  iOS-CrackRock in-app purchase framework
+//
+//  Created by bryn austin bellomy on 6/19/12.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
+//</p>
+
+<p>//#import <iOS-BlingLord/SEBlingLordView.h>
+//#import <iOS-BlingLord/SEBlingLordMenuItem.h></p>
+
+
+<div class="pilwrap" id="import-">
+  <h1>
+    <a href="#import-" class="pilcrow">&#182;</a>
+    import <ObjC-StatelyNotificationRobot/SEStatelyNotificationRobot.h>
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="import-">
+  <h1>
+    <a href="#import-" class="pilcrow">&#182;</a>
+    import <BrynKit/BrynKit.h>
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="import--secrackrockstorecontroller.h-">
+  <h1>
+    <a href="#import--secrackrockstorecontroller.h-" class="pilcrow">&#182;</a>
+    import "SECrackRockStoreController.h"
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="import--secrackrock.h-">
+  <h1>
+    <a href="#import--secrackrock.h-" class="pilcrow">&#182;</a>
+    import "SECrackRock.h"
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="import--secrackrockproduct.h-">
+  <h1>
+    <a href="#import--secrackrockproduct.h-" class="pilcrow">&#182;</a>
+    import "SECrackRockProduct.h"
+  </h1>
+</div>
+
+
+<p>//#import "UIImage+SECrackRock.h"</p>
+
+<p>Key(StateObserver_Transaction_SpringboardView);
+Key(StateObserver_Transaction_RestorePurchases);
+Key(StateObserver_ProductsRequest_SECrackRockStoreController);</p>
+
+<p>//@implementation SECrackRockMenuItem
+//@end</p>
+
+<p>@interface SECrackRockStoreController ()
+//  @property (nonatomic, weak, readwrite) UIBarButtonItem *restorePurchasesButton;
+@end</p>
+
+<p>/**!
+* ## SECrackRockViewController
+*/
+@implementation SECrackRockStoreController</p>
+
+
+<div class="pilwrap" id="pragma-mark--view-lifecycle">
+  <h1>
+    <a href="#pragma-mark--view-lifecycle" class="pilcrow">&#182;</a>
+    pragma mark- View lifecycle
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="pragma-mark-">
+  <h1>
+    <a href="#pragma-mark-" class="pilcrow">&#182;</a>
+    pragma mark-
+  </h1>
+</div>
+
+
+<ul>
+<li>(instancetype) init {
+self = [super init];
+if (self) {
+   [self registerForAllStoreNotifications];
+}
+return self;
+}</li>
+</ul>
+
+<p>/<em>*!
+* #### initWithNibName:bundle:
+*
+* @param {NSString</em>} nibNameOrNil
+* @param {NSBundle*} nibBundleOrNil
+* @return {id}
+*/</p>
+
+<p>//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+//    if (self) {
+//      self.springboardItemSize = CGSizeMake(83.0f, 103.0f);
+//    }
+//    return self;
+//}</p>
+
+<p>/**!
+* #### viewWillAppear:
+*
+* @param {BOOL} animated
+* @return {void}
+*/</p>
+
+<p>//- (void) viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear: animated];
+//
+//    // register for the notifications posted by SECrackRock
+//    [self registerForAllStoreNotifications];
+//}</p>
+
+<p>/**!
+* #### viewWillDisappear:
+*
+* @param {BOOL} animated
+* @return {void}
+*/</p>
+
+<p>//- (void) viewWillDisappear:(BOOL)animated {
+//  [super viewWillDisappear:animated];
+//
+//  // remove all notification handlers and SEStatelyNotificationRobot state handlers
+//  [self unregisterForAllStoreNotifications];
+//}</p>
+
+<ul>
+<li>(void) dealloc {
+[self unregisterForAllStoreNotifications];
+}</li>
+</ul>
+
+
+<div class="pilwrap" id="pragma-mark--notification-handling">
+  <h1>
+    <a href="#pragma-mark--notification-handling" class="pilcrow">&#182;</a>
+    pragma mark- Notification handling
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="pragma-mark-">
+  <h1>
+    <a href="#pragma-mark-" class="pilcrow">&#182;</a>
+    pragma mark-
+  </h1>
+</div>
+
+
+<p>/**!
+* #### registerForAllStoreNotifications
+*
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) registerForAllStoreNotifications {
+// remove any existing observer
+[SEStatelyNotificationRobot.sharedRobot removeHandlerWithID: StateObserver_Transaction_RestorePurchases];
+[SEStatelyNotificationRobot.sharedRobot removeHandlerWithID: StateObserver_ProductsRequest_SECrackRockStoreController];</p>
+
+<p>@weakify(self);
+[SEStatelyNotificationRobot.sharedRobot handleStateOf: ObservableState_Transaction
+                                           handlerID: StateObserver_Transaction_RestorePurchases
+                                             onQueue: NSOperationQueue.mainQueue
+                                           withBlock: ^(SEState newState, NSDictionary *stateInfo) {</p></li>
+</ul>
+
+
+<div class="highlight"><pre><code>                                               <span class="n">BrynFnLog</span><span class="p">(</span><span class="s">@&quot;handler for TransactionState state change: newState == %d&quot;</span><span class="p">,</span> <span class="n">newState</span><span class="p">);</span>
+                                               <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+                                               <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">transactionStateDidChange</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+                                                   <span class="n">self</span><span class="p">.</span><span class="n">transactionStateDidChange</span><span class="p">(</span><span class="n">stateInfo</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<p>//                                                    BOOL enabled = (newState == SECrackRockTransactionStateAsleep);
+//                                                    self.restorePurchasesButton.enabled = enabled;</p>
+
+
+<div class="highlight"><pre><code>                                           <span class="p">}];</span>
+</code></pre></div>
+
+
+
+<p>[SEStatelyNotificationRobot.sharedRobot handleStateOf: ObservableState_ProductsRequest
+                                               handlerID: StateObserver_ProductsRequest_SECrackRockStoreController
+                                                 onQueue: NSOperationQueue.mainQueue
+                                               withBlock: ^(SEState newState, NSDictionary *stateInfo) {</p>
+
+
+<div class="highlight"><pre><code>                                               <span class="n">BrynFnLog</span><span class="p">(</span><span class="s">@&quot;handler for ProductsRequest state change: newState == %d&quot;</span><span class="p">,</span> <span class="n">newState</span><span class="p">);</span>
+                                               <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+                                               <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">productsRequestStateDidChange</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+                                                   <span class="n">self</span><span class="p">.</span><span class="n">productsRequestStateDidChange</span><span class="p">(</span><span class="n">stateInfo</span><span class="p">);</span>
+
+                                               <span class="k">if</span> <span class="p">(</span><span class="n">newState</span> <span class="o">==</span> <span class="n">SECrackRockProductsRequestStateFinished</span><span class="p">)</span> <span class="p">{</span>
+                                                   <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">didFinishPreparingProductInfo</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+                                                       <span class="n">self</span><span class="p">.</span><span class="n">didFinishPreparingProductInfo</span><span class="p">(</span><span class="n">stateInfo</span><span class="p">);</span>
+                                               <span class="p">}</span>
+
+                                           <span class="p">}];</span>
+</code></pre></div>
+
+
+
+<p>[NSNotificationCenter.defaultCenter addObserver: self selector: @selector(successfulPurchase:)
+                                              name: SECrackRockNotification_SuccessfulPurchase      object:SECrackRock.sharedInstance];
+   [NSNotificationCenter.defaultCenter addObserver: self selector: @selector(cancelledPurchase:)
+                                              name: SECrackRockNotification_CancelledPurchase       object:SECrackRock.sharedInstance];
+   [NSNotificationCenter.defaultCenter addObserver: self selector: @selector(failedPurchase:)
+                                              name: SECrackRockNotification_FailedPurchase          object:SECrackRock.sharedInstance];
+   [NSNotificationCenter.defaultCenter addObserver: self selector: @selector(successfulRestore:)
+                                              name: SECrackRockNotification_SuccessfulRestore       object:SECrackRock.sharedInstance];
+   [NSNotificationCenter.defaultCenter addObserver: self selector: @selector(multipleRestoreComplete:)
+                                              name: SECrackRockNotification_MultipleRestoreComplete object:SECrackRock.sharedInstance];
+   [NSNotificationCenter.defaultCenter addObserver: self selector: @selector(incompleteRestore:)
+                                              name: SECrackRockNotification_IncompleteRestore       object:SECrackRock.sharedInstance];
+   [NSNotificationCenter.defaultCenter addObserver: self selector: @selector(failedRestore:)
+                                              name: SECrackRockNotification_FailedRestore           object:SECrackRock.sharedInstance];
+}</p>
+
+<p>/**!
+* #### unregisterForAllStoreNotifications
+*
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) unregisterForAllStoreNotifications {
+[SEStatelyNotificationRobot.sharedRobot removeHandlerWithID: StateObserver_Transaction_SpringboardView];
+[SEStatelyNotificationRobot.sharedRobot removeHandlerWithID: StateObserver_Transaction_RestorePurchases];
+[SEStatelyNotificationRobot.sharedRobot removeHandlerWithID: StateObserver_ProductsRequest_SECrackRockStoreController];</p>
+
+<p>[NSNotificationCenter.defaultCenter removeObserver:self name:SECrackRockNotification_SuccessfulPurchase object:SECrackRock.sharedInstance];
+[NSNotificationCenter.defaultCenter removeObserver:self name:SECrackRockNotification_CancelledPurchase object:SECrackRock.sharedInstance];
+[NSNotificationCenter.defaultCenter removeObserver:self name:SECrackRockNotification_FailedPurchase object:SECrackRock.sharedInstance];
+[NSNotificationCenter.defaultCenter removeObserver:self name:SECrackRockNotification_SuccessfulRestore object:SECrackRock.sharedInstance];
+[NSNotificationCenter.defaultCenter removeObserver:self name:SECrackRockNotification_MultipleRestoreComplete object:SECrackRock.sharedInstance];
+[NSNotificationCenter.defaultCenter removeObserver:self name:SECrackRockNotification_IncompleteRestore object:SECrackRock.sharedInstance];
+[NSNotificationCenter.defaultCenter removeObserver:self name:SECrackRockNotification_FailedRestore object:SECrackRock.sharedInstance];
+}</p></li>
+</ul>
+
+
+<div class="pilwrap" id="pragma-mark--blinglord-springboard-view----misc.-graphics-">
+  <h1>
+    <a href="#pragma-mark--blinglord-springboard-view----misc.-graphics-" class="pilcrow">&#182;</a>
+    pragma mark- BlingLord springboard view (+ misc. graphics)
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="pragma-mark-">
+  <h1>
+    <a href="#pragma-mark-" class="pilcrow">&#182;</a>
+    pragma mark-
+  </h1>
+</div>
+
+
+<p>/<em>*!
+* #### shouldDisplayProductInStore:
+*
+* @param {SECrackRockProduct</em>} product
+* @return {BOOL}
+*/</p>
+
+<ul>
+<li><p>(BOOL) shouldDisplayProductInStore:(SECrackRockProduct *)product {
+yssert(product != nil, @"product argument is nil.");</p>
+
+<p>BOOL shouldDisplayItem = YES;</p>
+
+<p>switch (product.productStatus) {
+// products that returned errors or nothing when app store was queried
+default:
+case SECrackRockProductStatusUnknown:
+case SECrackRockProductStatusError:
+ shouldDisplayItem = NO;
+ break;</p>
+
+<p>// paid/purchaseable products
+case SECrackRockProductStatusNonfreePurchased:
+case SECrackRockProductStatusNonfreeUnpurchased: {
+ shouldDisplayItem = product.isAvailableInStore;
+} break;</p>
+
+<p>// free items might as well always show up, right?
+case SECrackRockProductStatusFree:
+ shouldDisplayItem = YES;
+ break;
+}</p>
+
+<p>return shouldDisplayItem;
+}</p></li>
+</ul>
+
+<p>/<em>*!
+* #### purchaseableIndicatorForProduct:
+*
+* @param {SECrackRockProduct</em>} product
+* @return {UIImage*}
+*/</p>
+
+<p>//- (UIImage *) purchaseableIndicatorForProduct: (SECrackRockProduct *)product {
+//  return nil;
+//}</p>
+
+<p>/<em>*!
+* #### iconForProduct:withPurchaseableIndicator:
+*
+* @param {SECrackRockProduct</em>} product
+* @param {BOOL} withPurchaseableIndicator
+* @return {UIImage*}
+*/</p>
+
+<p>//- (UIImage *) iconForProduct:(SECrackRockProduct *)product withPurchaseableIndicator:(BOOL)withPurchaseableIndicator {
+//  yssert(product != nil, @"product argument is nil.");
+//
+//  // load the product's icon, add the 'purchaseable' indicator overlay if it hasn't been purchased yet
+//  UIImage *icon = UIImageWithBundlePNG(product.thumbnailPNGFilename);
+//  yssert(icon != nil, @"icon is nil.");
+//
+//  if (withPurchaseableIndicator == YES) {
+//    UIImage *purchaseableIndicator = [self purchaseableIndicatorForProduct: product];
+//
+//    // if a purchaseableIndicator was provided, replace the existing icon with one that has the indicator overlaid
+//    if (purchaseableIndicator != nil) {
+//      icon = [icon imageWithOverlay:purchaseableIndicator atPosition:CGPointZero withSize:icon.size];
+//    }
+//  }
+//
+//  return icon;
+//}</p>
+
+<p>/<em>*!
+* #### initializeMenuItems
+*
+* @return {NSMutableArray</em>}
+*/</p>
+
+<p>//- (NSMutableArray *) initializeMenuItems {
+//
+//  // create an array of SEBlingLord objects
+//  NSMutableArray *items = [NSMutableArray arrayWithCapacity: SECrackRock.sharedInstance.sortedProductIDs.count];
+//
+//  __bryn_weak SECrackRockViewController *weakSelf = self;
+//  for (NSString *productID in SECrackRock.sharedInstance.sortedProductIDs) {
+//    SECrackRockProduct *product = SECrackRock.sharedInstance.productsByID[ productID ];
+//
+//    // make sure we want to display each product (i.e. the request to the app store was successful)
+//    if ([self shouldDisplayProductInStore: product] == NO)
+//      continue;
+//
+//    // generate the product's icon
+//    BOOL showPurchaseableIndicator = (product.productStatus == SECrackRockProductStatusNonfreeUnpurchased);
+//    UIImage *icon = [self iconForProduct:product withPurchaseableIndicator:showPurchaseableIndicator];
+//
+//    // initialize the menu item object
+//    SECrackRockMenuItem *menuItem =
+//      [[SECrackRockMenuItem alloc] initWithFrame: CGRectMake(0.0f, 0.0f, self.springboardItemSize.width, self.springboardItemSize.height)
+//                                           title: product.readableName image: icon
+//                                       removable: NO
+//                                 tapHandlerBlock: ^{
+//                                     __strong SECrackRockViewController *strongSelf = weakSelf;
+//                                     SECrackRockProduct *blockProduct = SECrackRock.sharedInstance.productsByID[ productID ];
+//                                     yssert(blockProduct != nil, @"blockProduct is nil.");
+//
+//                                     [strongSelf productAccessWasAttempted: blockProduct];
+//                                 }];
+//
+//    menuItem.productID = product.productID;
+//    [items addObject: menuItem];
+//  }
+//
+//  return items;
+//}</p>
+
+<p>/<em>*!
+* #### menuItemForProductID:
+*
+* @param {NSString</em>} productID
+* @return {SECrackRockMenuItem*}
+*/</p>
+
+<p>//- (SECrackRockMenuItem *) menuItemForProductID:(NSString *)productID {
+//  if (productID != nil) {
+//    for (SECrackRockMenuItem *menuItem in self.springboardView.items) {
+//      if ([productID isEqualToString:menuItem.productID])
+//        return menuItem;
+//    }
+//  }
+//  return nil;
+//}</p>
+
+
+<div class="pilwrap" id="pragma-mark--user-interaction">
+  <h1>
+    <a href="#pragma-mark--user-interaction" class="pilcrow">&#182;</a>
+    pragma mark- User interaction
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="pragma-mark-">
+  <h1>
+    <a href="#pragma-mark-" class="pilcrow">&#182;</a>
+    pragma mark-
+  </h1>
+</div>
+
+
+<p>/<em>*!
+* #### productAccessWasAttempted:
+*
+* @param {SECrackRockProduct</em>} product
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) tryToAccessProduct: (NSString *)productID {
+yssert(productID != nil, @"productID argument is nil.");</p>
+
+<p>SECrackRockProduct *product = SECrackRock.sharedInstance.productsByID[ productID ];
+assert(product != nil);</p>
+
+<p>if (self.productAccessWasAttempted != nil)
+   self.productAccessWasAttempted(product);</p></li>
+</ul>
+
+<p>//  switch (product.productStatus) {
+//    case SECrackRockProductStatusFree:
+//    case SECrackRockProductStatusNonfreePurchased:
+//      // this is where you'd probably want to let the user use the purchase
+//      break;
+//
+//    case SECrackRockProductStatusNonfreeUnpurchased: {
+//      [self tryToPurchaseProduct: product.productID];
+//    } break;
+//
+//    default: {
+//      yssert(NO, @"SECrackRockProduct productStatus is unknown.");
+//      [[[UIAlertView alloc] initWithTitle: @"Our bad"
+//                                  message: @"An error occurred, and we don't know exactly why.  Maybe try again later!"
+//                                 delegate: nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+//    } break;
+//  }
+}</p>
+
+
+<div class="pilwrap" id="pragma-mark--public-methods-for-purchasing-restoring">
+  <h1>
+    <a href="#pragma-mark--public-methods-for-purchasing-restoring" class="pilcrow">&#182;</a>
+    pragma mark- Public methods for purchasing/restoring
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="pragma-mark-">
+  <h1>
+    <a href="#pragma-mark-" class="pilcrow">&#182;</a>
+    pragma mark-
+  </h1>
+</div>
+
+
+<p>/<em>*!
+* #### tryToPurchaseProduct:
+*
+* Attempt to purchase a product with a given product ID.
+*
+* @param {NSString</em>} productID
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) tryToPurchaseProduct:(NSString *)productID {</p>
+
+<p>BOOL success = [SECrackRock.sharedInstance tryToPurchaseProduct:productID];
+if (success == NO) {
+// Returned NO, so notify user that In-App Purchase is Disabled in their Settings.
+[[[UIAlertView alloc] initWithTitle: @"Allow Purchases"
+                           message: @"You must first enable In-App Purchase in your iOS Settings before making this purchase."
+                          delegate: nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];</p>
+
+<p>}
+}</p></li>
+</ul>
+
+<p>/<em>*!
+* #### tryToRestorePurchase:
+*
+* Attempt to restore a customer's previous non-consumable or subscription
+* In-App Purchase with a given product ID.  Required if a user reinstalled app
+* on same device or another device.
+*
+* @param {NSString</em>} productID
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) tryToRestorePurchase: (NSString *)productID {</p>
+
+<p>BOOL success = [SECrackRock.sharedInstance tryToRestorePurchase:productID];</p>
+
+<p>if (success == NO) {
+[[[UIAlertView alloc] initWithTitle: @"Allow Purchases"
+                           message: @"You must first enable In-App Purchase in your iOS Settings before restoring a previous purchase."
+                          delegate: nil cancelButtonTitle: @"OK" otherButtonTitles: nil] show];
+}
+}</p></li>
+</ul>
+
+<p>/**!
+* #### tryToRestoreAllPurchases
+*
+* Attempt to restore all purchases made with the current apple ID.
+*
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) tryToRestoreAllPurchases {</p>
+
+<p>BOOL success = [SECrackRock.sharedInstance tryToRestoreAllPurchases];</p>
+
+<p>if (success == NO) {
+// notify user that In-App Purchase is Disabled in their Settings.
+[[[UIAlertView alloc] initWithTitle: @"Allow Purchases"
+                           message: @"You must first enable In-App Purchase in your iOS Settings before restoring a previous purchase."
+                          delegate: nil cancelButtonTitle: @"OK" otherButtonTitles: nil] show];</p>
+
+<p>}
+}</p></li>
+</ul>
+
+<p>/**!
+* #### didFinishPreparingProductInfo
+*
+* Called in response to <code>SECrackRockNotification_DidFinishPreparingProductInfo</code>.
+*
+* Sets up the springboard view and creates a menu item for each product that
+* was verified as purchaseable by the app store.
+*
+* Note: if you override this method in a subclass, you really oughta call the
+* superclass's method (i.e., <code>[super didFinishPreparingProductInfo]</code>).
+*
+* @return {void}
+*/</p>
+
+<p>//- (void) didFinishPreparingProductInfo {
+//
+//  // initialize the menu items
+//
+//  NSMutableArray *menuItems = [self initializeMenuItems];
+//
+//  yssert(menuItems != nil, @"menuItems array is nil.");
+//
+//  // pass the array to a new instance of SEBlingLord and add it to the view
+//
+//  CGRect frame;
+//  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+//    frame = CGRectMake(0.0f, 0.0f, 320.0f, 480.0f - 20.0f); // 20.0f = status bar
+//  else
+//    frame = CGRectMake(0.0f, 0.0f, 768.0f, 1024.0f - 20.0f); // @@TODO: is this correct for an iPad?
+//
+//  SEBlingLordView *board = [[SEBlingLordView alloc] initWithFrame:frame];
+//  board.itemSize = self.springboardItemSize;
+//  board.itemMargins = self.springboardItemMargins; //  CGSizeMake(15.0f, 15.0f);
+//  board.outerMargins = self.springboardOuterMargins; // CGSizeMake(10.0f, 10.0f);
+//  board.allowsEditing = NO;
+//  [board addMenuItems:menuItems];
+//
+//
+//  if (self.springboardView != nil) {
+//    [self.springboardView removeFromSuperview];
+//    self.springboardView = nil;
+//  }
+//
+//  [self.view addSubview: board];
+//  self.springboardView = board;
+//
+//
+//  // register a block to respond to the transaction state (i.e. whether or not a
+//  // transaction with the app store servers is pending).  this block toggles
+//  // user interaction with the springboard off when a transaction is underway,
+//  // and back on when it is done.
+//
+//    [SEStatelyNotificationRobot.sharedRobot removeHandlerWithID: StateObserver_Transaction_SpringboardView]; // remove any existing observer
+// <br />
+//    @weakify(self);
+//    [SEStatelyNotificationRobot.sharedRobot handleStateOf: ObservableState_Transaction
+//                                                handlerID: StateObserver_Transaction_SpringboardView
+//                                                  onQueue: NSOperationQueue.mainQueue
+//                                                withBlock: ^(SEState newState, NSDictionary *stateInfo) {
+//                                                    @strongify(self);
+//                                                    BOOL enabled = (newState == SECrackRockTransactionStateAsleep);
+//                                                    self.springboardView.userInteractionEnabled = enabled;
+//                                                }];
+//}</p>
+
+<p>/**!
+* #### restorePurchasesButtonClicked
+*
+* Called when the user has clicked the 'restore all purchases' button.  Can
+* be rigged up to a button using Interface Builder, but does not need to be.
+*
+* @return {IBAction}
+*/</p>
+
+<p>//- (IBAction) restorePurchasesButtonClicked {
+//  [self tryToRestoreAllPurchases];
+//}</p>
+
+<p>/**
+*
+*/</p>
+
+<p>/<em>*!
+* #### recreateProductIconWithoutPurchaseableIndicator:
+*
+* @param {NSString</em>} productID
+*
+* @return {void}
+*/</p>
+
+<p>//- (void) recreateProductIconWithoutPurchaseableIndicator:(NSString *)productID {
+//  yssert(productID != nil, @"productID argument is nil.");
+//
+//  // recreate the product's icon without the purchaseable indicator
+//
+//  __bryn_weak SECrackRockViewController *weakSelf = self;
+//  dispatch_async(dispatch_get_main_queue(), ^{
+//    __strong SECrackRockViewController *strongSelf = weakSelf;
+//
+//    SECrackRockMenuItem *springboardMenuItem = [strongSelf menuItemForProductID:productID];
+//    SECrackRockProduct *product = SECrackRock.sharedInstance.productsByID[ productID ];
+//
+//    springboardMenuItem.imageView.image = [strongSelf iconForProduct:product withPurchaseableIndicator:NO];
+//  });
+//
+//}</p>
+
+<p>/<em>*!
+* #### displayAlertToUserWithTitle:text:dismissText:
+*
+* @param {NSString</em>} title
+* @param {NSString<em>} text
+* @param {NSString</em>} dismissText
+*
+* @return {void}
+*/</p>
+
+<ul>
+<li>(void) displayAlertToUserWithTitle:(NSString *)title text:(NSString *)text dismissText:(NSString *)dismissText {
+[[[UIAlertView alloc] initWithTitle:title message:text delegate:nil cancelButtonTitle:dismissText otherButtonTitles:nil] show];
+}</li>
+</ul>
+
+<p>/<em>*!
+* #### successfulPurchase:
+*
+* @param {NSNotification</em>} notification
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) successfulPurchase:(NSNotification *)notification {
+yssert(notification != nil, @"notification argument is nil.");</p>
+
+<p>//  NSString *productID = notification.userInfo[ SECrackRockUserInfoKey_ProductID ];
+//  [self recreateProductIconWithoutPurchaseableIndicator:productID];</p>
+
+<p>// notify the user that the purchase was successful
+if (self.successfulPurchase != nil)
+   self.successfulPurchase(notification.userInfo);
+else
+   [self displayAlertToUserWithTitle: @"Thank You!" text: @"Your purchase was successful!" dismissText: @"OK"];</p></li>
+</ul>
+
+<p>}</p>
+
+<p>/<em>*!
+* #### cancelledPurchase:
+*
+* @param {NSNotification</em>} notification
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) cancelledPurchase:(NSNotification *)notification {
+yssert(notification != nil, @"notification argument is nil.");</p>
+
+<p>// no-op</p>
+
+<p>if (self.cancelledPurchase != nil)
+   self.cancelledPurchase(notification.userInfo);
+}</p></li>
+</ul>
+
+<p>/<em>*!
+* #### failedPurchase:
+*
+* @param {NSNotification</em>} notification
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) failedPurchase:(NSNotification *)notification {
+yssert(notification != nil, @"notification argument is nil.");</p>
+
+<p>if (self.failedPurchase != nil)
+   self.failedPurchase(notification.userInfo);
+else
+   [self displayAlertToUserWithTitle: @"Purchase Failed" text: @"There was a transaction error. Please try again later, or contact customer support for assistance." dismissText: @"OK"];</p></li>
+</ul>
+
+<p>}</p>
+
+<p>/<em>*!
+* #### successfulRestore:
+*
+* @param {NSNotification</em>} notification
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) successfulRestore:(NSNotification *)notification {
+yssert(notification != nil, @"notification argument is nil.");</p>
+
+<p>//  NSString *productID = notification.userInfo[ SECrackRockUserInfoKey_ProductID ];
+//  [self recreateProductIconWithoutPurchaseableIndicator:productID];</p>
+
+<p>// if it's a single item restore, notify the user that the restore was successful
+if (NO == SECrackRock.sharedInstance.isCurrentlyRestoringMultiplePurchases) {
+   if (self.successfulRestore != nil)
+       self.successfulRestore(notification.userInfo);
+   else
+       [self displayAlertToUserWithTitle: @"Thank You!" text: @"Your purchase was successfully restored!" dismissText: @"OK"];</p>
+
+<p>}
+}</p></li>
+</ul>
+
+<p>/<em>*!
+* #### multipleRestoreComplete:
+*
+* @param {NSNotification</em>} notification
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) multipleRestoreComplete:(NSNotification *)notification {
+yssert(notification != nil, @"notification argument is nil.");</p>
+
+<p>if (self.multipleRestoreComplete != nil)
+   self.multipleRestoreComplete(notification.userInfo);
+else
+   [self displayAlertToUserWithTitle: @"Success!" text: @"Your purchases were successfully restored!" dismissText: @"OK"];
+}</p></li>
+</ul>
+
+<p>/<em>*!
+* #### incompleteRestore:
+*
+* @param {NSNotification</em>} notification
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) incompleteRestore:(NSNotification *)notification {
+yssert(notification != nil, @"notification argument is nil.");</p>
+
+<p>if (self.incompleteRestore != nil)
+   self.incompleteRestore(notification.userInfo);
+else
+   [self displayAlertToUserWithTitle: @"Restore Issue" text: @"A prior purchase transaction could not be found. To restore the purchased product, tap the product's icon. Paid customers will NOT be charged again, but the purchase will be restored." dismissText: @"OK"];
+}</p></li>
+</ul>
+
+<p>/<em>*!
+* #### failedRestore:
+*
+* @param {NSNotification</em>} notification
+* @return {void}
+*/</p>
+
+<ul>
+<li><p>(void) failedRestore:(NSNotification *)notification {
+yssert(notification != nil, @"notification argument is nil.");</p>
+
+<p>if (self.failedRestore != nil)
+   self.failedRestore(notification.userInfo);
+else
+   [self displayAlertToUserWithTitle: @"Restore Stopped" text: @"Either you cancelled the request or your prior purchase could not be restored. Please try again later, or contact customer support for assistance." dismissText: @"OK"];
+}</p></li>
+</ul>
+
+<p>@end</p></td><td class="code highlight"><div class="highlight"><pre>
+</pre></div></td></tr></tbody></table></div></body></html>
