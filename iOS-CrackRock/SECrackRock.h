@@ -6,17 +6,28 @@
 //  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
+#import <CocoaLumberjack/DDLog.h>
+#import <BrynKit/GCDThreadsafe.h>
 #import "SECrackRockCommon-Private.h"
 
 Key(SECrackRockNotification_CollectionWasUpdated);
 
+Key(SECrackRockState_Uninitialized, @"uninitialized");
+Key(SECrackRockState_Ready, @"ready");
+Key(SECrackRockState_Purchasing, @"purchasing");
+Key(SECrackRockState_Restoring, @"restoring");
+Key(SECrackRockState_Requesting, @"requesting");
+Key(SECrackRockState_Error, @"error");
 
-@class RACSignal;
+Key(SECrackRockEvent_Purchase, @"purchase");
+Key(SECrackRockEvent_Restore, @"restore");
+Key(SECrackRockEvent_Error, @"error");
+Key(SECrackRockEvent_TransactionComplete, @"transactionComplete");
+Key(SECrackRockEvent_RequestProducts, @"requestProducts");
 
 typedef void(^SECrackRockTransactionResponseBlock)(NSError *error);
 
-
-/**!
+/**
  * # SECrackRock
  */
 @interface SECrackRock : NSObject <DDRegisteredDynamicLogging>

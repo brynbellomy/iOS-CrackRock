@@ -15,15 +15,16 @@ Pod::Spec.new do |s|
 
   s.framework   = 'StoreKit'
 
-  s.dependency 'BrynKit/Main', '>= 1.2.0'
-  s.dependency 'BrynKit/GCDThreadsafe', '>= 1.2.0'
-  s.dependency 'BrynKit/EDColor', '>= 1.2.0'
-  s.dependency 'BrynKit/CocoaLumberjack', '>= 1.2.0'
+  s.dependency 'BrynKit/Main', '>= 1.2.1'
+  s.dependency 'BrynKit/RACHelpers', '>= 1.2.1'
+  s.dependency 'BrynKit/GCDThreadsafe', '>= 1.2.1'
+  s.dependency 'BrynKit/EDColor', '>= 1.2.1'
+  s.dependency 'BrynKit/CocoaLumberjack', '>= 1.2.1'
   s.dependency 'CocoaLumberjack'
 
   s.dependency 'ReactiveCocoa', '>= 1.4.0'
   s.dependency 'ReactiveCocoa/RACExtensions', '>= 1.4.0'
-  s.dependency 'StateMachine-GCDThreadsafe', '>= 0.0.1'
+  s.dependency 'StateMachine-GCDThreadsafe', '>= 2.0.1'
   s.dependency 'Underscore.m', '>= 0.2.0'
   s.dependency 'libextobjc/EXTBlockMethod', '>= 0.2.5'
   s.dependency 'libextobjc/EXTScope', '>= 0.2.5'

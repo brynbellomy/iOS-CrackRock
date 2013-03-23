@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <BrynKit/GCDThreadsafe.h>
+#import <StoreKit/StoreKit.h>
 #import "SECrackRock.h"
-
-@class SKProduct;
 
 @interface SECrackRockProduct : NSObject <GCDThreadsafe>
 
 //
 // read-only properties
+// hint: observe these with ReactiveCocoa KVO
 //
 
 @property (nonatomic, copy,   readonly) NSString *productID;
@@ -33,7 +33,7 @@
 // methods
 //
 
-- (instancetype) initWithProductID:    (NSString *)productID;
+- (instancetype) initWithProductID: (NSString *)productID;
 
 - (instancetype) initWithProductID: (NSString *)productID
                       readableName: (NSString *)readableName

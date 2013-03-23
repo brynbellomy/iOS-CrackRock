@@ -25,14 +25,13 @@
     @property (nonatomic, copy,   readwrite) NSString *productDescription;
     @property (nonatomic, copy,   readwrite) NSString *price;
 
-    @property (nonatomic, assign, readwrite) dispatch_queue_t queueCritical;
-
     @property (nonatomic, assign, readwrite) BOOL isAvailableInStore;
     @property (nonatomic, assign, readwrite) BOOL hasBeenPurchased;
 @end
 
 
 @implementation SECrackRockProduct
+    @gcd_threadsafe
 
 
 #pragma mark- Lifecycle
@@ -134,56 +133,6 @@
         [[NSUserDefaults standardUserDefaults] setObject:purchasedItems forKey:SECrackRockUserDefaultsKey_purchasedItems];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
-}
-
-
-
-#pragma mark- GCDThreadsafe
-#pragma mark-
-
-/**
- * #### runCriticalMutableSection:
- *
- * Runs the given block on the critical section queue asynchronously, but as a barrier block
- * that blocks any other critical operations until it completes.
- *
- * @param {dispatch_block_t} blockCritical
- * @return {void}
- */
-
-- (void) runCriticalMutableSection: (dispatch_block_t)blockCritical
-{
-    yssert(self.queueCritical != nil);
-
-    if (dispatch_get_current_queue() == self.queueCritical) {
-        blockCritical();
-    }
-    else {
-        dispatch_barrier_async(self.queueCritical, blockCritical);
-    }
-}
-
-
-
-/**
- * #### runCriticalReadonlySection:
- *
- * Runs the given block on the critical section queue synchronously.
- *
- * @param {dispatch_block_t} blockCritical
- * @return {void}
- */
-
-- (void) runCriticalReadonlySection: (dispatch_block_t)blockCritical
-{
-    yssert(self.queueCritical != nil);
-
-    if (dispatch_get_current_queue() == self.queueCritical) {
-        blockCritical();
-    }
-    else {
-        dispatch_sync(self.queueCritical, blockCritical);
-    }
 }
 
 

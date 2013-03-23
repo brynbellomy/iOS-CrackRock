@@ -10,7 +10,7 @@
 #import <BrynKit/BrynKit.h>
 #import <BrynKit/BrynKitEDColor.h>
 #import <BrynKit/BrynKitDDLogColorFormatter.h>
-#import <BrynKit/NSObject+GCDThreadsafe.h>
+#import <BrynKit/GCDThreadsafe.h>
 
 #import "SECrackRockProduct.h"
 #import "SECrackRockCommon-Private.h"
@@ -23,9 +23,11 @@
     @property (nonatomic, copy, readwrite) NSString *productDescription;
     @property (nonatomic, copy, readwrite) NSString *price;
 
-//    @property (nonatomic, assign, readwrite) SECrackRockProductStatus productStatus;
     @property (nonatomic, assign, readwrite) BOOL isAvailableInStore;
     @property (nonatomic, assign, readwrite) BOOL hasBeenPurchased;
+@end
+
+@interface SECrackRockProduct (GCDThreadsafe) <GCDThreadsafe>
 @end
 
 

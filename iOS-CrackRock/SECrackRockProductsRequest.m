@@ -18,19 +18,18 @@
 #import "SECrackRockProduct-Private.h"
 #import "SECrackRockCommon-Private.h"
 
-@interface SECrackRockProductsRequest ()
+@interface SECrackRockProductsRequest () <SEThreadsafeStateMachine>
     @property (nonatomic, strong, readwrite) NSSet *productIDs;
     @property (nonatomic, strong, readwrite) SKProductsRequest  *productsRequest;
     @property (nonatomic, strong, readwrite) SKProductsResponse *productsResponse;
     @property (nonatomic, copy,   readwrite) SEProductsRequestResponseBlock blockCompletion;
     @property (nonatomic, copy,   readwrite) NSString *state;
     @property (nonatomic, strong, readwrite) NSError *error;
-
-    @property (nonatomic, assign, readwrite) dispatch_queue_t queueCritical;
 @end
 
 @interface SECrackRockProductsRequest (StateMachine_Private)
     - (void) initializeStateMachine;
+
     - (void) start;
     - (void) cancel;
     - (void) complete;
@@ -40,6 +39,7 @@
 
 
 @implementation SECrackRockProductsRequest
+    @gcd_threadsafe
 
 STATE_MACHINE(^(LSStateMachine *sm) {
     sm.initialState = @"ready";
@@ -79,7 +79,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
         lllog(Info, @"%d requested products available", self.productsResponse.products.count);
 
         // call the completion block
-        [self doCompletionCallback];
+        [self callCompletionCallback];
     }];
 
 
@@ -89,7 +89,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [sm when: @"error" transitionFrom:@"complete" to:@"error"];
     [sm when: @"error" transitionFrom:@"cancelled" to:@"error"];
     [sm after:@"error" do:^(SECrackRockProductsRequest *self) {
-        [self doCompletionCallback];
+        [self callCompletionCallback];
     }];
 
 
@@ -99,7 +99,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
         [self.productsRequest cancel];
     }];
     [sm after: @"cancel" do:^(SECrackRockProductsRequest *self) {
-        [self doCompletionCallback];
+        [self callCompletionCallback];
     }];
 
 });
@@ -123,7 +123,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
                                                               completion:^(NSError *error, NSArray *validProducts, NSArray *invalidProductIDs) {
 
                                                                   // @@TODO: just have to hold on to the request somehow... this definitely oughta be refactored
-                                                                  printf("\n\ninside products request completion block / productIDs = %s\n\n", request.description.UTF8String);
+                                                                  printf("\n\n[@@TODO: refactor me!!!] inside products request completion block / productIDs = %s\n\n", request.description.UTF8String);
 
                                                                   if (error != nil) {
                                                                       lllog(Error, @"Error in products request: %@", error.localizedDescription);
@@ -322,12 +322,12 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
 
 /**
- * doCompletionCallback
+ * callCompletionCallback
  *
  *
  */
 
-- (void) doCompletionCallback
+- (void) callCompletionCallback
 {
     if (self.blockCompletion != nil)
     {
@@ -336,54 +336,6 @@ STATE_MACHINE(^(LSStateMachine *sm) {
             @strongify(self);
             self.blockCompletion(self.error, self.productsResponse.products, self.productsResponse.invalidProductIdentifiers);
         });
-    }
-}
-
-#pragma mark- GCDThreadsafe
-#pragma mark-
-
-/**
- * #### runCriticalMutableSection:
- *
- * Runs the given block on the critical section queue asynchronously, but as a barrier block
- * that blocks any other critical operations until it completes.
- *
- * @param {dispatch_block_t} blockCritical
- * @return {void}
- */
-
-- (void) runCriticalMutableSection: (dispatch_block_t)blockCritical
-{
-    yssert(self.queueCritical != nil);
-
-    if (dispatch_get_current_queue() == self.queueCritical) {
-        blockCritical();
-    }
-    else {
-        dispatch_barrier_async(self.queueCritical, blockCritical);
-    }
-}
-
-
-
-/**
- * #### runCriticalReadonlySection:
- *
- * Runs the given block on the critical section queue synchronously.
- *
- * @param {dispatch_block_t} blockCritical
- * @return {void}
- */
-
-- (void) runCriticalReadonlySection: (dispatch_block_t)blockCritical
-{
-    yssert(self.queueCritical != nil);
-
-    if (dispatch_get_current_queue() == self.queueCritical) {
-        blockCritical();
-    }
-    else {
-        dispatch_sync(self.queueCritical, blockCritical);
     }
 }
 

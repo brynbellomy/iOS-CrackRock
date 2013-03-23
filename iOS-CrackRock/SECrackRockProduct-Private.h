@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
-
 #import "SECrackRockCommon.h"
 
 @interface SECrackRockProduct (Private)

@@ -12,6 +12,8 @@
 
 typedef void(^SEProductsRequestResponseBlock)(NSError *error, NSArray *validProducts, NSArray *invalidProductIDs);
 
+
+
 @interface SECrackRockProductsRequest : NSObject <GCDThreadsafe, SKProductsRequestDelegate>
 
 @property (nonatomic, copy,   readonly) NSString *state;
@@ -26,6 +28,17 @@ typedef void(^SEProductsRequestResponseBlock)(NSError *error, NSArray *validProd
 //
 - (void) doStart;
 - (void) doCancel;
+
+@end
+
+@interface SECrackRockProductsRequest (StateMachine_GCDThreadsafe)
+
+//
+// state machine transition availability methods
+//
+- (BOOL) canStart;
+- (BOOL) canCancel;
+
 
 //
 // state machine states

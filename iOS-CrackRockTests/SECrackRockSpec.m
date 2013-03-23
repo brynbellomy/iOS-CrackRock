@@ -19,7 +19,7 @@ describe(@"SECrackRock", ^{
     __block SECrackRock *crackRock = nil;
     
     beforeAll(^{
-      crackRock = [[SECrackRock alloc] init];   
+        crackRock = [[SECrackRock alloc] init];
     });
     
     it(@"is not nil", ^{

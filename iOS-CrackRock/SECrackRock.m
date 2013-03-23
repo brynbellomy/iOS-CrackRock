@@ -19,24 +19,11 @@
 #import "SECrackRockProduct-Private.h"
 #import "SECrackRockProductsRequest.h"
 
-Key(SECrackRockState_Uninitialized, @"uninitialized");
-Key(SECrackRockState_Ready, @"ready");
-Key(SECrackRockState_Purchasing, @"purchasing");
-Key(SECrackRockState_Restoring, @"restoring");
-Key(SECrackRockState_Requesting, @"requesting");
-Key(SECrackRockState_Error, @"error");
-
-Key(SECrackRockEvent_Purchase, @"purchase");
-Key(SECrackRockEvent_Restore, @"restore");
-Key(SECrackRockEvent_Error, @"error");
-Key(SECrackRockEvent_TransactionComplete, @"transactionComplete");
-Key(SECrackRockEvent_RequestProducts, @"requestProducts");
-
 
 #define _ Underscore
 
 
-@interface SECrackRock ()
+@interface SECrackRock () <SEThreadsafeStateMachine>
     @property (nonatomic, assign, readwrite) BOOL isCurrentlyRestoringMultiplePurchases;
     @property (nonatomic, assign, readwrite) BOOL restoreWasInitiatedByUser;
 
@@ -72,6 +59,7 @@ Key(SECrackRockEvent_RequestProducts, @"requestProducts");
 
 
 @implementation SECrackRock
+@gcd_threadsafe
 
 static int logLevel = LOG_LEVEL_VERBOSE;
 + (int)  ddLogLevel               { return logLevel;  }
@@ -739,14 +727,12 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 }
 
 
-
-
-
-
-
 @end
 
-#pragma mark SKPaymentTransactionObserver Methods
+
+
+#pragma mark- SKPaymentTransactionObserver methods
+#pragma mark-
 
 @implementation SECrackRock (SKPaymentTransactionObserver)
 
@@ -931,10 +917,6 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [self failedRestore: error.code
                 message: error.localizedDescription];
 }
-
-
-
-
 
 @end
 
