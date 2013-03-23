@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
   s.name         = 'iOS-CrackRock'
   s.version      = '1.0.0'
 
-  s.summary      = 'In-app purchase helper classes.'
+  s.summary      = 'Reactive in-app purchase helper classes.'
   s.homepage     = 'http://brynbellomy.github.com/iOS-CrackRock'
   s.author       = { 'bryn austin bellomy' => 'bryn@signals.io' }
   s.license      = { :type => 'WTFPL', :file => 'LICENSE.md' }
