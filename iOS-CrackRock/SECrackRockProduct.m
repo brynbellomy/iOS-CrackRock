@@ -10,14 +10,25 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
 #import <BrynKit/BrynKit.h>
-#import <BrynKit/NSObject+GCDThreadsafe.h>
+#import <BrynKit/GCDThreadsafe.h>
 
 #import "SECrackRockProduct.h"
 #import "SECrackRockProduct-Private.h"
 
 
 @interface SECrackRockProduct ()
-    @property (nonatomic, copy, readwrite) SECrackRockTransactionResponseBlock blockTransactionCompletion;
+    @property (nonatomic, strong, readwrite) SKProduct *skProduct;
+
+    @property (nonatomic, copy,   readwrite) SECrackRockTransactionResponseBlock blockTransactionCompletion;
+    @property (nonatomic, copy,   readwrite) NSString *productID;
+    @property (nonatomic, copy,   readwrite) NSString *readableName;
+    @property (nonatomic, copy,   readwrite) NSString *productDescription;
+    @property (nonatomic, copy,   readwrite) NSString *price;
+
+    @property (nonatomic, assign, readwrite) dispatch_queue_t queueCritical;
+
+    @property (nonatomic, assign, readwrite) BOOL isAvailableInStore;
+    @property (nonatomic, assign, readwrite) BOOL hasBeenPurchased;
 @end
 
 
@@ -33,57 +44,58 @@
  * @param {NSString*} productID
  * @return {instancetype}
  */
-
-- (instancetype) initWithProductID:(NSString *)productID {
-    self = [self initWithProductID:productID thumbnailPNGFilename:nil];
+- (instancetype) initWithProductID:(NSString *)productID
+{
+    self = [self initWithProductID:productID
+                      readableName:nil
+                productDescription:nil
+                            isFree:NO];
     return self;
 }
 
 
 
-/**!
- * #### initWithProductID:thumbnailPNGFilename:
- * 
+/**
+ * #### initWithProductID:readableName:productDescription:isFree:
+ *
  * @param {NSString*} productID
- * @param {NSString*} thumbnailPNGFilename
+ * @param {NSString*} readableName
+ * @param {NSString*} productDescription
+ * @param {BOOL} isFree
  * @return {instancetype}
  */
 - (instancetype) initWithProductID: (NSString *)productID
-              thumbnailPNGFilename: (NSString *)thumbnailPNGFilename
+                      readableName: (NSString *)readableName
+                productDescription: (NSString *)productDescription
+                            isFree: (BOOL)isFree
 {
     self = [super init];
-
-    if (self) {
-        _productID			  = productID;
-        _thumbnailPNGFilename = thumbnailPNGFilename;
+    if (self)
+    {
+        _productID          = productID;
+        _readableName       = readableName;
+        _productDescription = productDescription;
+        _isAvailableInStore = NO;
+        _isFree             = isFree;
+        _queueCritical      = dispatch_queue_create("com.signalenvelope.SECrackRock.Product.queueCritical", 0);
     }
     return self;
 }
 
 
-/**!
- * #### copyWithZone:
- * 
- * @param {NSZone*} zone
- * @return {instancetype}
- */
 
-- (instancetype) copyWithZone:(NSZone *)zone
+- (BOOL) isEqual:(id)object
 {
-    // use designated initializer
-    id theCopy = [[[self class] allocWithZone:zone] initWithProductID: [self.productID copy]
-                                                 thumbnailPNGFilename: [self.thumbnailPNGFilename copy]];
-
-    [theCopy setReadableName: [self.readableName copy]];
-    [theCopy setProductDescription: [self.productDescription copy]];
-    [theCopy setPrice:[self.price copy]];
-    [theCopy setProductStatus:self.productStatus];
-    [theCopy setIsAvailableInStore:self.isAvailableInStore];
-    [theCopy setHasBeenPurchased:self.hasBeenPurchased];
-    [theCopy setSkProduct:[self.skProduct copy]];
-
-    return theCopy;
+    if ([object isKindOfClass: [SECrackRockProduct class]])
+    {
+        SECrackRockProduct *product = object;
+        if ([product.productID isEqualToString:self.productID]) {
+            return YES;
+        }
+    }
+    return NO;
 }
+
 
 
 - (BOOL) hasBeenPurchased
@@ -92,10 +104,11 @@
     @weakify(self);
     [self runCriticalReadonlySection:^{
         @strongify(self);
-        hasBeenPurchased = [[[NSUserDefaults standardUserDefaults] arrayForKey:SECrackRockUserDefaultsKey_purchasedItems] containsObject:self.productID];
+        hasBeenPurchased = !self.isFree && [[[NSUserDefaults standardUserDefaults] arrayForKey:SECrackRockUserDefaultsKey_purchasedItems] containsObject:self.productID];
     }];
     return hasBeenPurchased;
 }
+
 
 
 - (void) setHasBeenPurchased:(BOOL)hasBeenPurchased
@@ -103,6 +116,10 @@
     @weakify(self);
     [self runCriticalMutableSection:^{
         @strongify(self);
+
+        if (self.isFree == YES) {
+            return;
+        }
 
         NSMutableArray *purchasedItems = [[NSUserDefaults standardUserDefaults] arrayForKey:SECrackRockUserDefaultsKey_purchasedItems].mutableCopy ?: [NSMutableArray array];
         BOOL hasBeenRecordedAsPurchased = [purchasedItems containsObject:self.productID];
@@ -117,6 +134,56 @@
         [[NSUserDefaults standardUserDefaults] setObject:purchasedItems forKey:SECrackRockUserDefaultsKey_purchasedItems];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
+}
+
+
+
+#pragma mark- GCDThreadsafe
+#pragma mark-
+
+/**
+ * #### runCriticalMutableSection:
+ *
+ * Runs the given block on the critical section queue asynchronously, but as a barrier block
+ * that blocks any other critical operations until it completes.
+ *
+ * @param {dispatch_block_t} blockCritical
+ * @return {void}
+ */
+
+- (void) runCriticalMutableSection: (dispatch_block_t)blockCritical
+{
+    yssert(self.queueCritical != nil);
+
+    if (dispatch_get_current_queue() == self.queueCritical) {
+        blockCritical();
+    }
+    else {
+        dispatch_barrier_async(self.queueCritical, blockCritical);
+    }
+}
+
+
+
+/**
+ * #### runCriticalReadonlySection:
+ *
+ * Runs the given block on the critical section queue synchronously.
+ *
+ * @param {dispatch_block_t} blockCritical
+ * @return {void}
+ */
+
+- (void) runCriticalReadonlySection: (dispatch_block_t)blockCritical
+{
+    yssert(self.queueCritical != nil);
+
+    if (dispatch_get_current_queue() == self.queueCritical) {
+        blockCritical();
+    }
+    else {
+        dispatch_sync(self.queueCritical, blockCritical);
+    }
 }
 
 

@@ -15,6 +15,8 @@
 		C5133C3E15BDD1C20026E5ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C3D15BDD1C20026E5ED /* UIKit.framework */; };
 		C5133C4015BDD2750026E5ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C3F15BDD2750026E5ED /* CoreGraphics.framework */; };
 		C5133C4215BDD2D30026E5ED /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5133C4115BDD2D30026E5ED /* QuartzCore.framework */; };
+		C56BC0DB16DFA8F60040EB8F /* SECrackRockCommon-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C56BC0D916DFA8F50040EB8F /* SECrackRockCommon-Private.h */; };
+		C56BC0DC16DFA8F60040EB8F /* SECrackRockProduct-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C56BC0DA16DFA8F50040EB8F /* SECrackRockProduct-Private.h */; };
 		C56D0D4815BC7D8900358BA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D4715BC7D8900358BA6 /* Foundation.framework */; };
 		C56D0D5615BC7D8900358BA6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D5515BC7D8900358BA6 /* SenTestingKit.framework */; };
 		C56D0D5915BC7D8900358BA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56D0D4715BC7D8900358BA6 /* Foundation.framework */; };
@@ -31,7 +33,6 @@
 		C578E37316D95FF40037C46F /* SECrackRockProductsRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = C578E37116D95FF40037C46F /* SECrackRockProductsRequest.h */; };
 		C578E37416D95FF40037C46F /* SECrackRockProductsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = C578E37216D95FF40037C46F /* SECrackRockProductsRequest.m */; };
 		C57BC1E916DDEC2F00B690E0 /* SECrackRockProductSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C57BC1E816DDEC2F00B690E0 /* SECrackRockProductSpec.m */; };
-		C5D5CF9916DEF41F00A806DB /* libTropicalKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D5CF9816DEF41F00A806DB /* libTropicalKiwi.a */; };
 		C5D5CF9D16DEF4BF00A806DB /* libTropicalKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D5CF9C16DEF4BF00A806DB /* libTropicalKiwi.a */; };
 		EBB2327AB7004ED8ADB5C328 /* libPods-iOS-CrackRockTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1113EF1E8541D98E5CD56D /* libPods-iOS-CrackRockTests.a */; };
 /* End PBXBuildFile section */
@@ -55,6 +56,8 @@
 		C5133C3D15BDD1C20026E5ED /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C5133C3F15BDD2750026E5ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		C5133C4115BDD2D30026E5ED /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C56BC0D916DFA8F50040EB8F /* SECrackRockCommon-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SECrackRockCommon-Private.h"; sourceTree = "<group>"; };
+		C56BC0DA16DFA8F50040EB8F /* SECrackRockProduct-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SECrackRockProduct-Private.h"; sourceTree = "<group>"; };
 		C56D0D4415BC7D8900358BA6 /* libiOS-CrackRock.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libiOS-CrackRock.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C56D0D4715BC7D8900358BA6 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C56D0D4B15BC7D8900358BA6 /* iOS-CrackRock-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS-CrackRock-Prefix.pch"; sourceTree = "<group>"; };
@@ -75,9 +78,7 @@
 		C578E37216D95FF40037C46F /* SECrackRockProductsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockProductsRequest.m; sourceTree = "<group>"; };
 		C57BC1E816DDEC2F00B690E0 /* SECrackRockProductSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SECrackRockProductSpec.m; sourceTree = "<group>"; };
 		C591517F15BCDBA10062C02E /* libKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libKiwi.a; path = "Vendor/Kiwi/build/Release-iphoneos/libKiwi.a"; sourceTree = "<group>"; };
-		C5D5CF9816DEF41F00A806DB /* libTropicalKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTropicalKiwi.a; sourceTree = "<group>"; };
 		C5D5CF9C16DEF4BF00A806DB /* libTropicalKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTropicalKiwi.a; path = "../../../Library/Developer/Xcode/DerivedData/TropicalKiwi-amtdwfayakbohdckaguvwbxnajzr/Build/Products/Debug-iphoneos/libTropicalKiwi.a"; sourceTree = "<group>"; };
-		C5D5CF9E16DF0DD500A806DB /* TestOutputGatherer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestOutputGatherer.h; sourceTree = "<group>"; };
 		F6376896C9CD4AE2A434784E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -105,7 +106,6 @@
 				C56D0D5615BC7D8900358BA6 /* SenTestingKit.framework in Frameworks */,
 				C56D0D5C15BC7D8900358BA6 /* libiOS-CrackRock.a in Frameworks */,
 				EBB2327AB7004ED8ADB5C328 /* libPods-iOS-CrackRockTests.a in Frameworks */,
-				C5D5CF9916DEF41F00A806DB /* libTropicalKiwi.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +115,6 @@
 		C56D0D3915BC7D8900358BA6 = {
 			isa = PBXGroup;
 			children = (
-				C5D5CF9E16DF0DD500A806DB /* TestOutputGatherer.h */,
 				C5D5CF9C16DEF4BF00A806DB /* libTropicalKiwi.a */,
 				C56D0D4915BC7D8900358BA6 /* iOS-CrackRock */,
 				C56D0D5D15BC7D8900358BA6 /* iOS-CrackRockTests */,
@@ -159,6 +158,8 @@
 				C5133BFB15BD8E060026E5ED /* SECrackRockCommon.h */,
 				C56D0D6E15BC85F400358BA6 /* SECrackRock.h */,
 				C56D0D6F15BC85F400358BA6 /* SECrackRock.m */,
+				C56BC0D916DFA8F50040EB8F /* SECrackRockCommon-Private.h */,
+				C56BC0DA16DFA8F50040EB8F /* SECrackRockProduct-Private.h */,
 				C56D0D7015BC85F400358BA6 /* SECrackRockProduct.h */,
 				C56D0D7115BC85F400358BA6 /* SECrackRockProduct.m */,
 				C56D0D7215BC85F400358BA6 /* SECrackRockStoreController.h */,
@@ -181,7 +182,6 @@
 		C56D0D5D15BC7D8900358BA6 /* iOS-CrackRockTests */ = {
 			isa = PBXGroup;
 			children = (
-				C5D5CF9816DEF41F00A806DB /* libTropicalKiwi.a */,
 				C57BC1E816DDEC2F00B690E0 /* SECrackRockProductSpec.m */,
 				C56D0D5E15BC7D8900358BA6 /* Supporting Files */,
 				C56D0D9115BC866400358BA6 /* SECrackRockSpec.m */,
@@ -211,6 +211,8 @@
 				C5133BFC15BD8E060026E5ED /* SECrackRockCommon.h in Headers */,
 				C56D0D7C15BC85F500358BA6 /* UIImage+SECrackRock.h in Headers */,
 				C578E37316D95FF40037C46F /* SECrackRockProductsRequest.h in Headers */,
+				C56BC0DB16DFA8F60040EB8F /* SECrackRockCommon-Private.h in Headers */,
+				C56BC0DC16DFA8F60040EB8F /* SECrackRockProduct-Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

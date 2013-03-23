@@ -6,11 +6,13 @@
 //  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
-#import <StateMachine/StateMachine.h>
+#import <StateMachine-GCDThreadsafe/StateMachine.h>
 #import <BrynKit/BrynKit.h>
+#import <BrynKit/RACSubject+SERACHelpers.h>
 #import <libextobjc/EXTScope.h>
 #import <Underscore.m/Underscore.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveCocoa/NSNotificationCenter+RACSupport.h>
 
 #import "SECrackRock.h"
 #import "SECrackRockProduct.h"
@@ -44,10 +46,14 @@ Key(SECrackRockEvent_RequestProducts, @"requestProducts");
     @property (nonatomic, strong, readwrite) NSSet *purchasedProducts;
     @property (nonatomic, strong, readwrite) NSSet *products;
 
-    @property (nonatomic, assign, readwrite) dispatch_queue_t purchasedItemsQueue;
     @property (nonatomic, assign, readwrite) dispatch_queue_t queueCritical;
 
     @property (nonatomic, copy,   readwrite) SECrackRockTransactionResponseBlock blockTransactionCompletion;
+
+    @property (nonatomic, copy, readwrite) NSString *state;
+@end
+
+@interface SECrackRock (SKPaymentTransactionObserver) <SKPaymentTransactionObserver>
 @end
 
 
@@ -56,6 +62,11 @@ Key(SECrackRockEvent_RequestProducts, @"requestProducts");
     - (void) initializeStateMachine;
     - (void) requestProducts;
     - (void) transactionComplete;
+    - (void) purchase;
+    - (void) restore;
+    - (void) error;
+    - (void) transactionComplete;
+    - (void) requestProducts;
 @end
 
 
@@ -95,36 +106,39 @@ STATE_MACHINE(^(LSStateMachine *sm) {
         @weakify(self);
 
         // pluck the product IDs
-        NSArray *productIDs = [[[self.paidProducts
-            rac_sequence].signal
-            map:^id(SECrackRockProduct *product) { return product.productID; }]
-            toArray];
+        NSLog(@"self.paidProducts = %@", self.paidProducts);
+        NSArray *productIDs = [self.paidProducts
+            .rac_sequence.signal
+             map:^id(SECrackRockProduct *product) { return product.productID; }]
+            .toArray;
 
-        self.productsRequest =
-        [[SECrackRockProductsRequest alloc] initWithProductIDs: [NSSet setWithArray:productIDs]
-                                                         queue: self.queueCritical
-                                                    completion:^(NSError *err, NSArray *validProducts, NSArray *invalidProductIDs) {
+        NSSet *productIDsSet = [NSSet setWithArray: productIDs];
+        NSLog(@"productIDs = %@", productIDs);
+        NSLog(@"[NSSet setWithArray:productIDs] = %@", productIDsSet);
 
-                                                        @strongify(self);
-                                                        lllog(Info, @"%d valid product IDs, %d invalid product IDs", validProducts.count, invalidProductIDs.count);
-                                                        if (err != nil) {
-                                                            lllog(Error, @"error = %@", err);
-                                                        }
-                                                        else {
-                                                            // update our cached products with the received product info
-                                                            for (SKProduct *product in validProducts) {
-                                                                [self requestedProductValidated: product];
-                                                            }
-                                                            
-                                                            // if any of the requested product IDs were not valid, mark them as such
-                                                            for (NSString *invalidProductID in invalidProductIDs) {
-                                                                [self requestedProductNotValid:invalidProductID];
-                                                            }
-                                                        }
-                                                        
-                                                    }];
+        RACSignal *rac_productsRequest = [SECrackRockProductsRequest rac_productsRequestForProductIDs: productIDsSet
+                                                                                            scheduler:[RACScheduler scheduler]];
 
-        [self.productsRequest start];
+        [rac_productsRequest subscribeNext:^(RACTuple *response) {
+            RACTupleUnpack(NSSet *validProducts, NSSet *invalidProductIDs) = response;
+            @strongify(self);
+            lllog(Info, @"%d valid product IDs, %d invalid product IDs", validProducts.count, invalidProductIDs.count);
+
+            // update our cached products with the received product info
+            for (SKProduct *product in validProducts) {
+                [self requestedProductValidated: product];
+            }
+
+            // if any of the requested product IDs were not valid, mark them as such
+            for (NSString *invalidProductID in invalidProductIDs) {
+                [self requestedProductNotValid:invalidProductID];
+            }
+
+        } error:^(NSError *error) {
+            @strongify(self);
+            lllog(Error, @"error = %@", error);
+            [self error];
+        }];
     }];
 
     // purchase
@@ -168,24 +182,36 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
 
 /**!
- * #### initWithFreeProductIDs:paidProductIDs:
+ * #### initWithFreeProducts:paidProductIDs:
  *
  * @return {id}
  */
 
-- (instancetype) initWithFreeProductIDs:(NSSet *)freeProductIDs
-                         paidProductIDs:(NSSet *)paidProductIDs
+- (instancetype) initWithFreeProducts:(NSSet *)freeProducts
+                         paidProducts:(NSSet *)paidProducts
 {
-    
-    self = [super init];
-    if (self) {
 
+    self = [super init];
+    if (self)
+    {
         [self initializeStateMachine];
 
         _isCurrentlyRestoringMultiplePurchases = NO;
         _restoreWasInitiatedByUser = NO;
+        _freeProducts = (freeProducts != nil) ? [freeProducts copy] : [NSSet set];
+        _paidProducts = (paidProducts != nil) ? [paidProducts copy] : [NSSet set];
 
-        RAC(self.productsByID) = [RACAbleWithStart(self.products)
+        yssert(_freeProducts != nil, @"_freeProducts is nil.");
+        yssert(_paidProducts != nil, @"_paidProducts is nil.");
+
+        RAC(self.products) = [RACSignal combineLatest: @[ [[RACAbleWithStart(self.freeProducts) distinctUntilChanged] notNil],
+                                                          [[RACAbleWithStart(self.paidProducts) distinctUntilChanged] notNil], ]
+                                               reduce:^NSSet *(NSSet *freeProducts, NSSet *paidProducts){
+                                                   return [freeProducts setByAddingObjectsFromSet:paidProducts];
+                                               }];
+        yssert(self.products != nil, @"self.products is nil.");
+
+        RAC(self.productsByID) = [[RACAbleWithStart(self.products) distinctUntilChanged]
                                       map:^id(NSSet *products) {
 
                                           NSMutableDictionary *productsByID = [NSMutableDictionary dictionaryWithCapacity:products.count];
@@ -195,12 +221,40 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
                                           return productsByID;
                                       }];
+        yssert(self.productsByID != nil, @"self.productsByID is nil.");
 
-        RAC(self.products) = self.rac_products;
 
-        RAC(self.purchasedItems) = [self.rac_products filter:^BOOL(SECrackRockProduct *product) {
-            return product.hasBeenPurchased;
+        RAC(self.purchasedProducts) = [RACSignal combineLatest:@[ [[[NSNotificationCenter defaultCenter] rac_addObserverForName:SECrackRockNotification_CollectionWasUpdated object:self] startWith:RACDefaultUnit],
+                                                               [[RACAbleWithStart(self.productsByID) distinctUntilChanged] notNil], ]
+                                                     reduce:^(id notification, NSDictionary *productsByID) {
+
+                                                         lllog(Error, @"purchasedProducts did change (inner) = %@", productsByID);
+
+                                                         NSMutableArray *arr = @[].mutableCopy;
+                                                         for (id key in productsByID) {
+                                                             SECrackRockProduct *product = productsByID[ key ];
+                                                             if (product.hasBeenPurchased) {
+                                                                 [arr addObject:product];
+                                                             }
+                                                         }
+                                                         return [NSSet setWithArray:arr];
+                                                     }];
+
+        [RACAbleWithStart(self.purchasedProducts) subscribeNext:^(id x) {
+            lllog(Error, @"purchasedProducts did change (outer) = %@", x);
         }];
+
+        yssert(self.purchasedProducts != nil, @"self.purchasedProducts is nil.");
+
+        RAC(self.freeAndPurchasedProducts) = [RACSignal combineLatest: @[ [[RACAbleWithStart(self.purchasedProducts) distinctUntilChanged] notNil],
+                                                                       [[RACAbleWithStart(self.freeProducts)   distinctUntilChanged] notNil], ]
+                                                            reduce:^id (NSSet *purchasedItems, NSSet *freeProducts) {
+                                                                yssert_notNilAndIsClass(purchasedItems, NSSet);
+                                                                yssert_notNilAndIsClass(freeProducts,   NSSet);
+
+                                                                return [purchasedItems setByAddingObjectsFromSet:freeProducts];
+                                                            }];
+        yssert(self.freeAndPurchasedProducts != nil, @"self.freeAndPurchasedProducts is nil.");
 
         // add an observer to monitor the transaction status
         [[SKPaymentQueue defaultQueue] addTransactionObserver: (id<SKPaymentTransactionObserver>)self];
@@ -218,8 +272,9 @@ STATE_MACHINE(^(LSStateMachine *sm) {
  * @return {void}
  */
 
-- (void) dealloc {
-    [[SKPaymentQueue defaultQueue] removeTransactionObserver: (id<SKPaymentTransactionObserver>)self];
+- (void) dealloc
+{
+    [[SKPaymentQueue defaultQueue] removeTransactionObserver: self];
 }
 
 
@@ -241,7 +296,6 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 - (void) purchase: (NSString *)productID
        completion: (SECrackRockTransactionResponseBlock)blockCompletion
 {
-    lllog(Verbose, @"product ID: %@", productID);
     yssert(productID != nil);
 
     SECrackRockProduct *product = self.productsByID[ productID ];
@@ -288,10 +342,8 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
 - (void) restoreAllPurchases:(SECrackRockTransactionResponseBlock)blockTransactionCompletion
 {
-    lllog(Verbose, @"entering method");
-
     // IAP is disabled, so bail
-    if (NO == [SKPaymentQueue canMakePayments]) {
+    if (NO == SKPaymentQueue.canMakePayments) {
         if (blockTransactionCompletion != nil) {
             NSError *error = [NSError errorWithDomain: @"com.signalenvelope.SECrackRock.IAPDisabled" code:2
                                              userInfo: @{ @"description": [NSString stringWithFormat:@"In-app purchasing is disabled on this device."] }];
@@ -312,38 +364,38 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
 
 
-#pragma mark KVO
-
-/**
- * keyPathsForValuesAffectingProducts
- */
-
-+ (NSSet *) keyPathsForValuesAffectingProducts
-{
-    return [NSSet setWithArray: @[@"freeProducts", @"paidProducts"]];
-}
-
-
-
-/**
- * keyPathsForValuesAffectingProductsByID
- */
-
-+ (NSSet *) keyPathsForValuesAffectingProductsByID
-{
-    return [NSSet setWithArray: @[@"products", @"freeProducts", @"paidProducts"]];
-}
-
-
-
-/**
- * keyPathsForValuesAffectingPurchasedItems
- */
-
-+ (NSSet *) keyPathsForValuesAffectingPurchasedItems
-{
-    return [NSSet setWithArray: @[@"products", @"freeProducts", @"paidProducts"]];
-}
+//#pragma mark KVO
+//
+///**
+// * keyPathsForValuesAffectingProducts
+// */
+//
+//+ (NSSet *) keyPathsForValuesAffectingProducts
+//{
+//    return [NSSet setWithArray: @[@"freeProducts", @"paidProducts"]];
+//}
+//
+//
+//
+///**
+// * keyPathsForValuesAffectingProductsByID
+// */
+//
+//+ (NSSet *) keyPathsForValuesAffectingProductsByID
+//{
+//    return [NSSet setWithArray: @[@"products", @"freeProducts", @"paidProducts"]];
+//}
+//
+//
+//
+///**
+// * keyPathsForValuesAffectingPurchasedItems
+// */
+//
+//+ (NSSet *) keyPathsForValuesAffectingPurchasedItems
+//{
+//    return [NSSet setWithArray: @[@"products", @"freeProducts", @"paidProducts"]];
+//}
 
 
 
@@ -351,35 +403,15 @@ STATE_MACHINE(^(LSStateMachine *sm) {
  * rac_products
  */
 
-- (RACSignal *) rac_products
-{
-    return [RACSignal merge: @[
-               [self.rac_freeProducts flatten],
-               [self.rac_paidProducts flatten],
-           ]];
-}
-
-
-
-/**
- * rac_freeProducts
- */
-
-- (RACSignal *) rac_freeProducts
-{
-    return self.freeProducts.rac_sequence.signal;
-}
-
-
-
-/**
- * rac_paidProducts
- */
-
-- (RACSignal *) rac_paidProducts
-{
-    return self.paidProducts.rac_sequence.signal;
-}
+//- (RACSignal *) rac_products
+//{
+//    return [RACSignal combineLatest: @[
+//             RACAbleWithStart(self.freeProducts),
+//             RACAbleWithStart(self.paidProducts),
+//         ] reduce:^NSSet *(NSSet *freeProducts, NSSet *paidProducts){
+//             return [freeProducts setByAddingObjectsFromSet:paidProducts];
+//         }];
+//}
 
 
 
@@ -397,15 +429,20 @@ STATE_MACHINE(^(LSStateMachine *sm) {
  * @return {void}
  */
 
-- (void) requestedProductNotValid:(NSString *)productID {
+- (void) requestedProductNotValid:(NSString *)productID
+{
     yssert(productID != nil, @"productID argument is nil.");
     lllog(Warn, @"Product '%@' unavailable", productID);
+
+    [self willChangeValueForKey:@keypath(self.paidProducts)];
 
     SECrackRockProduct *product = self.productsByID[ productID ];
     yssert(product != nil, @"product is nil.");
 
     product.isAvailableInStore = NO;
-    product.productStatus = SECrackRockProductStatusError;
+
+    [self didChangeValueForKey:@keypath(self.paidProducts)];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SECrackRockNotification_CollectionWasUpdated object:self];
 }
 
 
@@ -425,6 +462,9 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     yssert(skProduct != nil, @"skProduct argument is nil.");
     lllog(Info, @"product validated: %@", skProduct);
 
+    [self willChangeValueForKey:@keypath(self.paidProducts)];
+
+    // localize the returned price string
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle        = NSNumberFormatterCurrencyStyle;
     formatter.locale             = skProduct.priceLocale;
@@ -440,9 +480,11 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     productToUpdate.price              = localizedPrice;
     productToUpdate.skProduct          = skProduct;
     productToUpdate.isAvailableInStore = YES;
-    productToUpdate.productStatus      = [self.purchasedItems containsObject:productToUpdate.productID]
-                                              ? SECrackRockProductStatusNonfreePurchased
-                                              : SECrackRockProductStatusNonfreeUnpurchased;
+//    productToUpdate.productStatus      = [self.purchasedProducts containsObject:productToUpdate.productID]
+//                                              ? SECrackRockProductStatusNonfreePurchased
+//                                              : SECrackRockProductStatusNonfreeUnpurchased;
+    [self didChangeValueForKey:@keypath(self.paidProducts)];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SECrackRockNotification_CollectionWasUpdated object:self];
 }
 
 
@@ -474,10 +516,20 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
     lllog(Verbose, @"product ID: %@", productID);
 
+//    @weakify(self);
+//    [RACScheduler mainThreadScheduler] schedule:^{
+//        @strongify(self);
+
+
+    [self willChangeValueForKey:@keypath(self.purchasedProducts)];
+    [self willChangeValueForKey:@keypath(self.productsByID)];
+
     // save a record that this has been purchased locally to the phone (ends up in NSUserDefaults)
     SECrackRockProduct *product = self.productsByID[ productID ];
     yssert(product != nil);
     product.hasBeenPurchased = YES;
+
+    [self didChangeValueForKey:@keypath(self.productsByID)];
 
     if (self.blockTransactionCompletion != nil) {
         self.blockTransactionCompletion(nil);
@@ -485,6 +537,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     }
 
     [self transactionComplete];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SECrackRockNotification_CollectionWasUpdated object:self];
 }
 
 
@@ -511,6 +564,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     }
 
     [self transactionComplete];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SECrackRockNotification_CollectionWasUpdated object:self];
 }
 
 
@@ -539,6 +593,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     }
 
     [self transactionComplete];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SECrackRockNotification_CollectionWasUpdated object:self];
 }
 
 
@@ -560,10 +615,19 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     yssert(transactionReceipt != nil, @"transactionReceipt argument is nil.");
     lllog(Verbose, @"product ID: %@", productID);
 
+    [self willChangeValueForKey:@keypath(self.paidProducts)];
+
+    SECrackRockProduct *product = self.productsByID[ productID ];
+    yssert(product != nil);
+    product.hasBeenPurchased = YES;
+
+    [self didChangeValueForKey:@keypath(self.paidProducts)];
+
     if (self.isCurrentlyRestoringMultiplePurchases == NO) {
         if (self.blockTransactionCompletion != nil) {
             self.blockTransactionCompletion(nil);
             self.blockTransactionCompletion = nil;
+            [[NSNotificationCenter defaultCenter] postNotificationName:SECrackRockNotification_CollectionWasUpdated object:self];
         }
 
         [self transactionComplete];
@@ -612,6 +676,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     }
 
     [self transactionComplete];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SECrackRockNotification_CollectionWasUpdated object:self];
 }
 
 
@@ -641,6 +706,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     }
 
     [self transactionComplete];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SECrackRockNotification_CollectionWasUpdated object:self];
 }
 
 
@@ -669,6 +735,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     }
 
     [self transactionComplete];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SECrackRockNotification_CollectionWasUpdated object:self];
 }
 
 
@@ -680,9 +747,6 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 @end
 
 #pragma mark SKPaymentTransactionObserver Methods
-
-@interface SECrackRock (SKPaymentTransactionObserver) <SKPaymentTransactionObserver>
-@end
 
 @implementation SECrackRock (SKPaymentTransactionObserver)
 
@@ -859,10 +923,10 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     restoreCompletedTransactionsFailedWithError: (NSError *)error
 {
     lllog(Error, @"error: %@", error);
-    
+
     yssert(queue != nil, @"queue argument is nil.");
     yssert(error != nil, @"error argument is nil.");
-    
+
     // Restore was cancelled or an error occurred, so notify user.
     [self failedRestore: error.code
                 message: error.localizedDescription];

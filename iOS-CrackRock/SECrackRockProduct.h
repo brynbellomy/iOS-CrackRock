@@ -7,17 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <BrynKit/GCDThreadsafe.h>
 #import "SECrackRock.h"
-
-typedef enum : NSUInteger {
-    SECrackRockTransactionOutcome_Cancelled = 1,
-    SECrackRockTransactionOutcome_Purchased = 2,
-    SECrackRockTransactionOutcome_Restored  = 3
-} SECrackRockTransactionOutcome;
 
 @class SKProduct;
 
-@interface SECrackRockProduct : NSObject <NSCopying>
+@interface SECrackRockProduct : NSObject <GCDThreadsafe>
 
 //
 // read-only properties
@@ -27,26 +22,23 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy,   readonly) NSString *readableName;
 @property (nonatomic, copy,   readonly) NSString *productDescription;
 @property (nonatomic, copy,   readonly) NSString *price;
-//@property (nonatomic, copy,   readonly) NSString *state;
 
-@property (nonatomic, assign, readonly) SECrackRockProductStatus productStatus;
 @property (nonatomic, assign, readonly) BOOL isAvailableInStore;
 @property (nonatomic, assign, readonly) BOOL hasBeenPurchased;
+@property (nonatomic, assign, readonly) BOOL isFree;
 
 @property (nonatomic, strong, readonly) SKProduct *skProduct;
-
-//
-// read-write properties
-//
-
-@property (nonatomic, copy, readwrite) NSString *thumbnailPNGFilename;
 
 //
 // methods
 //
 
-- (instancetype) initWithProductID:(NSString *)productID;
-- (instancetype) initWithProductID:(NSString *)productID thumbnailPNGFilename:(NSString *)thumbnailPNGFilename;
+- (instancetype) initWithProductID:    (NSString *)productID;
+
+- (instancetype) initWithProductID: (NSString *)productID
+                      readableName: (NSString *)readableName
+                productDescription: (NSString *)productDescription
+                            isFree: (BOOL)isFree;
 
 @end
 

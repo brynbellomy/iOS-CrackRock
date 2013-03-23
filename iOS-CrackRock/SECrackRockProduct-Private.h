@@ -1,3 +1,11 @@
+//
+//  SECrackRockProduct-Private.h
+//  iOS-CrackRock iOS in-app purchase framework
+//
+//  Created by bryn austin bellomy on 7/23/12.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
+//
+
 
 #import "SECrackRockCommon.h"
 
@@ -9,7 +17,6 @@
     @property (nonatomic, copy, readwrite) NSString *productDescription;
     @property (nonatomic, copy, readwrite) NSString *price;
 
-    @property (nonatomic, assign, readwrite) SECrackRockProductStatus productStatus;
     @property (nonatomic, assign, readwrite) BOOL isAvailableInStore;
     @property (nonatomic, assign, readwrite) BOOL hasBeenPurchased;
 @end

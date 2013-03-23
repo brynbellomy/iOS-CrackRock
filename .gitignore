@@ -36,3 +36,5 @@ docset-installed.txt
 
 Pods
 Podfile.lock
+
+*.sublime-workspace

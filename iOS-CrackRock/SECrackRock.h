@@ -6,10 +6,9 @@
 //  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <StoreKit/StoreKit.h>
-#import <CocoaLumberjack/DDLog.h>
-#import "SECrackRockCommon.h"
+#import "SECrackRockCommon-Private.h"
+
+Key(SECrackRockNotification_CollectionWasUpdated);
 
 
 @class RACSignal;
@@ -22,8 +21,8 @@ typedef void(^SECrackRockTransactionResponseBlock)(NSError *error);
  */
 @interface SECrackRock : NSObject <DDRegisteredDynamicLogging>
 
-- (instancetype) initWithFreeProductIDs: (NSSet *)freeProductIDs
-                         paidProductIDs: (NSSet *)paidProductIDs;
+- (instancetype) initWithFreeProducts: (NSSet *)freeProductIDs
+                         paidProducts: (NSSet *)paidProducts;
 
 - (void)   purchase: (NSString *)productID
          completion: (SECrackRockTransactionResponseBlock)blockCompletion;
@@ -31,19 +30,15 @@ typedef void(^SECrackRockTransactionResponseBlock)(NSError *error);
 - (void) restoreAllPurchases:(SECrackRockTransactionResponseBlock)blockTransactionCompletion;
 
 //
-// RAC-KVO generated properties
+// RAC/KVO-based properties
 //
 @property (nonatomic, strong, readonly) NSSet *products;
-@property (nonatomic, strong, readonly) NSSet *purchasedItems;
+@property (nonatomic, strong, readonly) NSSet *purchasedProducts;
+@property (nonatomic, strong, readonly) NSSet *freeAndPurchasedProducts;
 @property (nonatomic, strong, readonly) NSDictionary *productsByID;
 
-@property (nonatomic, strong, readonly) RACSignal *rac_products;
-@property (nonatomic, strong, readonly) RACSignal *rac_freeProducts;
-@property (nonatomic, strong, readonly) RACSignal *rac_paidProducts;
-@property (nonatomic, strong, readonly) RACSignal *rac_state;
-
 //
-// backing stores for RAC-KVO properties
+// backing stores for RAC/KVO-based properties
 //
 @property (nonatomic, strong, readonly) NSSet *freeProducts;
 @property (nonatomic, strong, readonly) NSSet *paidProducts;

@@ -1,28 +1,31 @@
 //
 //  SECrackRockProductsRequest.h
-//  iOS-CrackRock
+//  iOS-CrackRock iOS in-app purchase framework
 //
 //  Created by bryn austin bellomy on 2.23.13.
 //  Copyright (c) 2013 illumntr. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <BrynKit/GCDThreadsafe.h>
 
-typedef void(^ProductsRequestResponseBlock)(NSError *error, NSArray *validProducts, NSArray *invalidProductIDs);
+typedef void(^SEProductsRequestResponseBlock)(NSError *error, NSArray *validProducts, NSArray *invalidProductIDs);
 
-@interface SECrackRockProductsRequest : NSObject <SKProductsRequestDelegate>
+@interface SECrackRockProductsRequest : NSObject <GCDThreadsafe, SKProductsRequestDelegate>
 
-@property (nonatomic, copy, readonly) NSString *state;
+@property (nonatomic, copy,   readonly) NSString *state;
+@property (nonatomic, strong, readonly) NSError *error;
 
-- (id) initWithProductIDs:(NSSet *)productIDs
-                    queue:(dispatch_queue_t)parentQueue
-               completion:(ProductsRequestResponseBlock)blockCompletion;
++ (RACSignal *) rac_productsRequestForProductIDs:(NSSet *)productIDs scheduler:(RACScheduler *)scheduler;
+
+- (id) initWithProductIDs:(NSSet *)productIDs completion:(SEProductsRequestResponseBlock)blockCompletion;
 
 //
 // state machine actions
 //
-- (void) start;
-- (void) cancel;
+- (void) doStart;
+- (void) doCancel;
 
 //
 // state machine states
@@ -31,5 +34,6 @@ typedef void(^ProductsRequestResponseBlock)(NSError *error, NSArray *validProduc
 - (BOOL) isRunning;
 - (BOOL) isComplete;
 - (BOOL) isCancelled;
+- (BOOL) isError;
 
 @end

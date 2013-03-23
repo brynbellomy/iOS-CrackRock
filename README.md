@@ -8,148 +8,154 @@
 
 # what
 
-helpers for brewing that delicious iOS fool-aid.  right now, it only supports a
-springboard-style view for displaying products, although in the future, this will
-be abstracted into a protocol so that any implementing view controller can be
-used.
+Helpers for brewing that delicious iOS fool-aid.
+
+Github's excellent [**ReactiveCocoa**](http://github.com/ReactiveCocoa/ReactiveCocoa) was used extensively under the hood, and it's highly recommended that you use it to interface with **iOS-CrackRock**.
 
 # how
 
-more documentation to come, but for now, just subclass the
-**SECrackRockViewController** class and implement the following methods:
+## some useful properties
+
+It'll probably be helpful to add properties like the following to whichever class ends up being responsible for your **SECrackRock** implementation.
 
 ```objective-c
-- (NSArray *) initializePaidProducts {
-  return @[
-    [[SECrackRockProduct alloc] initWithProductID: @"com.yourcompany.SmallBagOfCrap"
-                                     readableName: @"A bag of crap"
-                                      description: @"It's not like you're not still gonna buy it"
-                             thumbnailPNGFilename: @"small-bag-of-crap"], // thumbnails must be PNG so no extension is needed
-    
-    [[SECrackRockProduct alloc] initWithProductID: @"com.yourcompany.WillNeverGoBankruptAgain"
-                                     readableName: @"Well-perfumed bag of crap"
-                                      description: @"You know you can't help but click that buy button."
-                             thumbnailPNGFilename: @"bag-of-crap-with-pink-bow"]
+@property (nonatomic, strong, readwrite) SECrackRock *crackRock;
+@property (nonatomic, strong, readwrite) NSSet *availablePowerups;
+@property (nonatomic, strong, readwrite) NSSet *allProducts;
 
-    // ... etc.
-  ];
-}
-
-- (NSArray *) initializeFreeProducts {
-  return @[
-    [[SECrackRockProduct alloc] initWithProductID: @"com.yourcompany.FreeBagOfCrap"
-                                     readableName: @"A teeny tiny bag of crap"
-                                      description: @"Sample size."
-                             thumbnailPNGFilename: @"can-barely-see-it"]
-    
-    // ... etc.
-  ];
-}
+@property (nonatomic, strong, readonly)  NSSet *paidProducts;
+@property (nonatomic, strong, readonly)  NSSet *freeProducts;
 ```
 
-if you want SECrackRock to automatically add some kind of visible overlay to any
-product icon that the user has not purchased yet (i.e. a small ribbon with the
-price, etc.), implement the following method and return a UIImage with the same
-dimensions as your product icons.
+## declare your IAP products
+
+In addition to regular products, you can declare 'free' products when appropriate.  These are useful when your app sells a product -- let's say, for example, Instagram-style photo filters -- but also offers a reduced set of these for free by default.
+
+Because the IAP servers aren't queried for any of your 'free' products, you have to specify all required metadata when initializing these products (basically just name and description, unless you subclass `SECrackRockProduct` and add others).  Your 'paid' products can simply specify a product ID -- the other parameters of `-[SECrackRockProduct initWithProductID:readableName:productDescription:isFree:]` can simply be given as `nil`
 
 ```objective-c
-- (UIImage *) purchaseableIndicatorForProduct: (SECrackRockProduct *)product {
-  if ([@"$0.99" compare:product.price] == NSOrderedSame)
-    return UIImageWithBundlePNG(@"purchaseable-indicator-0.99");
-  else if ([@"$1.99" compare:product.price] == NSOrderedSame)
-    return UIImageWithBundlePNG(@"purchaseable-indicator-1.99");
-  else
-    return nil;
-}
-```
-
-you can also set certain parameters in your init method that control the layout
-of the springboard view used to display your products.  for more information on
-these parameters, check out the
-[iOS-BlingLord](http://github.com/brynbellomy/iOS-BlingLord) project on which
-this project depends.  example:
-
-```objective-c
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (NSSet *) freeProducts
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-      self.springboardItemSize = CGSizeMake(130.0f, 150.0f);
-      self.springboardItemMargins = CGSizeMake(15.0f, 25.0f);
-      self.springboardOuterMargins = CGSizeMake(10.0f, 10.0f);
+    NSArray *productMetadata = @[
+        @{  @"product id": @"freeproduct1",
+            @"name": @"super jump",
+            @"description": @"boing boing boing",
+            @"is powerup": @YES,
+            @"free": @YES, },
+
+        @{  @"product id": @"freeproduct2",
+            @"name": @"power walk",
+            @"description": @"get swole",
+            @"is powerup": @NO,
+            @"free": @YES, },
+    ];
+    return [self productsFromMetadata: productMetadata];
+}
+
+- (NSSet *) paidProducts
+{
+    NSArray *productMetadata = @[
+        @{  @"product id": @"paidproduct1", @"is powerup": @YES, },
+        @{  @"product id": @"paidproduct2", @"is powerup": @NO,  },
+    ];
+    return [self productsFromMetadata: productMetadata];
+}
+
+- (NSSet *) productsFromMetadata: (NSArray *)productMetadata
+{
+    NSMutableSet *products = [NSMutableSet set];
+    for (NSDictionary *metadata in productMetadata) {
+        SECrackRockProduct *product = nil;
+        if ([metadata[@"is powerup"] boolValue] == YES) {
+            product = [MyAppPowerUpProduct initWithProductID: metadata[@"product id"]
+                                                readableName: metadata[@"name"]
+                                          productDescription: metadata[@"description"]
+                                                      isFree: metadata[@"free"]];
+        }
+        else {
+            product = [SECrackRockProduct initWithProductID: metadata[@"product id"]
+                                               readableName: metadata[@"name"]
+                                         productDescription: metadata[@"description"]
+                                                     isFree: metadata[@"free"]];
+        }
+        [products addObject: product];
     }
-    return self;
+    return products;
 }
 ```
 
-finally, implement a handler that's fired when the user taps one of the product
-icons.  the `tryToPurchaseProduct:` method (and maybe `tryToRestorePurchase:` as
-well) will probably be useful here.
+## initialize the crack rock
+
+Add something like the following to whichever part of your application should bootstrap the in-app purchase functionality.  Probably best to do this in `-application:didFinishLaunchingWithOptions:`.
 
 ```objective-c
-- (void) iconWasTappedForProduct: (SECrackRockProduct *)crackProduct {
-  
-  switch (product.purchaseStatus) {
-    case SECrackRockPurchaseStatusFree:
-    case SECrackRockPurchaseStatusNonfreePurchased: {
+- (BOOL)              application:(UIApplication *)application
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.crackRock = [[SECrackRock alloc] initWithFreeProducts: freeProducts
+                                                  paidProducts: paidProducts];
 
-      // do whatever should be done here when a user taps on a product they have
-      // access to already
-      SomeViewController *vc = [[SomeViewController alloc] initWithNibName: @"SomeViewController" bundle: nil];
-      vc.productToDisplay = crackProduct;
-      [self.navigationController pushViewController:vc animated:YES];
-
-    } break;
-      
-    case SECrackRockPurchaseStatusNonfreeUnpurchased: {
-
-      // attempt to make a purchase
-      [self tryToPurchaseProduct: product.productID];
-
-    } break;
-      
-    default: {
-      [[[UIAlertView alloc] initWithTitle: @"Our bad"
-                                  message: @"An error occurred, and we don't know exactly why.  Maybe try again later!"
-                                 delegate: nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-    } break;
-  }
+    // ...
 }
 ```
 
-or even simpler, taking advantage of the default implementation:
+## reactive crack
+
+Speaking of ReactiveCocoa, you might find some benefit in setting up a few properties like the following.
 
 ```objective-c
-- (void) iconWasTappedForProduct: (SECrackRockProduct *)crackProduct {
-  
-  switch (product.purchaseStatus) {
-    case SECrackRockPurchaseStatusFree:
-    case SECrackRockPurchaseStatusNonfreePurchased: {
+RAC(self.allProducts) =
+    [RACSignal combineLatest: @[
+            [RACAbleWithStart([self freeProducts]) distinctUntilChanged],
+            [RACAbleWithStart([self paidProducts]) distinctUntilChanged], ]
+        reduce:^id (NSSet *freeProducts, NSSet *paidProducts) {
+            return [freeProducts setByAddingObjectsFromSet: paidProducts];
+        }];
 
-      // do whatever should be done here when a user taps on a product they have
-      // access to already
-      SomeViewController *vc = [[SomeViewController alloc] initWithNibName: @"SomeViewController" bundle: nil];
-      vc.productToDisplay = crackProduct;
-      [self.navigationController pushViewController:vc animated:YES];
+RAC(self.availablePowerups) =
+    [[RACAbleWithStart(self.crackRock.freeAndPurchasedProducts)
+        distinctUntilChanged]
+        map:^id (NSSet *freeAndPurchasedProducts) {
+            NSMutableSet *availablePowerups = [NSMutableSet set];
 
-    } break;
-      
-      
-    default: {
-      [super iconWasTappedForProduct:crackProduct];
-    } break;
-  }
+            for (SECrackRockProduct *product in freeAndPurchasedProducts) {
+                if ([product isKindOfClass: [MyAppPowerUpProducts class]]) {
+                    [availablePowerups addObject: product];
+                }
+            }
+            return availablePowerups;
+        }];
 }
 ```
 
-that should do it.  you can access all sorts of properties on the view
-controller and the view to customize them both from here to perdition, but it's
-pretty standard UIKit business at that point.
+## buy stuff
 
-also be sure to check out [EBPurchase](http://github.com/ebutterfly/EBPurchase)
-and [iOS-BlingLord](http://github.com/brynbellomy/iOS-BlingLord), which power
-this project under the hood.
+When you purchase and restore items, `SECrackRock`'s properties will send KVO notifications.  You can observe these properties using KVO or a framework like [ReactiveCocoa](http://github.com/ReactiveCocoa/ReactiveCocoa) and update the UI and application state accordingly.
 
+```objective-c
+[self.crackRock purchase: productID
+              completion:^(NSError *error) {
+                  if (error != nil) {
+                      NSLog(@"purchase error = %@", error);
+                      return;
+                  }
+
+                  NSLog(@"purchase success!");
+              }];
+```
+
+Restoring is just as easy.
+
+```objective-c
+[self.crackRock restoreAllPurchases:^(NSError *error) {
+    if (error != nil) {
+        NSLog(@"error = %@", error);
+        return;
+    }
+
+    NSLog(@"restore success!");
+}];
+```
 
 
 # license (WTFPL)
